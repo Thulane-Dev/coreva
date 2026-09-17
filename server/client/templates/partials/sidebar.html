@@ -1,0 +1,106 @@
+{% load static %}
+
+<div class="sidebar d-none d-lg-block">
+  <!-- SiteSafe Pro Logo  -->
+  <div class="d-flex align-items-center gap-2">
+    <h4 class="sidebar_title mb-0">
+      SiteSafe <span class="secondary_green_text">Pro</span>
+    </h4>
+  </div>
+
+  <div class="container">
+    <!-- Dashboard  -->
+    <a href="{% url 'dashboard:today' %}">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3 {% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}"
+      >
+        <i class="bi bi-house"></i>
+        <p class="mb-0">Today</p>
+      </div>
+    </a>
+    <!-- Projects  -->
+    <a href="{% url 'projects:projects' %}">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3 {% if request.resolver_match.namespace == 'projects' %}active{% endif %}"
+      >
+        <i class="bi bi-buildings"></i>
+        <p class="mb-0">Projects</p>
+      </div>
+    </a>
+    <!-- Inspections  -->
+    <a href="#">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3 {% if request.resolver_match.namespace == 'contractors' %}active{% endif %}"
+      >
+        <i class="bi bi-person"></i>
+        <p class="mb-0">Inspections</p>
+      </div>
+    </a>
+    <!-- Workers  -->
+    <a href="{% url 'issues:issues' %}">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3 {% if request.resolver_match.namespace == 'workers' %}active{% endif %}"
+      >
+        <i class="bi bi-people"></i>
+        <p class="mb-0">Issues</p>
+      </div>
+    </a>
+    <!-- Reports -->
+    <a href="{% url 'report:report' %}">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3 {% if request.resolver_match.namespace == 'documents' %}active{% endif %}"
+      >
+        <i class="bi bi-house"></i>
+        <p class="mb-0">Reports</p>
+      </div>
+    </a>
+    <!-- Incidents -->
+    <a href="{% url 'incidents:incidents' %}">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3 {% if request.resolver_match.namespace == 'documents' %}active{% endif %}"
+      >
+        <i class="bi bi-house"></i>
+        <p class="mb-0">Incidents</p>
+      </div>
+    </a>
+    <!-- Contractors  -->
+    <a href="{% url 'contractors:contractors' %}">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3"
+      >
+        <i class="bi bi-shield-check"></i>
+        <p class="mb-0">Contractors</p>
+      </div>
+    </a>
+    <!-- Assigned Projects Portal  -->
+    <a href="#">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3"
+      >
+        <i class="bi bi-building-check"></i>
+        <p class="mb-0">Subcontractor Portal</p>
+      </div>
+    </a>
+
+    <!-- Settings -->
+    <a href="{% url 'account:account' %}">
+      <div
+        class="sidebar_link_card d-flex align-items-center gap-3 sidebar_nav_links p-3 {% if request.resolver_match.namespace == 'account' %}active{% endif %}"
+      >
+        <i class="bi bi-gear"></i>
+        <p class="mb-0">Settings</p>
+      </div>
+    </a>
+
+    <!-- Logout  -->
+    <a href="{% url 'logout' %}">
+      <div
+        class="d-flex align-items-center gap-3 sidebar_nav_links p-3 sidebar_logout_btn"
+      >
+        <i class="bi bi-box-arrow-right"></i>
+        <p class="mb-0">Logout</p>
+      </div>
+    </a>
+    <!-- end link  -->
+  </div>
+</div>

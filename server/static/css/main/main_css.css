@@ -1,0 +1,48 @@
+.font_size_14 {
+  font-size: 14px !important;
+}
+
+.font_size_13 {
+  font-size: 13px !important;
+}
+
+.font_size_12 {
+  font-size: 12px !important;
+}
+
+.font_size_11 {
+  font-size: 11px !important;
+}
+
+.font_size_10 {
+  font-size: 11px !important;
+}
+
+.inputs_css_style {
+  /* border: 0px; */
+  background-color: #f8fafc !important;
+  font-size: 16px !important;
+  /* background: #fff; */
+  /* background-color: #e9ecef; */
+  /* background-color: #F2F4F7; */
+}
+
+.new_inputs_css {
+  background-color: #f8fafc !important;
+  font-size: 16px;
+}
+
+.section_header_background_color {
+  /* background-color: #f8fafc !important; */
+  /* background-color: #eef5ff; */
+  /* background-color: #e9ecef; */
+  background-color: #fbf6f2;
+}
+
+input {
+  font-size: 16px !important;
+}
+
+textarea {
+  font-size: 16px;
+}

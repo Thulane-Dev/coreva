@@ -1,0 +1,1878 @@
+{% load static %}
+<!-- divider  -->
+
+<!-- ======= BACK BUTTON  ======= -->
+<a href="javascript:history.back()" class="delivery_back mb-3">
+  <i class="bi bi-chevron-left"></i>
+  <span>Back</span>
+</a>
+
+<!-- ======= PROJECT HEADER  ======= -->
+<section class="project_details_header section-spacing">
+  <div class="project_header_inner">
+    <!-- ========================= PROJECT IDENTITY ========================== -->
+    <div class="project_identity">
+      <!-- Cover Image -->
+      <div class="project_cover_wrapper">
+        {% if project.cover_image %}
+        <img
+          src="{{ project.cover_image.url }}"
+          alt="{{ project.project_name }}"
+          class="project_cover_image"
+        />
+        {% else %}
+        <div class="project_cover_placeholder">
+          <span class="material-symbols-outlined"> construction </span>
+        </div>
+        {% endif %}
+      </div>
+      <!-- Project Information -->
+      <div class="project_header_info">
+        <div class="project_label">PROJECT</div>
+        <h1 class="project_header_name">{{ project.project_name }}</h1>
+        <div class="project_header_location">
+          <i class="bi bi-geo-alt-fill"></i>
+          <span>
+            {{ project.location.street_address }}, {{ project.location.city }},
+            {{ project.location.province }}
+          </span>
+        </div>
+        <!-- ========================= PROJECT STATUS ========================== -->
+        <div class="project_status_group">
+          <!-- Project Status -->
+          <span class="project_status active">
+            <span class="status_dot"></span> Active
+          </span>
+          <!-- Overall Status -->
+          {% if project_data.overall_status == 'Needs Attention' %}
+          <span class="project_status attention">
+            <i class="bi bi-exclamation-circle-fill"></i> Needs Attention
+          </span>
+          {% else %}
+          <span class="project_status healthy">
+            <i class="bi bi-check-circle-fill"></i>
+            <!-- divider  -->
+            {{project_data.overall_status }}
+          </span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <!-- ========================= PROJECT ICON ========================== -->
+    <div class="project_header_icon d-none d-lg-flex">
+      <span class="material-symbols-outlined"> apartment </span>
+    </div>
+  </div>
+</section>
+
+<!-- =======  TODAY'S WORK  ======= -->
+<section class="section-spacing">
+  <div class="todays-work-header">
+    <div>
+      <h4 class="new_section_title mb-1">Today's Work</h4>
+      <p class="project_management_subtitle mb-0">
+        Activity and actions for this project
+      </p>
+    </div>
+  </div>
+
+  <div class="todays-work-list">
+    <!-- =====================================================
+         INSPECTIONS
+    ====================================================== -->
+    <a href="#DailyInspection" class="today-work-link">
+      <div class="today-work-card">
+        <div class="today-work-icon inspection-work-icon">
+          <span class="material-symbols-outlined"> fact_check </span>
+        </div>
+
+        <div class="today-work-content">
+          <div class="today-work-title-row">
+            <h6 class="today-work-title mb-0">
+              {{project_data.inspection_insight}}
+              <!-- divider  -->
+              {% if project_data.inspection_status == 'Ready to Save'%}
+              <i
+                class="bi bi-exclamation-circle-fill text-danger"
+                style="margin-left: 4px"
+              ></i>
+              {% endif %}
+            </h6>
+          </div>
+
+          <p class="today-work-description mb-0">Daily Inspections</p>
+        </div>
+
+        <div class="today-work-action d-flex align-items-center gap-2">
+          <span class="today-work-action-text">
+            {{project_data.inspection_action}}
+          </span>
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- =====================================================
+         DAILY REPORT
+    ====================================================== -->
+    <a href="#DailyReport" class="today-work-link">
+      <div class="today-work-card">
+        <div class="today-work-icon report-work-icon">
+          <span class="material-symbols-outlined"> description </span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0">{{project_data.report_insight}}</h6>
+          <p class="today-work-description mb-0">Daily Report</p>
+        </div>
+
+        <div class="today-work-action d-flex align-items-center gap-2">
+          <span class="today-work-action-text">
+            {{project_data.report_action}}
+          </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- =====================================================
+         ISSUES
+    ====================================================== -->
+    {% if project_data.show_issue_insight == True %}
+
+    <a href="#IssuesSection" class="today-work-link">
+      <div class="today-work-card">
+        <div class="today-work-icon issue-work-icon">
+          <span class="material-symbols-outlined"> warning </span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0 d-flex gap-1">
+            {{project_data.issues_insight_text}}
+            <!-- divider  -->
+            {% if project_data.overdue_text_sm != '0 overdue issue' %}
+            <div class="d-none d-md-block">
+              <span class="today-overdue-text font_size_12">
+                {{project_data.overdue_text}}
+              </span>
+            </div>
+            {% endif %}
+          </h6>
+
+          {% if project_data.overdue_text_sm != '0 overdue issue' %}
+          <div class="d-flex align-items-center gap-1">
+            <p class="today-work-description mb-0">Issues</p>
+            <div class="d-block d-md-none">
+              <span class="today-overdue-text font_size_12">
+                {{project_data.overdue_text}}
+              </span>
+            </div>
+          </div>
+          {% else %}
+          <p class="today-work-description mb-0">Issues</p>
+          {% endif %}
+        </div>
+
+        <div class="today-work-action d-flex align-items-center gap-2">
+          <span class="today-work-action-text"> View issues </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    {% endif %}
+
+    <!-- =====================================================
+         TASKS
+    ====================================================== -->
+    {% if project_data.show_task_insight == True %}
+
+    <a href="#TaskSession" class="today-work-link">
+      <div class="today-work-card">
+        <div class="today-work-icon task-work-icon">
+          <span class="material-symbols-outlined"> task_alt </span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0 d-flex gap-1">
+            {{project_data.tasks_insight_text}}
+            <!-- divider  -->
+            {% if project_data.overdue_task_text_sm != '0 overdue task' %}
+            <div class="d-none d-md-block">
+              <span class="today-overdue-text font_size_12">
+                {{project_data.overdue_task_text}}
+              </span>
+            </div>
+            {% endif %}
+          </h6>
+
+          {% if project_data.overdue_task_text_sm != '0 overdue task' %}
+          <div class="d-flex align-items-center gap-1">
+            <p class="today-work-description mb-0">Tasks</p>
+            <div class="d-block d-md-none">
+              <span class="today-overdue-text font_size_12 mb-0">
+                {{project_data.overdue_task_text}}
+              </span>
+            </div>
+          </div>
+          {% else %}
+          <p class="today-work-description mb-0">Tasks</p>
+          {% endif %}
+        </div>
+
+        <div class="today-work-action d-flex align-items-center gap-2">
+          <span class="today-work-action-text"> View tasks </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    {% endif %}
+
+    <!-- =====================================================
+         MISSED INSPECTIONS
+    ====================================================== -->
+    {% if project_data.missed_inspection_count > 0 %}
+
+    <a
+      href="{% url 'inspections:missed-inspections' project.uuid %}"
+      class="today-work-action-link"
+    >
+      <div class="today-work-card today-work-warning w-100">
+        <div class="today-work-icon missed-work-icon">
+          <span class="material-symbols-outlined"> event_busy </span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0">
+            {{project_data.missed_inspections_text}}
+          </h6>
+          <p class="today-work-description mb-0">Missed Inspections</p>
+        </div>
+
+        <div class="today-work-action d-flex align-items-center gap-2">
+          <span class="today-work-action-text"> View inspections </span>
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+    {% endif %}
+
+    <!-- =====================================================
+         MISSED REPORTS
+    ====================================================== -->
+    {% if project_data.missed_report_count > 0 %}
+    <a
+      href="{% url 'report:missed-daily-reports' project.uuid %}"
+      class="today-work-action-link"
+    >
+      <div class="today-work-card today-work-warning w-100">
+        <div class="today-work-icon missed-work-icon">
+          <span class="material-symbols-outlined"> assignment_late </span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0">
+            {{project_data.missed_report_text}}
+          </h6>
+          <p class="today-work-description mb-0">Missed Daily Reports</p>
+        </div>
+
+        <div class="today-work-action d-flex align-items-center gap-2">
+          <span class="today-work-action-text"> View reports </span>
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ======= QUICK ACTIONS ======= -->
+<section class="project_quick_actions section-spacing">
+  <div class="project_quick_actions_header">
+    <div>
+      <h4 class="new_section_title mb-1">Quick Actions</h4>
+      <p class="project_management_subtitle mb-0">Common project actions</p>
+    </div>
+  </div>
+  <div class="project_quick_actions_list">
+    <!-- ADD TEAM MEMBER -->
+    <button type="button" class="project_quick_action primary">
+      <span class="project_quick_action_icon">
+        <i class="bi bi-person-plus"></i>
+      </span>
+
+      <span class="project_quick_action_text"> Add Team Member </span>
+    </button>
+
+    <!-- ADD SUBCONTRACTOR -->
+    <a
+      href="{% url 'contractors:add-contractor' project.uuid %}"
+      class="project_quick_action"
+    >
+      <span class="project_quick_action_icon">
+        <i class="bi bi-building-add"></i>
+      </span>
+
+      <span class="project_quick_action_text"> Add Subcontractor </span>
+    </a>
+
+    <!-- PROJECT SETTINGS -->
+    <button type="button" class="project_quick_action">
+      <span class="project_quick_action_icon">
+        <i class="bi bi-gear"></i>
+      </span>
+
+      <span class="project_quick_action_text"> Project Settings </span>
+    </button>
+  </div>
+</section>
+
+<section class="section-spacing">
+  <div class="row">
+    <!-- ======= DAILY INSPECTIONS ======= -->
+    <div class="col-12 col-lg-6 scroll-section mb-4" id="DailyInspection">
+      {% if project_data.checklist_items %}
+      <div class="inspection-report-card h-100">
+        <!-- HEADER -->
+        <div class="inspection-report-header">
+          <div class="inspection-report-heading">
+            <div class="section-icon inspection-section-icon">
+              <span class="material-symbols-outlined"> fact_check </span>
+            </div>
+
+            <div>
+              <h5 class="section-main-title mb-0">Daily Inspection</h5>
+
+              <span class="section-subtitle font_size_11">
+                Today's safety checklist
+              </span>
+            </div>
+          </div>
+
+          <!-- INSPECTION STATUS -->
+          {% if project_data.inspection_status == 'Incomplete' %}
+
+          <span class="status-pill status-incomplete">
+            <span class="status-dot"></span>
+            {{project_data.inspection_status}}
+          </span>
+
+          {% elif project_data.inspection_status == 'Ready to Save' %}
+
+          <span class="status-pill status-ready">
+            <i class="bi bi-check-circle"></i>
+            {{project_data.inspection_status}}
+          </span>
+
+          {% else %}
+
+          <span class="status-pill status-complete">
+            <i class="bi bi-check-circle-fill"></i>
+            {{project_data.inspection_status}}
+          </span>
+
+          {% endif %}
+        </div>
+
+        <!-- ================================
+        READY TO SAVE ALERT
+      ================================= -->
+        {% if project_data.inspection_status == 'Ready to Save' %}
+        <div
+          class="ready-save-banner mb-3"
+          style="background-color: #e1eefc !important"
+        >
+          <div
+            class="ready-save-icon"
+            style="background-color: #eef6ff !important"
+          >
+            <i
+              class="bi bi-check-lg"
+              style="color: rgb(49, 113, 189) !important"
+            ></i>
+          </div>
+          <div class="ready-save-content">
+            <span
+              class="ready-save-title"
+              style="color: rgb(49, 113, 189) !important"
+            >
+              Ready to Save
+            </span>
+
+            <span
+              class="ready-save-text"
+              style="color: rgb(49, 113, 189) !important"
+            >
+              All inspection items have been completed
+            </span>
+          </div>
+          <i
+            class="bi bi-exclamation-circle-fill ready-save-check"
+            style="color: rgb(49, 113, 189) !important"
+          ></i>
+        </div>
+        {% endif %}
+
+        <!-- CHECKLIST SUMMARY -->
+        <div class="inspection-summary">
+          <div>
+            <span class="summary-label font_size_13"> Checklist progress </span>
+
+            <div class="inspection-progress-wrapper">
+              <div class="inspection-progress">
+                <div
+                  class="inspection-progress-bar"
+                  style="--progress-bar: {{ project_data.inspection_percentage}}%;"
+                ></div>
+              </div>
+
+              <span class="inspection-progress-text">
+                {{project_data.inspection_answered}} /
+                {{project_data.inspections_questions_count_new}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CATEGORY LIST -->
+        <div class="inspection-category-list">
+          {% for category in project_data.checklist_items %}
+
+          <div class="inspection-category">
+            <div class="category-left">
+              <span
+                class="category-status-dot {% if category.status == 'complete' %} category-complete {% elif category.status == 'started' %} category-started {% else %} category-missing {% endif %}"
+              ></span>
+
+              <div class="category-content">
+                <span class="category-title"> {{category.name}} </span>
+
+                <span class="category-progress-text">
+                  {{category.an_questions}} / {{category.tot_question}} answered
+                </span>
+              </div>
+            </div>
+
+            <div class="category-right">
+              {% if category.failed_questions != 0 %}
+
+              <span class="failed-pill">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                {{category.failed_questions}} failed
+              </span>
+
+              {% endif %}
+              <!-- divider  -->
+              {% if category.status == 'missing' %}
+
+              <span class="category-status status-missing"> Pending </span>
+
+              {% else %}
+
+              <span
+                class="category-status {% if category.status == 'complete' %} status-complete-soft {% elif category.status == 'started' %} status-started-soft {% else %} status-missing {% endif %}"
+              >
+                {{category.status}}
+              </span>
+
+              {% endif %}
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="inspection-report-actions">
+          <a href="{% url 'inspections:project-inspections' project.uuid %}">
+            <button type="button" class="secondary-action-button w-100">
+              <span>View History</span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </a>
+
+          <a
+            href="{% url 'inspections:checklist' project.uuid %}"
+            class="primary-action-button"
+          >
+            <span>{{project_data.inspection_btn}}</span>
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% else %}
+      <!-- =====================================================
+       INSPECTION MISSING
+  ====================================================== -->
+      <div class="inspection-report-card empty-inspection-card h-100">
+        <div class="empty-operation-state">
+          <div class="empty-operation-icon inspection-empty-icon">
+            <span class="material-symbols-outlined"> fact_check </span>
+          </div>
+
+          <span class="missing-label"> ACTION REQUIRED </span>
+
+          <h5>Daily Inspection Missing</h5>
+
+          <p>
+            Today's safety inspection has not been started yet. There are
+            <strong>{{project_data.inspections_questions_count}}</strong>
+            items to check.
+          </p>
+
+          <div class="empty-operation-actions">
+            <a
+              href="{% url 'inspections:checklist' project.uuid %}"
+              class="primary-action-button"
+            >
+              <span>{{project_data.inspection_btn}}</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+
+            <button type="button" class="secondary-action-button">
+              <span>View History</span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+    <!-- ======= DAILY REPORT ======= -->
+    <div class="col-12 col-lg-6 scroll-section mb-4" id="DailyReport">
+      {% if project_data.report %}
+      <div class="inspection-report-card h-100">
+        <!-- HEADER -->
+        <div class="inspection-report-header">
+          <div class="inspection-report-heading">
+            <div class="section-icon report-section-icon">
+              <span class="material-symbols-outlined"> description </span>
+            </div>
+
+            <div>
+              <h5 class="section-main-title mb-0">Daily Report</h5>
+
+              <span class="section-subtitle font_size_11">
+                Today's project report
+              </span>
+            </div>
+          </div>
+
+          <!-- REPORT STATUS -->
+          {% if project_data.report.status == 'submitted' %}
+
+          <span class="status-pill status-complete">
+            <i class="bi bi-check-circle-fill"></i>
+            Submitted
+          </span>
+
+          {% else %}
+
+          <span class="status-pill status-incomplete">
+            <span class="status-dot"></span>
+            Incomplete
+          </span>
+
+          {% endif %}
+        </div>
+
+        <!-- REPORT MESSAGE -->
+        <div
+          class="report-status-banner {% if project_data.report.status == 'submitted' %} report-success-banner {% else %} report-incomplete-banner {% endif %}"
+        >
+          <div class="report-banner-icon">
+            {% if project_data.report.status == 'submitted' %}
+
+            <i class="bi bi-check-lg"></i>
+
+            {% else %}
+
+            <i class="bi bi-pencil-fill"></i>
+
+            {% endif %}
+          </div>
+
+          <div>
+            {% if project_data.report.status == 'submitted' %}
+
+            <strong class="font_size_12"> Report submitted </strong>
+
+            <span class="font_size_11">
+              This daily report has been completed successfully.
+            </span>
+
+            {% else %}
+
+            <strong class="font_size_12"> Report incomplete </strong>
+
+            <span class="font_size_11">
+              Continue the report and submit today's information.
+            </span>
+
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- REPORT DETAILS -->
+        <div class="report-details">
+          <!-- STATUS -->
+          <div class="report-detail-row">
+            <div class="report-detail-label font_size_13">
+              <i class="bi bi-circle-half"></i>
+              Status
+            </div>
+
+            {% if project_data.report.status == 'submitted' %}
+
+            <span class="detail-status detail-status-success font_size_10">
+              {{project_data.report_status}}
+            </span>
+
+            {% else %}
+
+            <span class="detail-status detail-status-warning font_size_10">
+              {{project_data.report_status}}
+            </span>
+
+            {% endif %}
+          </div>
+
+          <!-- DATE -->
+          <div class="report-detail-row">
+            <div class="report-detail-label font_size_13">
+              <i class="bi bi-calendar3"></i>
+              Report Date
+            </div>
+
+            <span class="report-detail-value font_size_13">
+              {{project_data.report.report_date}}
+            </span>
+          </div>
+
+          <!-- CREATED -->
+          <div class="report-detail-row">
+            <div class="report-detail-label font_size_13">
+              <i class="bi bi-clock"></i>
+              Created
+            </div>
+
+            <span class="report-detail-value font_size_13">
+              {{project_data.report.created_at|time:"g:i A"}}
+            </span>
+          </div>
+
+          <!-- LAST UPDATE -->
+          <div class="report-detail-row">
+            <div class="report-detail-label font_size_13">
+              <i class="bi bi-calendar3"></i>
+              Last Update
+            </div>
+
+            <span class="report-detail-value font_size_13">
+              {{project_data.report.updated_at|time:"g:i A"}}
+            </span>
+          </div>
+
+          <!-- SUBMITTED -->
+          <div class="report-detail-row">
+            <div class="report-detail-label font_size_13">
+              <i class="bi bi-send"></i>
+              Submitted
+            </div>
+
+            {% if project_data.report.submitted_at == None %}
+
+            <span class="report-detail-value font_size_13 report-not-submitted">
+              Not submitted
+            </span>
+
+            {% else %}
+
+            <span class="report-detail-value font_size_13">
+              {{project_data.report.submitted_at}}
+            </span>
+
+            {% endif %}
+          </div>
+
+          <!-- PREPARED BY -->
+          <div class="report-detail-row">
+            <div class="report-detail-label font_size_13">
+              <i class="bi bi-person"></i>
+              Prepared by
+            </div>
+
+            <span class="report-detail-value font_size_13">
+              {{project_data.report.created_by.first_name}}
+              {{project_data.report.created_by.last_name}}
+            </span>
+          </div>
+
+          <!-- COMPLETED BY -->
+          {% if project_data.report.completed_by %}
+
+          <div class="report-detail-row">
+            <div class="report-detail-label font_size_13">
+              <i class="bi bi-person-check"></i>
+              Completed by
+            </div>
+
+            <span class="report-detail-value font_size_13">
+              {{project_data.report.completed_by.first_name}}
+              {{project_data.report.completed_by.last_name}}
+            </span>
+          </div>
+
+          {% endif %}
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="inspection-report-actions">
+          <a href="{% url 'report:project-reports' project.uuid %}">
+            <button type="button" class="secondary-action-button w-100">
+              <span>View History</span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </a>
+
+          <a
+            href="{% url 'report:create-report' project.uuid %}"
+            class="primary-action-button"
+          >
+            {% if project_data.report.status == 'submitted' %}
+            <span>View Report</span>
+            {% else %}
+            <span>Continue Report</span>
+            {% endif %}
+
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% else %}
+      <!-- =====================================================
+       REPORT MISSING
+  ====================================================== -->
+      <div class="inspection-report-card empty-report-card h-100">
+        <div class="empty-operation-state">
+          <div class="empty-operation-icon report-empty-icon">
+            <span class="material-symbols-outlined"> description </span>
+          </div>
+
+          <span class="missing-label"> ACTION REQUIRED </span>
+
+          <h5>Daily Report Missing</h5>
+
+          <p>Today's daily report hasn't been created for this project yet.</p>
+
+          <div class="empty-operation-actions">
+            <a
+              href="{% url 'report:create-report' project.uuid %}"
+              class="primary-action-button"
+            >
+              <span>Create Daily Report</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+
+            <button type="button" class="secondary-action-button">
+              <span>View History</span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+    <!-- ======= OPEN ISSUES ======= -->
+    <div class="col-12 col-lg-6 scroll-section mb-4" id="IssuesSection">
+      {% if project_data.open_issues %}
+      <div class="operations-card operations-card-override h-100">
+        <!-- SECTION HEADER -->
+        <div class="dashboard_main_card mb-2 section_header_background_color">
+          <div class="operations-header mb-0">
+            <div class="operations-heading">
+              <div class="section-icon issue-section-icon">
+                <span class="material-symbols-outlined">warning</span>
+              </div>
+
+              <div>
+                <h5 class="operations-title mb-0">Open Issues</h5>
+
+                <span class="operations-count font_size_13">
+                  {{project_data.open_issues_count}} open
+                </span>
+              </div>
+            </div>
+
+            <div class="operations-actions">
+              <a
+                href="{% url 'issues:project-issues' project.uuid %}"
+                class="section-link"
+              >
+                See All
+              </a>
+
+              <a
+                href="{% url 'issues:log-issue' project.uuid %}"
+                class="section-add-button"
+              >
+                <i class="bi bi-plus-lg"></i>
+                <span>Add Issue</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ISSUES LIST -->
+        <div class="operations-list">
+          {% for data in project_data.open_issues %}
+
+          <div
+            class="operation-item issue-item scroll-section"
+            id="issue{{data.issue.id}}"
+          >
+            <!-- ICON -->
+            <div class="operation-icon issue-item-icon">
+              <span class="material-symbols-outlined">warning</span>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="operation-content">
+              <div class="operation-top">
+                <h6 class="operation-title mb-0 font_size_14">
+                  {{data.issue.title}}
+                </h6>
+
+                <!-- PRIORITY -->
+                {% if data.issue.priority == 'high' %}
+                <span class="font_size_11 priority-pill priority-high">
+                  <span class="priority-dot"></span>
+                  High
+                </span>
+
+                {% elif data.issue.priority == 'medium' %}
+                <span class="font_size_11 priority-pill priority-medium">
+                  <span class="priority-dot"></span>
+                  Medium
+                </span>
+
+                {% else %}
+                <span class="font_size_11 priority-pill priority-low">
+                  <span class="priority-dot"></span>
+                  Low
+                </span>
+                {% endif %}
+              </div>
+
+              <!-- DESCRIPTION -->
+              {% if data.issue.description %}
+              <p class="operation-description font_size_12">
+                {{data.issue.description}}
+              </p>
+              {% endif %}
+
+              <!-- META -->
+              <div class="operation-meta">
+                <!-- DUE DATE -->
+                {% if data.issue.due_date == today %}
+
+                <span class="meta-pill meta-due-today font_size_10">
+                  <i class="bi bi-calendar2-check-fill"></i>
+                  Due Today
+                </span>
+
+                {% else %}
+
+                <span class="meta-pill meta-due font_size_10">
+                  <i class="bi bi-calendar2"></i>
+                  {{data.issue_text}}
+                </span>
+
+                {% endif %}
+
+                <!-- ASSIGNED TO YOU -->
+                {% if data.issue.assigned_to == current_user %}
+
+                <span class="meta-pill meta-assigned font_size_10">
+                  <i class="bi bi-person-check-fill"></i>
+                  Assigned to you
+                </span>
+                {% else %}
+                <span
+                  class="meta-pill meta-assigned font_size_10"
+                  style="
+                    background-color: #f4f5f6 !important;
+                    color: rgb(111, 118, 125) !important;
+                  "
+                >
+                  <i class="bi bi-person-fill"></i>
+                  Unassigned
+                </span>
+                {% endif %}
+              </div>
+
+              <!-- BOTTOM -->
+              <div class="operation-bottom">
+                <!-- REPORTED BY  -->
+                <div class="assigned-info">
+                  <div class="mini-avatar">
+                    {{ data.issue.created_by.first_name|first|upper }}
+                  </div>
+
+                  <span class="person-label font_size_11">Reported by</span>
+                  <span class="font_size_11">
+                    {{ data.issue.created_by.first_name }}
+                    <!-- divider  -->
+                    {{ data.issue.created_by.last_name }}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  class="operation-view-button font_size_12"
+                >
+                  View Issue
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+
+        <!-- VIEW ALL -->
+        {% if project_data.open_issues_count > 4 %}
+
+        <a
+          href="{% url 'issues:project-issues' project.uuid %}"
+          class="view-all-button font_size_13"
+        >
+          <span> View all {{project_data.open_issues_count}} issues </span>
+
+          <i class="bi bi-arrow-right"></i>
+        </a>
+
+        {% endif %}
+      </div>
+      {% else %}
+      <!-- EMPTY ISSUES STATE -->
+      <div class="operations-card empty-operation-card h-100">
+        <div class="empty-state">
+          <div class="empty-icon issue-empty-icon">
+            <i class="bi bi-check-lg"></i>
+          </div>
+
+          <h5>No Open Issues</h5>
+
+          <p>
+            There are currently no open issues for this project. Everything is
+            on track.
+          </p>
+
+          <div class="empty-actions">
+            <a
+              href="{% url 'issues:log-issue' project.uuid %}"
+              class="empty-primary-button"
+            >
+              <i class="bi bi-plus-lg"></i>
+              Add Issue
+            </a>
+            <a href="{% url 'issues:project-issues' project.uuid %}">
+              <button type="button" class="empty-secondary-button">
+                View History
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <!-- ======= TASKS ======= -->
+    <div class="col-12 col-lg-6 scroll-section mb-4" id="TaskSession">
+      {% if project_data.open_tasks %}
+      <div class="operations-card operations-card-override h-100">
+        <!-- SECTION HEADER -->
+        <div class="dashboard_main_card mb-2 section_header_background_color">
+          <div class="operations-header mb-0">
+            <div class="operations-heading">
+              <div class="section-icon task-section-icon">
+                <span class="material-symbols-outlined"> assignment </span>
+              </div>
+
+              <div>
+                <h5 class="operations-title mb-0">Open Tasks</h5>
+
+                <span class="operations-count font_size_13">
+                  {{project_data.tasks_count}} open
+                </span>
+              </div>
+            </div>
+
+            <div class="operations-actions">
+              <a href="{% url 'issues:project-tasks' project.uuid %}">
+                <button type="button" class="section-link">See All</button>
+              </a>
+
+              <a
+                href="{% url 'issues:add-task' project.uuid %}"
+                class="section-add-button"
+              >
+                <i class="bi bi-plus-lg"></i>
+                <span>Add Task</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TASK LIST -->
+        <div class="operations-list">
+          {% for data in project_data.open_tasks %}
+          <div
+            class="operation-item task-item scroll-section"
+            id="task{{data.task.id}}"
+          >
+            <!-- ICON -->
+            <div class="operation-icon task-item-icon">
+              <span class="material-symbols-outlined"> assignment </span>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="operation-content">
+              <div class="operation-top">
+                <h6
+                  class="operation-title mb-0"
+                  style="font-weight: 600 !important"
+                >
+                  {{data.task.description}}
+                </h6>
+                <!-- PRIORITY -->
+                {% if data.task.priority == 'high' %}
+
+                <span class="priority-pill priority-high font_size_11">
+                  <span class="priority-dot"></span>
+                  High
+                </span>
+
+                {% elif data.task.priority == 'medium' %}
+
+                <span class="priority-pill priority-medium font_size_11">
+                  <span class="priority-dot"></span>
+                  Medium
+                </span>
+
+                {% else %}
+
+                <span class="priority-pill priority-low font_size_11">
+                  <span class="priority-dot"></span>
+                  Low
+                </span>
+
+                {% endif %}
+              </div>
+
+              <!-- META -->
+              <div class="operation-meta">
+                <!-- DUE DATE -->
+                {% if data.task.due_date == today %}
+
+                <span class="meta-pill meta-due-today font_size_10">
+                  <i class="bi bi-calendar2-check-fill"></i>
+                  Due Today
+                </span>
+
+                {% else %}
+
+                <span class="meta-pill meta-due font_size_10">
+                  <i class="bi bi-calendar2"></i>
+                  {{data.task_text}}
+                </span>
+
+                {% endif %}
+
+                <!-- ASSIGNED TO YOU -->
+                {% if data.task.assigned_to == current_user %}
+
+                <span class="meta-pill meta-assigned font_size_10">
+                  <i class="bi bi-person-check-fill"></i>
+                  Assigned to you
+                </span>
+                {% else %}
+                <span
+                  class="meta-pill meta-assigned font_size_10"
+                  style="
+                    background-color: #f4f5f6 !important;
+                    color: rgb(111, 118, 125) !important;
+                  "
+                >
+                  <i class="bi bi-person-fill"></i>
+                  Unassigned
+                </span>
+                {% endif %}
+              </div>
+
+              <!-- BOTTOM -->
+              <div class="operation-bottom">
+                <!-- CREATED BY  -->
+                <div class="assigned-info">
+                  <div class="mini-avatar">
+                    {{ data.task.created_by.first_name |first|upper }}
+                  </div>
+                  <span class="person-label font_size_11">Created by</span>
+                  <span class="font_size_11">
+                    {{ data.task.created_by.first_name }}
+                    <!-- divider  -->
+                    {{ data.task.created_by.last_name }}
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  class="operation-view-button font_size_12"
+                >
+                  View Task
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+
+        <!-- VIEW ALL -->
+        {% if project_data.overdue_tasks_count > 4 %}
+
+        <button type="button" class="view-all-button font_size_13">
+          <span> View all {{project_data.overdue_tasks_count}} tasks </span>
+
+          <i class="bi bi-arrow-right"></i>
+        </button>
+
+        {% endif %}
+      </div>
+      {% else %}
+      <!-- EMPTY TASK STATE -->
+      <div class="operations-card empty-operation-card h-100">
+        <div class="empty-state">
+          <div class="empty-icon task-empty-icon">
+            <i class="bi bi-list-check"></i>
+          </div>
+
+          <h5>No Open Tasks</h5>
+
+          <p>There are currently no open tasks for this project.</p>
+
+          <div class="empty-actions">
+            <a
+              href="{% url 'issues:add-task' project.uuid %}"
+              class="empty-primary-button"
+            >
+              <i class="bi bi-plus-lg"></i>
+              Add Task
+            </a>
+
+            <a href="{% url 'issues:project-tasks' project.uuid %}">
+              <button type="button" class="empty-secondary-button">
+                View History
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+    <!-- ======= INCIDENTS ======= -->
+    <div class="col-12 col-lg-6 scroll-section mb-4" id="Incidents">
+      {% if incidents %}
+      <section class="incidents_section">
+        <!-- ========================= SECTION HEADER ========================== -->
+        <div class="dashboard_main_card mb-2 section_header_background_color">
+          <div class="incidents_header mb-0">
+            <div>
+              <div class="d-flex align-items-center gap-2">
+                <h5 class="incidents_title mb-0">Incidents</h5>
+                <span class="incidents_count"> {{ incidents_count }} </span>
+              </div>
+              <p class="incidents_subtitle mb-0">Incidents recorded today</p>
+            </div>
+            <div class="incidents_header_actions">
+              <!-- Desktop -->
+              <a href="{% url 'incidents:project-incidents' project.uuid %}">
+                <button
+                  type="button"
+                  class="btn incidents_history_btn d-none d-md-inline-flex"
+                >
+                  View all
+                </button>
+              </a>
+              <a href="{% url 'incidents:log-incident' project.uuid %}">
+                <button type="button" class="btn incidents_add_btn">
+                  <i class="bi bi-plus-lg"></i>
+                  <span class="d-none d-sm-inline">Add Incident</span>
+                  <span class="d-sm-none">Add</span>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================= INCIDENT LIST ========================== -->
+        <div class="incidents_list">
+          {% for data in incidents %}
+          <div class="incident_card scroll-section" id="incident{{data.id}}">
+            <!-- Severity indicator -->
+            <div
+              class="incident_severity_bar {% if data.severity == 'high' %} incident_severity_high {% elif data.severity == 'medium' %} incident_severity_medium {% else %} incident_severity_low {% endif %}"
+            ></div>
+            <div class="incident_card_content">
+              <!-- Icon -->
+              <div
+                class="incident_icon {% if data.severity == 'high' %} incident_icon_high {% elif data.severity == 'medium' %} incident_icon_medium {% else %} incident_icon_low {% endif %}"
+              >
+                <span class="material-symbols-outlined"> emergency </span>
+              </div>
+              <!-- Main content -->
+              <div class="incident_main">
+                <!-- Type -->
+                <div class="incident_type">{{ data.incident_type }}</div>
+                <!-- Title -->
+                <h6 class="incident_title_text mb-0">{{ data.title }}</h6>
+                <!-- Meta -->
+                <div class="incident_meta">
+                  <!-- Severity -->
+                  {% if data.severity == 'high' %}
+                  <span class="incident_badge incident_badge_high">
+                    <span class="incident_badge_dot"></span> High severity
+                  </span>
+                  {% elif data.severity == 'medium' %}
+                  <span class="incident_badge incident_badge_medium">
+                    <span class="incident_badge_dot"></span> Medium severity
+                  </span>
+                  {% else %}
+                  <span class="incident_badge incident_badge_low">
+                    <span class="incident_badge_dot"></span> Low severity
+                  </span>
+                  {% endif %}
+                  <!-- Time -->
+                  <span class="incident_time">
+                    <i class="bi bi-clock"></i>
+                    {{ data.incident_time|time:"g:i A" }}
+                  </span>
+                </div>
+              </div>
+              <!-- Arrow -->
+              <div class="incident_arrow">
+                <i class="bi bi-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Mobile View All -->
+        <button type="button" class="btn incidents_mobile_view_all d-md-none">
+          View all incidents <i class="bi bi-arrow-right"></i>
+        </button>
+      </section>
+      {% else %}
+      <!-- ========================= EMPTY STATE ========================== -->
+      <section class="incidents_empty_section">
+        <div class="incident_empty_icon">
+          <span class="material-symbols-outlined"> emergency </span>
+        </div>
+        <h5 class="incident_empty_title">No incidents today</h5>
+        <p class="incident_empty_text">
+          No incidents have been recorded for this project today.
+        </p>
+        <div class="incident_empty_actions">
+          <a href="{% url 'incidents:log-incident' project.uuid %}">
+            <button type="button" class="btn incidents_add_btn w-100">
+              <i class="bi bi-plus-lg"></i> Add Incident
+            </button>
+          </a>
+          <a href="{% url 'incidents:project-incidents' project.uuid %}">
+            <button type="button" class="btn incidents_history_btn w-100">
+              View all incidents <i class="bi bi-arrow-right"></i>
+            </button>
+          </a>
+        </div>
+      </section>
+      {% endif %}
+    </div>
+    <!-- ======= DELIVERIES ======= -->
+    <div class="col-12 col-lg-6 scroll-section mb-4" id="Deliveries">
+      {% if deliveries %}
+      <section class="deliveries_section">
+        <!-- ========================= SECTION HEADER ========================== -->
+        <div class="dashboard_main_card mb-2 section_header_background_color">
+          <div class="deliveries_header mb-0">
+            <div>
+              <div class="d-flex align-items-center gap-2">
+                <h5 class="deliveries_title mb-0">Deliveries</h5>
+                <span class="deliveries_count"> {{ deliveries_count }} </span>
+              </div>
+              <p class="deliveries_subtitle mb-0">Deliveries recorded today</p>
+            </div>
+            <div class="deliveries_header_actions">
+              <!-- Desktop -->
+              <a href="{% url 'projects:project-deliveries' project.uuid %}">
+                <button
+                  type="button"
+                  class="btn deliveries_history_btn d-none d-md-inline-flex"
+                >
+                  View all
+                </button>
+              </a>
+              <a href="{% url 'projects:log-delivery' project.uuid %}">
+                <button type="button" class="btn deliveries_add_btn">
+                  <i class="bi bi-plus-lg"></i>
+                  <span class="d-none d-sm-inline"> Add Delivery </span>
+                  <span class="d-sm-none"> Add </span>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================= DELIVERIES LIST ========================== -->
+        <div class="deliveries_list">
+          {% for data in deliveries %}
+          <div class="delivery_card scroll-section" id="delivery{{data.id}}">
+            <!-- Status indicator -->
+            <div
+              class="delivery_status_bar {% if data.status == 'Received' %} delivery_status_received {% elif data.status == 'Partially Received' %} delivery_status_partial {% else %} delivery_status_other {% endif %}"
+            ></div>
+            <div class="delivery_card_content">
+              <!-- Delivery Icon -->
+              <div
+                class="delivery_icon {% if data.status == 'Received' %} delivery_icon_received {% elif data.status == 'Partially Received' %} delivery_icon_partial {% else %} delivery_icon_other {% endif %}"
+              >
+                <span class="material-symbols-outlined"> local_shipping </span>
+              </div>
+              <!-- Main Content -->
+              <div class="delivery_main">
+                <!-- Reference -->
+                <div class="delivery_reference">{{ data.reference }}</div>
+                <!-- Supplier -->
+                <h6 class="delivery_supplier mb-0">{{ data.supplier }}</h6>
+                <!-- Meta -->
+                <div class="delivery_meta">
+                  <!-- Status -->
+                  {% if data.status == 'Received' %}
+                  <span class="delivery_badge delivery_badge_received">
+                    <span class="delivery_badge_dot"></span> Received
+                  </span>
+                  {% elif data.status == 'Partially Received' %}
+                  <span class="delivery_badge delivery_badge_partial">
+                    <span class="delivery_badge_dot"></span> Partially received
+                  </span>
+                  {% else %}
+                  <span class="delivery_badge delivery_badge_other">
+                    <span class="delivery_badge_dot"></span> {{ data.status }}
+                  </span>
+                  {% endif %}
+                  <!-- Time -->
+                  <span class="delivery_time">
+                    <i class="bi bi-clock"></i>
+                    {{ data.delivery_time|time:"g:i A" }}
+                  </span>
+                </div>
+              </div>
+              <!-- Arrow -->
+              <div class="delivery_arrow">
+                <i class="bi bi-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Mobile View All -->
+        <button type="button" class="btn deliveries_mobile_view_all d-md-none">
+          View all deliveries <i class="bi bi-arrow-right"></i>
+        </button>
+      </section>
+      {% else %}
+      <!-- ========================= EMPTY STATE ========================== -->
+      <section class="deliveries_empty_section">
+        <div class="delivery_empty_icon">
+          <span class="material-symbols-outlined"> local_shipping </span>
+        </div>
+        <h5 class="delivery_empty_title">No deliveries today</h5>
+        <p class="delivery_empty_text">
+          No deliveries have been recorded for this project today.
+        </p>
+        <div class="delivery_empty_actions">
+          <a href="{% url 'projects:log-delivery' project.uuid %}">
+            <button type="button" class="btn deliveries_add_btn w-100">
+              <i class="bi bi-plus-lg"></i> Add Delivery
+            </button>
+          </a>
+          <a href="{% url 'projects:project-deliveries' project.uuid %}">
+            <button type="button" class="btn deliveries_history_btn w-100">
+              View all deliveries <i class="bi bi-arrow-right"></i>
+            </button>
+          </a>
+        </div>
+      </section>
+      {% endif %}
+    </div>
+    <!-- ======= PROJECT ACTIVITY ======= -->
+    {% if project_activity %}
+    <div class="col-12">
+      <section class="project_activity_card">
+        <!-- ========================= HEADER ========================== -->
+        <div class="project_activity_header">
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <h5 class="project_activity_title mb-0">Project Activity</h5>
+              {% if project_data.total_activities %}
+              <span class="project_activity_count">
+                {{ project_data.total_activities }}
+              </span>
+              {% endif %}
+            </div>
+            <p class="project_activity_subtitle mb-0">
+              Recent activity across this project
+            </p>
+          </div>
+          <a href="{% url 'projects:project-activity' project.uuid %}">
+            <button type="button" class="btn project_activity_view_all">
+              <span class="d-none d-sm-inline"> View all </span>
+              <span class="d-sm-none"> All </span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </a>
+        </div>
+        <!-- ========================= ACTIVITY TIMELINE ========================== -->
+        <div class="project_activity_timeline">
+          {% for group in project_activity %}
+          <!-- DATE -->
+          <div class="activity_date_divider">
+            <span class="activity_date_label">
+              {{ group.date|date:"d F Y" }}
+            </span>
+          </div>
+          <!-- ACTIVITIES -->
+          <div class="activity_day">
+            {% for data in group.activities %}
+            <div class="activity_item">
+              <!-- TIME -->
+              <div class="activity_time">
+                {{ data.created_at|time:"g:i A" }}
+              </div>
+              <!-- ICON / TIMELINE -->
+              <div class="activity_timeline">
+                <div class="activity_icon_wrapper">
+                  {% include 'partials/timeline_icons.html' %}
+                </div>
+              </div>
+              <!-- CONTENT -->
+              <div class="activity_content">
+                <div class="activity_content_header">
+                  <h6 class="activity_type mb-0">{{ data.activity_type }}</h6>
+                </div>
+                {% if data.description %}
+                <p class="activity_description mb-0">{{ data.description }}</p>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+        <!-- ========================= FOOTER ========================== -->
+        {% if project_data.total_activities > 5 %}
+        <div class="project_activity_footer">
+          <button type="button" class="btn project_activity_footer_btn">
+            View all activity <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+        {% endif %}
+      </section>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ======= Project Management ======= -->
+<section class="section-spacing project_management_section">
+  <div class="project_management_header">
+    <div>
+      <h4 class="new_section_title mb-1">Project Management</h4>
+      <p class="project_management_subtitle mb-0">
+        Manage people, project information and settings
+      </p>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <!-- TEAM -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <a href="#" class="project_action_card">
+        <div class="project_action_top">
+          <div class="project_action_icon blue">
+            <i class="bi bi-people"></i>
+          </div>
+
+          <i class="bi bi-arrow-up-right project_action_arrow"></i>
+        </div>
+
+        <div class="project_action_content">
+          <h6 class="project_action_title">Team Members</h6>
+
+          <p class="project_action_meta">12 members</p>
+
+          <p class="project_action_description">View and manage project team</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- SUBCONTRACTORS -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <a href="#" class="project_action_card">
+        <div class="project_action_top">
+          <div class="project_action_icon green">
+            <i class="bi bi-building"></i>
+          </div>
+
+          <i class="bi bi-arrow-up-right project_action_arrow"></i>
+        </div>
+
+        <div class="project_action_content">
+          <h6 class="project_action_title">Subcontractors</h6>
+
+          <p class="project_action_meta">4 subcontractors</p>
+
+          <p class="project_action_description">
+            View and manage subcontractors
+          </p>
+        </div>
+      </a>
+    </div>
+
+    <!-- ACTIVITY -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <a href="#" class="project_action_card">
+        <div class="project_action_top">
+          <div class="project_action_icon purple">
+            <i class="bi bi-clock-history"></i>
+          </div>
+
+          <i class="bi bi-arrow-up-right project_action_arrow"></i>
+        </div>
+
+        <div class="project_action_content">
+          <h6 class="project_action_title">Activity Log</h6>
+
+          <p class="project_action_meta">Full project history</p>
+
+          <p class="project_action_description">View all project activity</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <a href="#" class="project_action_card">
+        <div class="project_action_top">
+          <div class="project_action_icon gray">
+            <i class="bi bi-gear"></i>
+          </div>
+
+          <i class="bi bi-arrow-up-right project_action_arrow"></i>
+        </div>
+
+        <div class="project_action_content">
+          <h6 class="project_action_title">Project Settings</h6>
+
+          <p class="project_action_meta">Project configuration</p>
+
+          <p class="project_action_description">Update project details</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FEEDBACK BOX ======== -->
+<section class="mt-5 mb-4">
+  <div class="feedback-box">
+    <div class="feedback-icon">
+      <i class="bi bi-chat-square-heart"></i>
+    </div>
+
+    <div class="feedback-content">
+      <div class="feedback-label">YOUR FEEDBACK MATTERS</div>
+
+      <h4 class="fw-bold mb-2">Help us make Coreva better</h4>
+
+      <p class="mb-0">
+        Using Coreva on site and noticed something we could improve? We'd love
+        to hear from you.
+      </p>
+    </div>
+
+    <div class="feedback-action">
+      <button
+        type="button"
+        class="btn feedback-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#feedbackModal"
+      >
+        <i class="bi bi-send me-2"></i>
+        Give Feedback
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FAB FLOATING ACTION BUTTONS  ======== -->
+<div class="d-block d-lg-none">
+  <div class="floating-actions">
+    <button
+      class="action-btn"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasExample"
+      aria-controls="offcanvasExample"
+    >
+      <i class="bi bi-plus-lg"></i>
+    </button>
+  </div>
+</div>
+
+<!-- ======== FAB OFFCANVAS  ======== -->
+<div
+  class="offcanvas offcanvas-bottom"
+  tabindex="-1"
+  id="offcanvasExample"
+  aria-labelledby="offcanvasExampleLabel"
+>
+  <div class="offcanvas-header">
+    <h5
+      class="offcanvas-title"
+      id="offcanvasExampleLabel"
+      style="font-weight: 600"
+    >
+      Project
+    </h5>
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body" style="padding-bottom: 40px">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item px-0">
+        <a
+          href="{% url 'inspections:checklist' project.uuid %}"
+          onclick="closeOffcanvas()"
+        >
+          <div class="d-flex align-items-center d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3 w-100">
+              <div class="today-work-icon inspection-work-icon">
+                <span class="material-symbols-outlined"> fact_check </span>
+              </div>
+              <h6 class="mb-0 fw-bold">{{project_data.inspection_btn}}</h6>
+            </div>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </a>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <a
+          href="{% url 'report:create-report' project.uuid %}"
+          onclick="closeOffcanvas()"
+        >
+          <div class="d-flex align-items-center d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3 w-100">
+              <div class="today-work-icon report-work-icon">
+                <span class="material-symbols-outlined"> description </span>
+              </div>
+              {% if project_data.report %}
+              <!-- divider  -->
+              {% if project_data.report.status == 'submitted' %}
+              <h6 class="mb-0 fw-bold">View Report</h6>
+              {% else %}
+              <h6 class="mb-0 fw-bold">Continue Report</h6>
+              {% endif %}
+              <!-- divider  -->
+              {% else %}
+              <h6 class="mb-0 fw-bold">Create Daily Report</h6>
+              {% endif %}
+            </div>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </a>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <a
+          href="{% url 'issues:log-issue' project.uuid %}"
+          onclick="closeOffcanvas()"
+        >
+          <div class="d-flex align-items-center d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3 w-100">
+              <div class="today-work-icon issue-work-icon">
+                <span class="material-symbols-outlined"> warning </span>
+              </div>
+              <h6 class="mb-0 fw-bold">Add Issue</h6>
+            </div>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </a>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <a
+          href="{% url 'issues:add-task' project.uuid %}"
+          onclick="closeOffcanvas()"
+        >
+          <div class="d-flex align-items-center d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3 w-100">
+              <div class="today-work-icon task-work-icon">
+                <span class="material-symbols-outlined"> task_alt </span>
+              </div>
+              <h6 class="mb-0 fw-bold">Add Task</h6>
+            </div>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </a>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <a
+          href="{% url 'incidents:log-incident' project.uuid %}"
+          onclick="closeOffcanvas()"
+        >
+          <div class="d-flex align-items-center d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3 w-100">
+              <div class="today-work-icon incident_icon_high today-work-icon">
+                <span class="material-symbols-outlined"> emergency </span>
+              </div>
+              <h6 class="mb-0 fw-bold">Add Incident</h6>
+            </div>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </a>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <a
+          href="{% url 'projects:log-delivery' project.uuid %}"
+          onclick="closeOffcanvas()"
+        >
+          <div class="d-flex align-items-center d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3 w-100">
+              <div
+                class="today-work-icon delivery_icon_received today-work-icon"
+              >
+                <span class="material-symbols-outlined"> local_shipping </span>
+              </div>
+              <h6 class="mb-0 fw-bold">Add Delivery</h6>
+            </div>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </a>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div class="today-work-icon missed-work-icon">
+              <span class="material-symbols-outlined"> photo </span>
+            </div>
+            <h6 class="mb-0 fw-bold">Add Photos</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div class="today-work-icon inspection-work-icon">
+              <span class="material-symbols-outlined"> group </span>
+            </div>
+            <h6 class="mb-0 fw-bold">Team Members</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div class="today-work-icon inspection-work-icon">
+              <span class="material-symbols-outlined"> groups_2 </span>
+            </div>
+            <h6 class="mb-0 fw-bold">Subcontractors</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div
+              class="today-work-icon inspection-work-icon"
+              style="background-color: #f1f5f9 !important"
+            >
+              <span
+                class="material-symbols-outlined"
+                style="color: rgb(100, 116, 139) !important"
+              >
+                settings
+              </span>
+            </div>
+            <h6 class="mb-0 fw-bold">Project Settings</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+    </ul>
+  </div>
+</div>
+
+<!-- ======== BOTTOM NAVBAR ======== -->
+{% if show_bottom_nav is not False %}
+<div class="d-block d-lg-none">{% include 'partials/bottom_navbar.html' %}</div>
+{% endif %}
+
+<script>
+  function closeOffcanvas() {
+    var offcanvasElement = document.getElementById("offcanvasExample");
+    var offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+
+    if (!offcanvasInstance) {
+      offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
+    }
+    offcanvasInstance.hide();
+    console.log("close offcanvas");
+  }
+</script>

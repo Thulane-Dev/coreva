@@ -1,0 +1,505 @@
+{% load static %}
+<!-- divider  -->
+
+<!-- =====================================
+      PAGE HEADER
+====================================== -->
+<a href="javascript:history.back()" class="incident_back">
+  <i class="bi bi-chevron-left"></i>
+  <span>Back</span>
+</a>
+
+<div class="dashboard_main_card mb-3">
+  <div class="form_page_header mb-0">
+    <div
+      class="form_page_icon"
+      style="
+        background-color: #fff2f2 !important;
+        color: rgb(214, 57, 72) !important;
+      "
+    >
+      <i class="bi bi-exclamation-triangle-fill"></i>
+    </div>
+
+    <div class="d-flex justify-content-between w-100">
+      <div>
+        <div class="form_page_eyebrow">PROJECT</div>
+        <h1 class="form_page_title">Project Issues</h1>
+        <p class="form_page_subtitle mb-0">
+          Record an issue that needs attention, tracking or resolution.
+        </p>
+      </div>
+      <div class="d-none d-md-block">
+        <a href="{% url 'issues:log-issue' project.uuid %}">
+          <button type="button" class="project_quick_action primary">
+            <span class="project_quick_action_icon">
+              <i class="bi bi-plus-lg"></i>
+            </span>
+            <span class="project_quick_action_text"> Add Issue</span>
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="d-block d-md-none">
+  <a href="{% url 'issues:log-issue' project.uuid %}">
+    <button type="button" class="project_quick_action primary">
+      <span class="project_quick_action_icon">
+        <i class="bi bi-plus-lg"></i>
+      </span>
+      <span class="project_quick_action_text"> Add Issue</span>
+    </button>
+  </a>
+</section>
+
+<!-- ======== ISSUES ======== -->
+<section class="section-spacing">
+  {% for data in issues %}
+  <a href="{% url 'issues:issue' data.issue.uuid %}">
+    <div
+      class="operation-item issue-item scroll-section mb-3"
+      id="project_issue{{data.issue.id}}"
+    >
+      <!-- ICON -->
+      <div class="operation-icon issue-item-icon">
+        <span class="material-symbols-outlined">warning</span>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="operation-content">
+        <div class="operation-top">
+          <h6 class="operation-title mb-0 font_size_14">
+            {{data.issue.title}}
+            <!-- divider  -->
+            {% if data.issue.status == 'open'%}
+            <span
+              class="font_size_11 priority-pill priority-high text-capitalize"
+              style="margin-left: 4px"
+            >
+              <span class="priority-dot"></span>
+              {{data.issue.status}}
+            </span>
+            {% else %}
+            <span
+              class="font_size_11 priority-pill priority-low text-capitalize"
+              style="margin-left: 4px"
+            >
+              <span class="priority-dot"></span>
+              {{data.issue.status}}
+            </span>
+            {% endif %}
+          </h6>
+
+          <!-- PRIORITY -->
+          {% if data.issue.priority == 'high' %}
+          <span class="font_size_11 priority-pill priority-high">
+            <span class="priority-dot"></span>
+            High
+          </span>
+
+          {% elif data.issue.priority == 'medium' %}
+          <span class="font_size_11 priority-pill priority-medium">
+            <span class="priority-dot"></span>
+            Medium
+          </span>
+
+          {% else %}
+          <span class="font_size_11 priority-pill priority-low">
+            <span class="priority-dot"></span>
+            Low
+          </span>
+          {% endif %}
+        </div>
+
+        <!-- DESCRIPTION -->
+        {% if data.issue.description %}
+        <p class="operation-description font_size_12">
+          {{data.issue.description}}
+        </p>
+        {% endif %}
+
+        <!-- META -->
+        <div class="operation-meta">
+          <!-- DUE DATE -->
+          {% if data.issue.due_date == today %}
+
+          <span class="meta-pill meta-due-today font_size_10">
+            <i class="bi bi-calendar2-check-fill"></i>
+            Due Today
+          </span>
+
+          {% else %}
+
+          <span class="meta-pill meta-due font_size_10">
+            <i class="bi bi-calendar2"></i>
+            {{data.issue_text}}
+          </span>
+          {% endif %}
+
+          <!-- ASSIGNED TO YOU -->
+          {% if data.issue.assigned_to == current_user %}
+
+          <span class="meta-pill meta-assigned font_size_10">
+            <i class="bi bi-person-check-fill"></i>
+            Assigned to you
+          </span>
+          {% else %}
+          <span
+            class="meta-pill meta-assigned font_size_10"
+            style="
+              background-color: #f4f5f6 !important;
+              color: rgb(111, 118, 125) !important;
+            "
+          >
+            <i class="bi bi-person-fill"></i>
+            Unassigned
+          </span>
+          {% endif %}
+        </div>
+
+        <!-- BOTTOM -->
+        <div class="operation-bottom">
+          <!-- REPORTED BY  -->
+          <div class="assigned-info">
+            <div class="mini-avatar">
+              {{ data.issue.created_by.first_name|first|upper }}
+            </div>
+
+            <span class="person-label font_size_11">Reported by</span>
+            <span class="font_size_11">
+              {{ data.issue.created_by.first_name }}
+              <!-- divider  -->
+              {{ data.issue.created_by.last_name }}
+            </span>
+          </div>
+          <button type="button" class="operation-view-button font_size_12">
+            View Issue
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</section>
+
+<style>
+  /* ========================================
+   ISSUE CARD
+======================================== */
+
+  .issue-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 18px;
+    transition: all 0.2s ease;
+  }
+
+  .issue-card:hover {
+    border-color: #d9dee3;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  /* ========================================
+   HEADER
+======================================== */
+
+  .issue-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .issue-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 12px;
+    background: #fff1f1;
+    color: #dc3545;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .issue-icon .material-symbols-outlined {
+    font-size: 21px;
+  }
+
+  /* ========================================
+   MAIN CONTENT
+======================================== */
+
+  .issue-main {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .issue-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .issue-title {
+    color: #202428;
+    font-size: 15px;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  /* ========================================
+   PRIORITY BADGES
+======================================== */
+
+  .issue-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 4px 9px;
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .priority-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .priority-high {
+    background: #fff0f1;
+    color: #c92a3a;
+  }
+
+  .priority-high .priority-dot {
+    background: #dc3545;
+  }
+
+  .priority-medium {
+    background: #fff7df;
+    color: #9a7000;
+  }
+
+  .priority-medium .priority-dot {
+    background: #e5a900;
+  }
+
+  .priority-low {
+    background: #eaf8ef;
+    color: #258348;
+  }
+
+  .priority-low .priority-dot {
+    background: #2eaa5b;
+  }
+
+  /* ========================================
+   DESCRIPTION
+======================================== */
+
+  .issue-description {
+    color: #6c757d;
+    font-size: 14px;
+    line-height: 1.55;
+    margin-top: 7px;
+  }
+
+  /* ========================================
+   META
+======================================== */
+
+  .issue-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+  }
+
+  .issue-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 5px 9px;
+    border-radius: 7px;
+
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .issue-meta-item i {
+    font-size: 12px;
+  }
+
+  .due-today {
+    background: #fff0f1;
+    color: #c92a3a;
+  }
+
+  .due-date {
+    background: #fff7df;
+    color: #876500;
+  }
+
+  .assigned-you {
+    background: #eef4ff;
+    color: #356dcc;
+  }
+
+  /* ========================================
+   FOOTER
+======================================== */
+
+  .issue-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    margin-top: 17px;
+    padding-top: 14px;
+
+    border-top: 1px solid #f0f1f2;
+  }
+
+  .issue-person {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+  }
+
+  .person-avatar {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+
+    border-radius: 50%;
+    background: #f1f3f5;
+    color: #495057;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .issue-person > div:last-child {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .person-label {
+    color: #9aa0a6;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .person-name {
+    color: #343a40;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ========================================
+   MOBILE
+======================================== */
+
+  @media (max-width: 576px) {
+    .issue-card {
+      padding: 15px;
+      border-radius: 14px;
+    }
+
+    .issue-card-header {
+      gap: 11px;
+    }
+
+    .issue-icon {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 10px;
+    }
+
+    .issue-icon .material-symbols-outlined {
+      font-size: 19px;
+    }
+
+    .issue-title {
+      font-size: 14px;
+    }
+
+    .issue-description {
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .issue-meta {
+      margin-top: 10px;
+      gap: 6px;
+    }
+
+    .issue-meta-item {
+      font-size: 11px;
+      padding: 5px 8px;
+    }
+
+    .issue-card-footer {
+      gap: 15px;
+      margin-top: 14px;
+      padding-top: 12px;
+    }
+
+    .issue-person {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .person-name {
+      max-width: 120px;
+    }
+  }
+
+  /* ========================================
+   VERY SMALL PHONES
+======================================== */
+
+  @media (max-width: 380px) {
+    .issue-card-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .issue-person {
+      width: 100%;
+    }
+
+    .person-name {
+      max-width: none;
+    }
+  }
+</style>

@@ -1,0 +1,360 @@
+{% load static %}
+<!-- divider  -->
+
+<form
+  class="d-none"
+  method="POST"
+  action="{% url 'contractors:save-contractor' project.uuid %}"
+>
+  {% csrf_token %}
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-10 col-lg-7">
+      <center>
+        <div class="page_header_icon mb-3">
+          <span class="material-symbols-outlined"> groups_2 </span>
+        </div>
+
+        <h5 class="form_heading">Add Subcontractor</h5>
+        <p class="text-secondary">
+          Add a subcontractor to this project so they can start managing their
+          tasks and issues assigned to them.
+        </p>
+      </center>
+
+      <!-- ======== Contractor Information ======== -->
+      <div class="main_card py-4 mb-3 mt-4">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="form_count_container">
+            <h6 class="mb-0 fw-bold">1</h6>
+          </div>
+          <h6 class="mb-0" style="font-weight: 700">
+            1. Contractor Information
+          </h6>
+        </div>
+
+        <div class="row g-2">
+          <!-- Company Name -->
+          <div class="col-12 col-md-6">
+            <label for="company_name" class="form-label">
+              Company Name <span class="text-danger">*</span>
+            </label>
+
+            <input
+              type="text"
+              name="company_name"
+              id="company_name"
+              required
+              class="form-control grey_input"
+            />
+          </div>
+          <!-- Phone -->
+          <div class="col-12 col-md-6">
+            <label for="phone" class="form-label"> Phone </label>
+            <input
+              type="text"
+              name="phone"
+              id="phone"
+              class="form-control grey_input"
+            />
+          </div>
+          <!-- Email -->
+          <div class="col-12 col-md-6">
+            <label for="email" class="form-label"> Email Address</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="form-control grey_input"
+            />
+          </div>
+          <!-- Start Date -->
+          <div class="col-12 col-md-6">
+            <label for="start_date" class="form-label"> Start Date</label>
+            <input
+              type="date"
+              name="start_date"
+              id="start_date"
+              onfocus="this.showPicker()"
+              onclick="this.showPicker()"
+              class="form-control grey_input"
+            />
+          </div>
+          <!-- Street Address -->
+          <div class="col-12 col-md-6">
+            <label for="street Address" class="form-label">
+              Street Address
+            </label>
+            <input
+              type="text"
+              name="street"
+              id="street Address"
+              class="form-control grey_input"
+            />
+          </div>
+          <!-- City -->
+          <div class="col-12 col-md-6">
+            <label for="city" class="form-label"> City </label>
+            <input
+              type="text"
+              name="city"
+              id="city"
+              class="form-control grey_input"
+            />
+          </div>
+          <!-- Province -->
+          <div class="col-12 col-md-6">
+            <label for="province" class="form-label"> Province </label>
+            <input
+              type="text"
+              name="province"
+              id="province"
+              class="form-control grey_input"
+            />
+          </div>
+          <!-- Country -->
+          <div class="col-12 col-md-6">
+            <label for="country" class="form-label"> Country </label>
+            <input
+              type="text"
+              name="country"
+              id="country"
+              class="form-control grey_input"
+              value="South Africa"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== Submit Buttons LG ======== -->
+      <div class="d-none d-md-block">
+        <div class="row d-flex justify-content-end mt-4">
+          <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <button
+              type="button"
+              onclick="history.back()"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3"
+            >
+              Cancel
+            </button>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <button
+              type="submit"
+              class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+            >
+              <i class="bi bi-floppy"></i> Save Contractor
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<div class="contractor_form_page">
+  <form
+    method="POST"
+    action="{% url 'contractors:save-contractor' project.uuid %}"
+  >
+    {% csrf_token %}
+    <div class="row d-flex justify-content-center">
+      <div class="col-12 col-md-10 col-lg-7">
+        <!-- ===================================================== PAGE HEADER ====================================================== -->
+        <div class="dashboard_main_card mb-3">
+          <div class="contractor_form_header mb-0">
+            <div class="contractor_page_icon mb-3">
+              <span class="material-symbols-outlined"> groups_2 </span>
+            </div>
+            <h5 class="form_heading mb-2">Add Subcontractor</h5>
+            <p class="text-secondary mb-0">
+              Add a subcontractor to this project so they can start managing
+              their tasks and issues assigned to them.
+            </p>
+          </div>
+        </div>
+        <!-- ===================================================== CONTRACTOR INFORMATION ====================================================== -->
+        <div class="contractor_form_card mb-3 mt-4">
+          <div class="contractor_form_section">
+            <div class="contractor_form_number">
+              <span class="fw-bold">1</span>
+            </div>
+            <h6 class="contractor_form_section_title">
+              Contractor Information
+            </h6>
+          </div>
+          <div class="row g-3">
+            <!-- Company Name -->
+            <div class="col-12 col-md-6">
+              <label for="company_name" class="form-label">
+                Company Name <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                name="company_name"
+                id="company_name"
+                required
+                class="form-control grey_input"
+                placeholder="ABC Construction"
+              />
+            </div>
+            <!-- Phone -->
+            <div class="col-12 col-md-6">
+              <label for="phone" class="form-label"> Phone </label>
+              <input
+                type="tel"
+                name="phone"
+                id="phone"
+                class="form-control grey_input"
+                placeholder="083 123 4567"
+              />
+            </div>
+            <!-- Email -->
+            <div class="col-12 col-md-6">
+              <label for="email" class="form-label"> Email Address </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form-control grey_input"
+                placeholder="info@abcconstruction.co.za"
+              />
+            </div>
+            <!-- Start Date -->
+            <div class="col-12 col-md-6">
+              <label for="start_date" class="form-label"> Start Date </label>
+              <input
+                type="date"
+                name="start_date"
+                id="start_date"
+                onfocus="this.showPicker()"
+                onclick="this.showPicker()"
+                class="form-control grey_input"
+              />
+            </div>
+            <!-- Street Address -->
+            <div class="col-12">
+              <label for="street_address" class="form-label">
+                Street Address
+              </label>
+              <input
+                type="text"
+                name="street"
+                id="street_address"
+                class="form-control grey_input"
+                placeholder="Enter street address"
+              />
+            </div>
+            <!-- City -->
+            <div class="col-12 col-md-6">
+              <label for="city" class="form-label"> City </label>
+              <input
+                type="text"
+                name="city"
+                id="city"
+                class="form-control grey_input"
+                placeholder="Enter city"
+              />
+            </div>
+            <!-- Province -->
+            <div class="col-12 col-md-6">
+              <label for="province" class="form-label"> Province </label>
+              <input
+                type="text"
+                name="province"
+                id="province"
+                class="form-control grey_input"
+                placeholder="Enter province"
+              />
+            </div>
+            <!-- Country -->
+            <div class="col-12">
+              <label for="country" class="form-label"> Country </label>
+              <input
+                type="text"
+                name="country"
+                id="country"
+                class="form-control grey_input"
+                value="South Africa"
+                placeholder="Enter country"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- ===================================================== PROJECT ACCESS ====================================================== -->
+        <div class="contractor_form_card mb-3">
+          <div class="contractor_form_section">
+            <div class="contractor_form_number">
+              <span class="fw-bold">2</span>
+            </div>
+            <h6 class="contractor_form_section_title">Project Access</h6>
+          </div>
+          <p class="text-secondary small mb-3">
+            The subcontractor will be connected to this project and can access
+            the work assigned to them through the contractor portal.
+          </p>
+          <div class="contractor_access_box">
+            <div class="d-flex align-items-start gap-3">
+              <div class="contractor_access_icon">
+                <i class="bi bi-person-workspace"></i>
+              </div>
+              <div>
+                <p class="fw-bold mb-1">Subcontractor Portal</p>
+                <p class="text-secondary small mb-0">
+                  Once added, you can share their project access with them.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ===================================================== DESKTOP ACTIONS ====================================================== -->
+        <div class="d-none d-md-block">
+          <div class="row d-flex justify-content-end mt-4">
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+              <button
+                type="button"
+                onclick="history.back()"
+                class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 align-items-center"
+              >
+                Cancel
+              </button>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-3">
+              <button
+                type="submit"
+                class="btn btn-primary primary_button w-100 d-flex justify-content-center gap-3 align-items-center"
+              >
+                <i class="bi bi-floppy"></i> Save Contractor
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ========================================================= MOBILE ACTIONS ========================================================== -->
+    <section
+      class="fixed-bottom contractor_mobile_actions px-2 d-block d-md-none"
+    >
+      <div class="row g-2">
+        <div class="col-6">
+          <button
+            type="button"
+            onclick="history.back()"
+            class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-2 align-items-center"
+          >
+            Cancel
+          </button>
+        </div>
+        <div class="col-6">
+          <button
+            type="submit"
+            class="btn btn-primary primary_button w-100 d-flex justify-content-center gap-2 align-items-center"
+          >
+            <i class="bi bi-floppy"></i> Save
+          </button>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>

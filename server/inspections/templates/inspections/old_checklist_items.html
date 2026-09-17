@@ -1,0 +1,558 @@
+<section class="d-none">
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-10 col-lg-5">
+      <!-- ======= BACK BUTTON  ======= -->
+      <a onclick="history.back()">
+        <p class="d-flex align-items-center gap-2 back_button mb-3">
+          <i class="bi bi-chevron-left"></i> Back
+        </p>
+      </a>
+      <!-- ======= PAGE HEADER  ======= -->
+      <div class="blue_card_container mb-4">
+        <p class="text-light mb-2" style="font-size: 13px">DAILY INSPECTION</p>
+        <h5 class="fw-bold text-white">{{inspection.project.project_name}}</h5>
+        {% if inspection.status == 'in_progress' %}
+        <span class="badge bg-warning text-dark" style="font-size: 15px"
+          >In Progress</span
+        >
+        {% elif inspection.status == 'pending' %}
+        <span class="badge bg-danger" style="font-size: 15px">Pending</span>
+        {% else %}
+        <span class="badge bg-success" style="font-size: 15px">Complete</span>
+        {% endif %}
+      </div>
+
+      <!-- ======= QUESTIONS  ======= -->
+      {% for category in inspection_data_new.categories %}
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item mb-3">
+          <h2 class="accordion-header" id="headingTwo">
+            <button
+              class="accordion-button collapsed inspection_header_card py-4 border-secondary d-flex gap-2"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo{{category.category.id}}"
+              aria-expanded="false"
+              aria-controls="collapseTwo{{category.category.id}}"
+            >
+              <h5 class="fw-bold mb-0">{{category.category.name}}</h5>
+
+              <div id="category-count-{{ category.category.id }}">
+                {% if category.total_answered == category.total_questions %}
+                <span class="badge bg-success"> Complete </span>
+                {% else %}
+                <span class="badge bg-secondary">
+                  {{ category.total_answered }} / {{ category.total_questions }}
+                  Answered
+                </span>
+                {% endif %}
+              </div>
+
+              <div id="failed-count-{{ category.category.id }}">
+                {% if category.failed_items > 0 %}
+                <span class="badge bg-danger"
+                  >{{ category.failed_items }} Failed</span
+                >
+                {% endif %}
+              </div>
+            </button>
+          </h2>
+          <div
+            id="collapseTwo{{category.category.id}}"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body px-0">
+              {% for response in category.responses %}
+              <div class="main_card mb-3">
+                <!-- Response Partial  -->
+                {% include "partials/inspection_response_partial.html" %}
+                <!-- issue partial  -->
+                <div id="response-container-{{ response.id }}">
+                  {% include "partials/issue_partial.html" %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- ======= SUBMIT BUTTON  ======= -->
+      <form
+        method="POST"
+        action="{% url 'inspections:save-inspection' inspection.uuid%}"
+      >
+        {% csrf_token %}
+        <div class="row mt-4">
+          <div class="col-6">
+            <button
+              type="submit"
+              name="save_draft"
+              class="btn btn-outline-primary secondary_outline_btn w-100"
+            >
+              Save Draft
+            </button>
+          </div>
+          <div class="col-6">
+            <button
+              type="submit"
+              name="save_inspection"
+              class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+            >
+              <i class="bi bi-floppy"></i>
+              Save Inspection
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CHATGPT INSPECTION RESPONSE PARTIAL CHECKLIST  -->
+<form class="d-block">
+  {% csrf_token %}
+  <div id="response-{{ response.id }}" class="inspection_response">
+    <!-- QUESTION -->
+    <div class="inspection_question_header">
+      <span class="inspection_question_number">
+        {{ response.question.order }}
+      </span>
+      <p class="inspection_question_text mb-0">
+        {{ response.question.question }}
+      </p>
+    </div>
+    <!-- ANSWERS -->
+    <div class="inspection_answers">
+      <!-- YES -->
+      <button
+        hx-post="{% url 'inspections:update-inspection-response' response.id %}"
+        hx-vals='{"answer": "pass"}'
+        hx-target="#response-{{ response.id }}"
+        hx-swap="outerHTML"
+        type="submit"
+        class="inspection_answer {% if response.answer == 'pass' %}selected_yes{% endif %}"
+      >
+        <i class="bi bi-check-lg"></i> <span>Yes</span>
+      </button>
+      <!-- NO -->
+      <button
+        hx-post="{% url 'inspections:update-inspection-response' response.id %}"
+        hx-vals='{"answer": "fail"}'
+        hx-target="#response-{{ response.id }}"
+        hx-swap="outerHTML"
+        type="submit"
+        class="inspection_answer {% if response.answer == 'fail' %}selected_no{% endif %}"
+      >
+        <i class="bi bi-x-lg"></i> <span>No</span>
+      </button>
+      <!-- N/A -->
+      <button
+        hx-post="{% url 'inspections:update-inspection-response' response.id %}"
+        hx-vals='{"answer": "na"}'
+        hx-target="#response-{{ response.id }}"
+        hx-swap="outerHTML"
+        type="submit"
+        class="inspection_answer {% if response.answer == 'na' %}selected_na{% endif %}"
+      >
+        <span>N/A</span>
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- OLD ISSUE MODAL PARTIAL  -->
+<!-- ======== ADD ISSUE MODAL ======== -->
+<div
+  class="modal fade d-none"
+  id="addIssueModal{{ response.id }}"
+  tabindex="-1"
+  aria-labelledby="addIssueModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addIssueModalLabel">Add Issue</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h5 class="mb-3 fw-bold">{{response.question.question}}</h5>
+
+        <form
+          hx-post="{% url 'inspections:add-issue' response.id %}"
+          hx-target="#response-{{ response.id }}"
+          hx-swap="outerHTML"
+          hx-on="htmx:afterRequest: closeOffcanvas()"
+        >
+          {% csrf_token %}
+          <div class="mb-3">
+            <label
+              for="exampleFormControlTextarea1"
+              class="form-label text-secondary"
+              style="font-size: 16px"
+              >Description</label
+            >
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              name="description"
+              rows="3"
+            ></textarea>
+          </div>
+          <!-- Priority  -->
+          <select
+            class="form-select mb-3 py-3"
+            aria-label="Default select example"
+            name="priority"
+          >
+            <option selected value="high">Select priority</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+          <!-- Team  -->
+          <select
+            name="assigned_to_id"
+            class="form-select mb-3 py-3"
+            aria-label="Default select example"
+          >
+            <option value="None">Assign Team Member</option>
+            {% for user in team_members %}
+            <option value="{{user.id}}">
+              {{user.first_name}} {{user.last_name}} {{user.id}}
+            </option>
+            {% endfor %}
+          </select>
+
+          <div class="form-floating mb-3">
+            <input
+              type="date"
+              class="form-control"
+              id="floatingInput"
+              name="due_date"
+              placeholder="Due Date"
+              value="{{ today|date:'Y-m-d' }}"
+              required
+            />
+            <label for="floatingInput">Due Date</label>
+          </div>
+
+          <button
+            type="submit"
+            onclick="closeCreateIssueModal('{{ response.id }}')"
+            class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-3 buttons_border_radius"
+          >
+            Create Issue
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATED ISSUE ALERT  -->
+<a data-bs-toggle="modal" data-bs-target="#addIssueModal{{response.id}}">
+  <div class="alert alert-danger mt-4 border_radius py-2" role="alert">
+    <div class="d-flex align-items-center gap-3">
+      <i class="bi bi-exclamation-triangle-fill" style="font-size: 20px"></i>
+      <div
+        class="d-flex align-items-center d-flex justify-content-between w-100"
+      >
+        <h6 class="fw-bold mb-0">Issue Created</h6>
+
+        <i class="bi bi-chevron-right d-block d-md-none"></i>
+        <p class="mb-0 d-none d-md-block">
+          View Issue
+          <i class="bi bi-arrow-right" style="margin-left: 5px"></i>
+        </p>
+      </div>
+    </div>
+  </div>
+</a>
+
+<!-- CATEGORY COUNT PARTIAL  -->
+<div
+  class="d-none"
+  id="category-count-{{ response.question.category.id }}"
+  hx-swap-oob="true"
+>
+  {% if total_answered == total_questions %}
+  <span class="badge bg-success"> Complete </span>
+  {% else %}
+  <span class="badge bg-secondary">
+    {{ total_answered }} / {{ total_questions }} Answered
+  </span>
+  {% endif %}
+</div>
+
+<div
+  class="d-none"
+  id="failed-count-{{ response.question.category.id }}"
+  hx-swap-oob="true"
+>
+  {% if failed_items > 0 %}
+  <span class="badge bg-danger"> {{failed_items}} Failed</span>
+  {% endif %}
+</div>
+
+<!-- ISSUE LATEST PARTIAL  -->
+<div id="response-container-{{ response.id }}" hx-swap-oob="true">
+  {% if response.answer == 'fail' %}
+  <!-- ======== ADD ISSUE BUTTON ======== -->
+  {% if not response.inspection_response.exists %}
+  <button
+    type="button"
+    data-bs-toggle="modal"
+    data-bs-target="#addIssueModal{{ response.id }}"
+    class="btn add_issue_button d-flex align-items-center justify-content-center gap-2"
+  >
+    <i class="bi bi-plus-lg"></i>
+    Add Issue
+  </button>
+  {% endif %}
+  <!-- NEW ISSUE MODAL  -->
+  <div
+    class="modal fade"
+    id="addIssueModal{{ response.id }}"
+    tabindex="-1"
+    aria-labelledby="addIssueModalLabel{{ response.id }}"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content add_issue_modal">
+        <!-- Header -->
+        <div class="modal-header add_issue_modal_header">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <div class="add_issue_modal_icon">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+              </div>
+
+              <h5 class="modal-title fw-bold mb-0">Add Issue</h5>
+            </div>
+
+            <p class="text-secondary mb-0 add_issue_modal_subtitle">
+              Create a corrective action for this failed inspection.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+          <!-- Failed Question -->
+          <div class="failed_question_box mb-4">
+            <div class="failed_question_label">
+              <i class="bi bi-x-circle-fill"></i>
+              Failed Inspection
+            </div>
+
+            <h6 class="fw-bold mb-0">{{ response.question.question }}</h6>
+          </div>
+
+          <form
+            hx-post="{% url 'inspections:add-issue' response.id %}"
+            hx-target="#response-{{ response.id }}"
+            hx-swap="outerHTML"
+            hx-push-url="false"
+            hx-on="htmx:afterRequest: closeOffcanvas()"
+          >
+            {% csrf_token %}
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label
+                for="issue-description-{{ response.id }}"
+                class="form-label"
+              >
+                Description
+              </label>
+
+              <textarea
+                class="form-control add_issue_input"
+                id="issue-description-{{ response.id }}"
+                name="description"
+                rows="4"
+                placeholder="Describe the issue and what needs to be corrected..."
+                required
+              ></textarea>
+            </div>
+
+            <!-- Priority -->
+            <div class="mb-3">
+              <label for="issue-priority-{{ response.id }}" class="form-label">
+                Priority
+              </label>
+
+              <select
+                class="form-select add_issue_input"
+                id="issue-priority-{{ response.id }}"
+                name="priority"
+                required
+              >
+                <option value="" selected>Select priority</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+
+            <!-- Assigned Team Member -->
+            <div class="mb-3">
+              <label for="issue-assigned-{{ response.id }}" class="form-label">
+                Assign To
+              </label>
+
+              <select
+                name="assigned_to_id"
+                id="issue-assigned-{{ response.id }}"
+                class="form-select add_issue_input"
+              >
+                <option value="None">Unassigned</option>
+
+                {% for user in team_members %}
+                <option value="{{ user.id }}">
+                  {{ user.first_name }} {{ user.last_name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Due Date -->
+            <div class="mb-4">
+              <label for="issue-due-date-{{ response.id }}" class="form-label">
+                Due Date
+              </label>
+
+              <input
+                type="date"
+                class="form-control add_issue_input"
+                id="issue-due-date-{{ response.id }}"
+                name="due_date"
+                value="{{ today|date:'Y-m-d' }}"
+                required
+                onfocus="this.showPicker()"
+                onclick="this.showPicker()"
+              />
+            </div>
+
+            <!-- Submit -->
+            <button
+              type="submit"
+              onclick="closeCreateIssueModal('{{ response.id }}')"
+              class="btn btn-primary w-100 primary_button d-flex align-items-center justify-content-center gap-2 border-0"
+            >
+              <i class="bi bi-plus-lg"></i>
+              Create Issue
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ======== ISSUE CREATED ======== -->
+  {% for issue in response.inspection_response.all %}
+  <a
+    data-bs-toggle="modal"
+    data-bs-target="#addIssueModal{{ response.id }}"
+    class="text-decoration-none"
+  >
+    <div class="issue_created_alert mt-4" role="alert">
+      <div class="issue_created_icon">
+        <i class="bi bi-check-lg"></i>
+      </div>
+
+      <div class="issue_created_content">
+        <div>
+          <h6 class="fw-bold mb-1">Issue Created</h6>
+
+          <p class="mb-0">
+            A corrective action has been created for this failed inspection.
+          </p>
+        </div>
+
+        <div class="issue_created_action">
+          <span class="d-none d-md-inline"> View Issue </span>
+
+          <i class="bi bi-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+  <!-- DIVIDER  -->
+  {% endif %}
+</div>
+
+<div id="response-container-{{ response.id }}">
+  {% if response.answer == 'fail' %}
+  <!-- ======== ADD ISSUE BUTTON ======== -->
+  {% if not response.inspection_response.exists %}
+  <button
+    type="button"
+    data-bs-toggle="modal"
+    data-bs-target="#addIssueModal{{ response.id }}"
+    class="btn add_issue_button d-flex align-items-center justify-content-center gap-2"
+  >
+    <i class="bi bi-plus-lg"></i>
+    Add Issue
+  </button>
+  {% else %}
+  <!-- ======== ISSUE ALREADY CREATED ======== -->
+  {% for issue in response.inspection_response.all %}
+  <a
+    data-bs-toggle="modal"
+    data-bs-target="#addIssueModal{{ response.id }}"
+    class="text-decoration-none"
+  >
+    <div class="issue_created_alert mt-4" role="alert">
+      <div class="issue_created_icon">
+        <i class="bi bi-check-lg"></i>
+      </div>
+
+      <div class="issue_created_content">
+        <div>
+          <h6 class="fw-bold mb-1">Issue Created</h6>
+
+          <p class="mb-0">
+            A corrective action has been created for this failed inspection.
+          </p>
+        </div>
+
+        <div class="issue_created_action">
+          <span class="d-none d-md-inline"> View Issue </span>
+
+          <i class="bi bi-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+  <!-- divider  -->
+  {% endif%}
+  <!-- divider  -->
+  {% endif %}
+</div>
+
+

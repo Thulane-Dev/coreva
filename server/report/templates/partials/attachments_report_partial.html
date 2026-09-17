@@ -1,0 +1,9 @@
+<section class="mt-4">
+  <div class="row g-3">
+    {% for data in files %}
+    <div class="col-3">
+      <img src="{{ data.photo.url }}" alt="" class="report_image" />
+    </div>
+    {% endfor %}
+  </div>
+</section>

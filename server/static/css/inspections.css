@@ -1,0 +1,136 @@
+:root {
+  --primary_color: #010738;
+
+  --secondary_color: #0b1736;
+  --navy_blue_color: #09132d;
+  --green_color: #08855f;
+  --light_green_color: #0ec77a;
+  --grey_text: #4b5563;
+  --blue_color_new: #2d4ada;
+  /* --blue_color_new: #0165fb; */
+}
+
+.inspection_btn {
+  /* background-color: #ebebf2; */
+  background-color: rgba(255, 255, 255, 0.452);
+  color: gray;
+  border-radius: 8px;
+  /* font-size: 14px; */
+  width: 100%;
+  font-weight: 600 !important;
+}
+
+.inspection_header_image {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.inspection_background {
+  background-color: rgba(211, 211, 211, 0.364) !important;
+  border-left: 5px solid #1c2894 !important;
+  border-top: 1px solid grey !important;
+  border-bottom: 1px solid grey !important;
+  border-right: 1px solid grey !important;
+}
+
+/* Accordion style  */
+.accordion_background {
+  padding-left: 0px;
+  padding-right: 0px;
+  /* background-color: red !important; */
+  border: 0px;
+}
+
+.accordion-item {
+  border: 0px;
+  background-color: transparent;
+}
+
+.accordion-button {
+  /* border-radius: 12px; */
+  border: 1px solid #eceff3;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  padding: 16px;
+}
+
+.green_btn {
+  background-color: green !important;
+  color: white !important;
+}
+
+.red_btn {
+  background-color: red !important;
+  color: white !important;
+}
+
+.na_btn {
+  background-color: black !important;
+  color: white !important;
+}
+
+.due_container {
+  height: 28px;
+  width: 28px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: var(--blue_color_new);
+  color: white;
+}
+
+.missing {
+  color: rgb(255, 255, 255);
+  background-color: #dc3545;
+}
+
+.complete {
+  color: rgb(255, 255, 255);
+  background-color: #198754;
+}
+
+.incomplete {
+  color: rgb(33, 37, 41);
+  background-color: #ffc107;
+}
+
+.dark_valid_background {
+  background-color: #2a9f51;
+  color: white;
+}
+
+.span_status {
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+/* New Inspection CSS  */
+.inspection_header_card {
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid #cfd0d2;
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+.inspections_answer_btn {
+  /* border-radius: 20px !important; */
+  width: 100%;
+}
+
+.add_issue_button {
+  width: 100%;
+  font-weight: 600;
+}
+
+.border_radius {
+  border-radius: 12px;
+}

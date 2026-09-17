@@ -1,0 +1,290 @@
+<div class="row d-flex justify-content-center">
+  <div class="col-12 col-md-10 col-lg-5">
+    <div class="accordion" id="accordionExample">
+      {% for category in inspection_data.grouped_checklist %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button
+            class="accordion-button collapsed py-4 border-secondary"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapse{{category.category.uuid}}"
+            aria-expanded="false"
+            aria-controls="collapse{{category.category.uuid}}"
+          >
+            <div class="d-flex align-items-center gap-3">
+              <div class="due_container" style="background-color: #1c2894">
+                <p class="mb-0">{{category.category.order}}</p>
+              </div>
+              <div class="d-flex align-items-center gap-3">
+                <h6 class="mb-0" style="font-weight: 500">
+                  {{ category.name }}
+                </h6>
+                <span
+                  class="span_status dark_valid_background rounded-pill"
+                  style="font-size: 13px"
+                >
+                  {{ category.an_questions }}/{{ category.tot_question }}
+                </span>
+              </div>
+            </div>
+          </button>
+        </h2>
+        <div
+          id="collapse{{category.category.uuid}}"
+          class="accordion-collapse collapse show"
+          aria-labelledby="headingTwo"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body accordion_background py-4">
+            {% for response in category.responses %}
+            <div class="main_card mb-4 inspection_background">
+              <div
+                class="d-flex justify-content-between d-flex align-items-center mb-3"
+              >
+                <p class="mb-0" style="font-weight: 600">
+                  {{ response.question.question }} {{ response.uuid }}
+                </p>
+                <i
+                  class="bi bi-plus-circle-fill"
+                  style="font-size: 22px; color: #1c2894"
+                ></i>
+              </div>
+              <!-- ======== Answers ======== -->
+              <form>
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col">
+                    <button
+                      hx-post="{% url 'inspections:answer-inspection-question' inspection.uuid response.question.uuid %}"
+                      hx-target="#InspectionTarget"
+                      hx-swap="innerHTML"
+                      name="answer"
+                      value="pass"
+                      type="submit"
+                      class="btn btn-secondary inspection_btn {% if response.answer == 'pass' %} green_btn {% endif %}"
+                    >
+                      Yes
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      hx-post="{% url 'inspections:answer-inspection-question' inspection.uuid response.question.uuid %}"
+                      hx-target="#InspectionTarget"
+                      hx-swap="innerHTML"
+                      name="answer"
+                      value="fail"
+                      type="submit"
+                      class="btn btn-secondary inspection_btn {% if response.answer == 'fail' %} red_btn {% endif %}"
+                    >
+                      No
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      hx-post="{% url 'inspections:answer-inspection-question' inspection.uuid response.question.uuid %}"
+                      hx-target="#InspectionTarget"
+                      hx-swap="innerHTML"
+                      name="answer"
+                      value="na"
+                      type="submit"
+                      class="btn btn-secondary inspection_btn {% if response.answer == 'na' %} na_btn {% endif %}"
+                    >
+                      N/A
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <!-- ======== Issue ======== -->
+              {% if response.answer == 'fail' %}
+              <div>
+                <button
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#issueModal"
+                  class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-3 buttons_border_radius"
+                >
+                  <i class="bi bi-plus-lg"></i> Add Issue
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+              {% endif %}
+              <!-- divider  -->
+              <!-- divider  -->
+              {% for issue in response.inspection_response.all %}
+              <!-- divider  -->
+              <p>{{response.uuid}}</p>
+              <p>{{ issue.inspection_response.uuid }}</p>
+
+              <p>{{ issue.title }}</p>
+              <p>{{ issue.description }}</p>
+              <p>{{ issue.priority }}</p>
+              <!-- divider  -->
+              <!-- divider  -->
+              {% endfor %}
+            </div>
+
+            <!-- Issue Modal -->
+            <div
+              class="modal fade"
+              id="issueModal"
+              tabindex="-1"
+              aria-labelledby="issueModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="issueModalLabel">Add Issue</h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      {% csrf_token%}
+                      <h6 class="mb-3">{{ response.question.question }}</h6>
+                      <div class="mb-3">
+                        <label
+                          for="exampleFormControlTextarea1"
+                          class="form-label text-secondary"
+                          style="font-size: 16px"
+                          >Description</label
+                        >
+                        <textarea
+                          class="form-control"
+                          id="exampleFormControlTextarea1"
+                          name="issue_description"
+                          rows="3"
+                        ></textarea>
+                      </div>
+                      <!-- Priority  -->
+                      <select
+                        class="form-select mb-3"
+                        aria-label="Default select example"
+                        name="priority"
+                      >
+                        <option selected value="high">Select priority</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                      </select>
+                      <!-- Team  -->
+                      <select
+                        name="assigned_to"
+                        class="form-select mb-3"
+                        aria-label="Default select example"
+                      >
+                        <option selected value="None">
+                          Assign Team Member
+                        </option>
+                        {% for user in team_members %}
+                        <option value="{{user.id}}">
+                          {{user.first_name}} {{user.last_name}}
+                        </option>
+                        {% endfor %}
+                      </select>
+
+                      <!-- Date & Time  -->
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-floating mb-3">
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="floatingInput"
+                              name="due_date"
+                              placeholder="Due Date"
+                              required
+                            />
+                            <label for="floatingInput">Due Date</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-floating mb-3">
+                            <input
+                              type="time"
+                              class="form-control"
+                              id="floatingInput"
+                              name="due_time"
+                              placeholder="Due Time"
+                              required
+                            />
+                            <label for="floatingInput">Due Time</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        hx-post="{% url 'inspections:create-inspection-issue' inspection.uuid response.uuid %}"
+                        hx-target="#InspectionTarget"
+                        hx-swap="innerHTML"
+                        type="submit"
+                        class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-3 buttons_border_radius"
+                      >
+                        Create Issue
+                      </button>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            <!-- end card item  -->
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- end item  -->
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
+    collapse.addEventListener("shown.bs.collapse", function () {
+      this.previousElementSibling.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  });
+</script>
+
+<script>
+  function closeAllModals() {
+    // Get all open modals
+    const openModals = document.querySelectorAll(".modal.show");
+
+    openModals.forEach(function (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    });
+
+    // Clean up any lingering backdrops
+    document.querySelectorAll(".modal-backdrop").forEach(function (backdrop) {
+      backdrop.remove();
+    });
+    document.body.classList.remove("modal-open");
+  }
+
+  // Usage
+  closeAllModals();
+</script>

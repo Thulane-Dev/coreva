@@ -1,0 +1,1170 @@
+{% load static %}
+<!-- divider  -->
+
+<!-- ======= SMALL SCREEN FIXED TOP HEADER  ======= -->
+<div class="offcanvas-header page_header_nav fixed-top d-block d-md-none">
+  <div class="d-flex align-items-center gap-3">
+    <a onclick="history.back()">
+      <div
+        class="list_icon_container page_header_icon back_button_new_container"
+      >
+        <i class="bi bi-chevron-left text-white"></i>
+      </div>
+    </a>
+    <div class="d-flex align-items-center gap-2">
+      <h6 class="offcanvas-title text-white" id="offcanvasExampleLabel">
+        {{project.project_name}}
+      </h6>
+      {% if project_data.overall_status == 'Needs Attention' %}
+      <div class="dot_style"></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- ======= SMALL SCREEN PROJECT IMAGE  ======= -->
+<section class="section-spacing d-block d-md-none" style="margin-top: 60px">
+  <div
+    class="mb-3 small_screen_project_img py-3 px-2"
+    style="background-image:
+          linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+          url('{{ project.cover_image.url }}');"
+  >
+    <!-- Status  -->
+    <div class="d-flex gap-2 mb-3">
+      {% if project.status == 'active' %}
+      <span class="badge bg-success rounded-pill px-3" style="font-size: 14px"
+        >Project Active</span
+      >
+      {% elif project.status == 'completed' %}
+      <span class="badge bg-success rounded-pill px-3" style="font-size: 14px"
+        >Complete</span
+      >
+      {% elif project.status == 'on_hold' %}
+      <span class="badge bg-secondary rounded-pill px-3" style="font-size: 14px"
+        >On Hold</span
+      >
+      {% endif %}
+      <!-- END PROJECT STATUS  -->
+
+      {% if project_data.overall_status == 'Needs Attention' %}
+      <span class="badge bg-danger project_header_span rounded-pill">
+        <i
+          class="bi bi-exclamation-circle"
+          style="
+            margin-right: 7px;
+            font-size: 14px;
+            font-weight: 600 !important;
+          "
+        ></i>
+        {{project_data.overall_status}}</span
+      >
+      {% else %}
+      <span class="badge bg-success rounded-pill">
+        <i
+          class="bi bi-check-circle"
+          style="
+            margin-right: 7px;
+            font-size: 14px;
+            font-weight: 600 !important;
+          "
+        ></i>
+        {{project_data.overall_status}}</span
+      >
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ======= SMALL SCREEN PROJECT NAME  ======= -->
+  <div class="blue_card_container py-4">
+    <div class="d-flex justify-content-between d-flex align-items-center mb-3">
+      <h4 class="font_weight_800 text-white mb-0">{{project.project_name}}</h4>
+      <div class="inspection-icon">
+        <i class="bi bi-buildings text-white"></i>
+      </div>
+    </div>
+
+    <p class="page_header_sub_title mb-2 text-white">
+      <i class="bi bi-geo-alt-fill text-danger" style="margin-right: 4px"></i
+      >{{project.location.street_address}}, {{project.location.city}},
+      {{project.location.province}}
+    </p>
+    <!-- <span class="badge bg-success">Active</span> -->
+  </div>
+</section>
+
+<section class="section-spacing">
+  <!-- Quick Action Buttons  -->
+  <div class="d-flex justify-content-end gap-2 mb-4">
+    <button
+      type="button"
+      class="btn btn-outline-primary rounded-pill quick_action_btns"
+    >
+      <i class="bi bi-plus-lg" style="margin-right: 3px"></i> Team
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-primary rounded-pill quick_action_btns"
+    >
+      <i class="bi bi-plus-lg" style="margin-right: 3px"></i> Contractor
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-primary rounded-pill quick_action_btns"
+    >
+      Project Settings
+    </button>
+  </div>
+
+  <!-- ======== TODAYS WORK ======== -->
+  <div class="main_card py-4">
+    <div class="d-flex justify-content-between d-flex align-items-center mb-3">
+      <h5 class="mb-0 font_weight_600">Today's Work</h5>
+      {% if project_data.overall_status == 'Needs Attention' %}
+      <span class="badge bg-danger">Needs Attention</span>
+      {% endif %}
+    </div>
+    <p class="text-secondary">
+      Tasks that need to be completed or addressed today.
+    </p>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item px-0 pb-3">
+        <div class="progress mb-2" style="height: 20px; font-weight: 700">
+          <div
+            class="progress-bar bg-danger"
+            role="progressbar"
+            style="width: 30%"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            25%
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item px-0 py-3">
+        <!-- INSPECTIONS  -->
+        <a href="#DailyInspectionSM">
+          <div class="d-flex gap-3">
+            <span>{{project_data.inspection_icon}}</span>
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="mb-0" style="font-weight: 600">
+                  {{project_data.inspection_insight}}
+                </p>
+                {% if project_data.failed_inspections != ''%}
+                <span class="badge bg-danger mt-2">
+                  <i class="bi bi-x-circle-fill" style="margin-right: 5px"></i>
+                  {{project_data.failed_inspections}}
+                </span>
+                {% endif %}
+              </div>
+
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </a>
+      </li>
+      <!-- end li  -->
+      <li class="list-group-item px-0 py-3">
+        <a href="#DailyReportSM">
+          <div class="d-flex align-items-center gap-3">
+            <span>{{project_data.report_icon}}</span>
+
+            <div
+              class="d-flex justify-content-between d-flex align-items-center w-100"
+            >
+              <p class="mb-0" style="font-weight: 600">
+                {{project_data.report_insight}}
+              </p>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </a>
+      </li>
+      <!-- end li  -->
+      <!-- ISSUES INSIGHT  -->
+      {% if project_data.show_issue_insight == True %}
+      <li class="list-group-item px-0 py-3">
+        <a href="#IssuesSectionSM">
+          <div class="d-flex gap-3">
+            <span>{{project_data.issues_icon}}</span>
+
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="mb-0" style="font-weight: 600">
+                  {{project_data.issues_insight_text}}
+                </p>
+                {% if project_data.overdue_text_sm != '0 overdue issue' %}
+                <span class="badge bg-danger mt-2">
+                  <i class="bi bi-bell-fill" style="margin-right: 5px"></i>
+                  {{project_data.overdue_text_sm}}
+                </span>
+                {% endif %}
+              </div>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </a>
+      </li>
+      {% endif %}
+      <!-- TASKS INSIGHT  -->
+      {% if project_data.show_task_insight == True %}
+      <li class="list-group-item px-0 py-3">
+        <a href="#TaskSessionSM">
+          <div class="d-flex gap-3">
+            <span>{{project_data.tasks_icon}}</span>
+
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="mb-0" style="font-weight: 600">
+                  {{project_data.tasks_insight_text}}
+                </p>
+                {% if project_data.overdue_task_text_sm != '0 overdue task' %}
+                <span class="badge bg-danger mt-2">
+                  <i class="bi bi-bell-fill" style="margin-right: 5px"></i>
+                  {{project_data.overdue_task_text_sm}}
+                </span>
+                {% endif %}
+              </div>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </a>
+      </li>
+      {% endif %}
+      <!-- end li  -->
+
+      <!-- Missed Inspections  -->
+      {% if project_data.missed_inspection_count > 0 %}
+      <li class="list-group-item px-0 py-3">
+        <a
+          data-bs-toggle="offcanvas"
+          href="#missedInspectionsOffcanvas"
+          aria-controls="missedInspectionsOffcanvas"
+        >
+          <div class="d-flex align-items-center gap-3">
+            <span>{{project_data.missed_inspection_icon}}</span>
+
+            <div
+              class="d-flex justify-content-between d-flex align-items-center w-100"
+            >
+              <p class="mb-0" style="font-weight: 600">
+                {{project_data.missed_inspections_text}}
+              </p>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </a>
+      </li>
+      {% endif %}
+
+      <!-- Missed Reports  -->
+      {% if project_data.missed_report_count > 0 %}
+      <li class="list-group-item px-0 py-3">
+        <a
+          data-bs-toggle="offcanvas"
+          href="#missedReportsOffcanvas"
+          aria-controls="missedReportsOffcanvas"
+        >
+          <div class="d-flex align-items-center gap-3">
+            <span>{{project_data.missed_report_icon}}</span>
+
+            <div
+              class="d-flex justify-content-between d-flex align-items-center w-100"
+            >
+              <p class="mb-0" style="font-weight: 600">
+                {{project_data.missed_report_text}}
+              </p>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</section>
+
+<!-- ======= SMALL SCREEN ACTION BUTTONS  ======= -->
+<section class="section-spacing d-none">
+  <div class="main_card">
+    <div class="row g-3">
+      <!-- Daily Inspection -->
+      <div class="col-6 border_right">
+        <div>
+          <center>
+            <i class="bi bi-clipboard2-check-fill icon_container_act"></i>
+
+            <p class="fw-bold mb-0" style="font-size: 15px">Inspection</p>
+            <p class="text-secondary mb-0" style="font-size: 13px">
+              start today
+            </p>
+          </center>
+        </div>
+      </div>
+
+      <!-- Log Issue -->
+      <div class="col-6 mb-3">
+        <div>
+          <center>
+            <i class="bi bi-exclamation-triangle-fill icon_container_act"></i>
+
+            <p class="fw-bold mb-0" style="font-size: 15px">Log Issue</p>
+            <p class="text-secondary mb-0" style="font-size: 13px">
+              report an issue
+            </p>
+          </center>
+        </div>
+      </div>
+
+      <!-- Daily Report -->
+      <div class="col-6 border_right">
+        <div>
+          <center>
+            <i class="bi bi-file-earmark-text-fill icon_container_act"></i>
+
+            <p class="fw-bold mb-0" style="font-size: 15px">Daily Report</p>
+            <p class="text-secondary mb-0" style="font-size: 13px">
+              create report
+            </p>
+          </center>
+        </div>
+      </div>
+
+      <!-- Add Contractor -->
+      <div class="col-6 mb-3">
+        <div>
+          <center>
+            <i class="bi bi-calendar2-check-fill icon_container_act"></i>
+
+            <p class="fw-bold mb-0" style="font-size: 15px">Add Task</p>
+            <p class="text-secondary mb-0" style="font-size: 13px">
+              create a task
+            </p>
+          </center>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= DAILY INSPECTION  ======= -->
+<section class="section-spacing scroll-section" id="DailyInspectionSM">
+  {% if project_data.checklist_items %}
+  <!-- Started Daily Inspection  -->
+  <div class="main_card mt-4 py-4">
+    <div class="card-gradient mb-3">
+      <center>
+        <div
+          class="primary_cards_container mb-2"
+          style="
+            height: 50px !important;
+            width: 50px !important;
+            font-size: 20px;
+          "
+        >
+          <i class="bi bi-clipboard2-check-fill dark_icon_style"></i>
+        </div>
+        <h5 class="fw-bold text-white">Daily Inspection</h5>
+        {% if project_data.inspection_status == 'Complete' %}
+        <span class="badge bg-success rounded-pill px-5" style="font-size: 15px"
+          >Complete
+        </span>
+        {% else %}
+        <span
+          class="badge bg-warning text-dark rounded-pill px-5"
+          style="font-size: 15px"
+        >
+          Incomplete
+        </span>
+        {% endif %}
+      </center>
+    </div>
+    <ul class="list-group list-group-flush">
+      {% for category in project_data.checklist_items %}
+      <li class="list-group-item px-0 py-3">
+        <div class="d-flex gap-3 mb-0">
+          <div
+            class="dot_style mt-1"
+            style="background-color: #1e35d0 !important"
+          ></div>
+          <div>
+            <p class="mb-1" style="font-weight: 600">{{ category.name }}</p>
+            <div class="d-flex align-items-center gap-2">
+              <div>
+                {% if category.status == 'missing' %}
+                <span class="badge {{category.status}} text-capitalize">
+                  <span style="margin-right: 5px"
+                    >{{ category.an_questions }}/{{category.tot_question}}</span
+                  >
+                  pending
+                </span>
+                {% else %}
+                <span class="badge {{category.status}} text-capitalize">
+                  <span style="margin-right: 5px"
+                    >{{ category.an_questions }}/{{category.tot_question}}</span
+                  >
+                  {{category.status}}
+                </span>
+                {% endif %}
+              </div>
+              {% if category.failed_questions != 0 %}
+              <div>
+                <span class="badge bg-danger"
+                  >{{category.failed_questions }} Failed items</span
+                >
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <!-- Action Button  -->
+    <div class="row g-3 d-flex justify-content-center mt-3">
+      <div class="col-12">
+        <a href="{% url 'inspections:inspection-new' project.uuid %}">
+          <button
+            type="button"
+            class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+          >
+            {{project_data.inspection_btn}}
+            <i class="bi bi-arrow-right-circle-fill"></i>
+          </button>
+        </a>
+      </div>
+      <div class="col-12">
+        <button
+          type="button"
+          class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+        >
+          View all inspections <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="card-gradient py-4 h-100">
+    <center>
+      <div class="primary_cards_container mb-3">
+        <i class="bi bi-clipboard2-check-fill dark_icon_style"></i>
+      </div>
+      <h5 class="dark_primary_title mb-2">Daily Inspection Missing</h5>
+      <p class="text-white status_missing_count">
+        {{project_data.inspections_questions_count}} items to check
+      </p>
+    </center>
+
+    <!-- Action Button  -->
+    <div class="row d-flex justify-content-center">
+      <div class="col-12">
+        <a href="{% url 'inspections:inspection-new' project.uuid %}">
+          <button
+            type="button"
+            class="btn btn-light light_button w-100 d-flex justify-content-center gap-3 mb-3"
+          >
+            {{project_data.inspection_btn}}
+            <i class="bi bi-arrow-right-circle-fill"></i>
+          </button>
+        </a>
+        <button
+          type="button"
+          class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+        >
+          View History <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<hr class="my-4" />
+
+<!-- ======= DAILY REPORT  ======= -->
+<section class="section-spacing scroll-section" id="DailyReportSM">
+  {% if project_data.report %}
+  <div class="main_card py-4 h-100">
+    <div class="daily_report_blue_card">
+      <center>
+        <div
+          class="gradient_avatar_circle mb-2"
+          style="
+            height: 50px !important;
+            width: 50px !important;
+            font-size: 20px;
+          "
+        >
+          <i
+            class="bi bi-file-earmark-text-fill dark_icon_style text-white"
+          ></i>
+        </div>
+        <h5 class="fw-bold blue_color_text_heading">Daily Report</h5>
+        {% if project_data.report.status == 'submitted' %}
+        <p class="mb-0">
+          This daily report has been completed and submitted successfully.
+        </p>
+        {% else %}
+        <p class="mb-0">
+          This report is incomplete continue and submit todays report.
+        </p>
+        {% endif %}
+        <!-- divider  -->
+        {% if project_data.report.status == 'submitted' %}
+        <span
+          class="badge bg-success complete_status_badge rounded-pill text-capitalize px-5 mt-3"
+          >{{project_data.report_status}}</span
+        >
+        {% else %}
+        <span
+          class="badge bg-warning text-dark complete_status_badge rounded-pill text-capitalize px-5 mt-3"
+          >{{project_data.report_status}}</span
+        >
+        {% endif %}
+      </center>
+    </div>
+
+    <!-- Report Data  -->
+    <ul class="list-group list-group-flush mt-4">
+      <li class="list-group-item px-0 py-3">
+        <p class="mb-1 text-secondary" style="font-size: 14px">Status</p>
+        {% if project_data.report.status == 'submitted' %}
+        <span
+          class="badge bg-success complete_status_badge rounded-pill text-capitalize px-5"
+          >{{project_data.report_status}}</span
+        >
+        {% else %}
+        <p class="new_font_weight_600 text-capitalize mb-0">Incomplete</p>
+        {% endif %}
+      </li>
+      <li class="list-group-item px-0 py-3">
+        <p class="mb-1 text-secondary" style="font-size: 14px">Report Date</p>
+        <p class="new_font_weight_600 text-capitalize mb-0">
+          {{project_data.report.report_date}}
+        </p>
+      </li>
+      <li class="list-group-item px-0 py-3">
+        <p class="mb-1 text-secondary" style="font-size: 14px">Generated At</p>
+        <p class="new_font_weight_600 text-capitalize mb-0">
+          {{project_data.report.created_at|time:"g:i A" }}
+        </p>
+      </li>
+      <li class="list-group-item px-0 py-3">
+        <p class="mb-1 text-secondary" style="font-size: 14px">Submitted At</p>
+        {% if project_data.report.submitted_at == None %}
+        <p class="new_font_weight_600 text-capitalize mb-0 text-danger">
+          Not submitted
+        </p>
+        {% else %}
+        <p class="new_font_weight_600 text-capitalize mb-0">
+          {{project_data.report.submitted_at}}
+        </p>
+        {% endif %}
+      </li>
+      <li class="list-group-item px-0 py-3">
+        <p class="mb-1 text-secondary" style="font-size: 14px">Created By</p>
+        <p class="new_font_weight_600 text-capitalize mb-0">
+          {{project_data.report.created_by.first_name}}
+          {{project_data.report.created_by.last_name}}
+        </p>
+      </li>
+      {% if project_data.report.completed_by %}
+      <li class="list-group-item px-0 py-3">
+        <p class="mb-1 text-secondary" style="font-size: 14px">Completed By</p>
+        <p class="new_font_weight_600 text-capitalize mb-0">
+          {{project_data.report.completed_by.first_name}}
+          {{project_data.report.completed_by.last_name}}
+        </p>
+      </li>
+      {% endif %}
+    </ul>
+
+    <div class="row g-3 mt-3">
+      <div class="col-12">
+        <a
+          href="{% url 'report:create-report' project.uuid %}"
+          hx-get="{% url 'report:create-report' project.uuid %}"
+          hx-target="#content"
+          hx-push-url="true"
+        >
+          <button
+            type="button"
+            class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+          >
+            Continue Report <i class="bi bi-arrow-right-circle-fill"></i>
+          </button>
+        </a>
+      </div>
+      <div class="col-12">
+        <button
+          type="button"
+          class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+        >
+          View all reports <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="main_card py-4 h-100">
+    <center>
+      <div class="dark_blue_avatar_container mb-3">
+        <i class="bi bi-file-earmark-text-fill text-light"></i>
+      </div>
+      <h5 class="blue_primary_title mb-2">
+        Daily Report <span class="text-danger">Missing</span>
+      </h5>
+      <p class="text-secondary">
+        The daily report for this project hasn’t been completed yet.
+      </p>
+    </center>
+
+    <!-- Action Button  -->
+    <div class="row d-flex justify-content-center">
+      <div class="col-12">
+        <a
+          href="{% url 'report:create-report' project.uuid %}"
+          hx-get="{% url 'report:create-report' project.uuid %}"
+          hx-target="#content"
+          hx-push-url="true"
+        >
+          <button
+            type="button"
+            class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-2 mb-3"
+          >
+            Create Daily Report
+            <i class="bi bi-arrow-right-circle-fill"></i>
+          </button>
+        </a>
+        <button
+          type="button"
+          class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+        >
+          View History <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<hr class="my-4" />
+
+<!-- ======= OPEN ISSUES  ======= -->
+<section class="section-spacing scroll-section" id="IssuesSectionSM">
+  {% if project_data.open_issues %}
+  <div class="d-flex justify-content-between d-flex align-items-center mb-3">
+    <h5 class="mb-0 fw-bold">
+      Open Issues ( {{project_data.open_issues_count}} )
+    </h5>
+    <p class="mb-0 summary_icon_blue" style="font-weight: 600">
+      View all issues
+    </p>
+  </div>
+  <!-- Action Button  -->
+  <div class="row d-flex justify-content-center mb-3">
+    <div class="col-12">
+      <a
+        href="{% url 'issues:log-issue' project.uuid  %}"
+        hx-get="{% url 'issues:log-issue' project.uuid  %}"
+        hx-target="#content"
+        hx-push-url="true"
+      >
+        <button
+          type="button"
+          class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+        >
+          <i class="bi bi-plus-lg"></i> Add issue
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <!-- divider  -->
+  {% for data in project_data.open_issues %}
+  <div class="main_card py-3 mb-3" style="background-color: #f8d7da !important">
+    <div class="d-flex gap-2 mb-3">
+      <!-- Priority Stats  -->
+      {% if data.issue.priority == 'high'%}
+      <span class="badge_font badge bg-danger">High Priority</span>
+      {% elif data.issue.priority == 'medium'%}
+      <span class="badge_font badge bg-warnring text-dark"
+        >Medium Priority</span
+      >
+      {% else %}
+      <span class="badge_font badge bg-primary">Low Priority</span>
+      {% endif %}
+
+      <!-- Due Date  -->
+      <span class="badge_font badge bg-warning text-dark">
+        {{data.issue_text}}
+      </span>
+
+      <!-- Assignment  -->
+      {% if data.issue.assigned_to == current_user %}
+      <span class="badge_font badge bg-primary">Assigned to you</span>
+      {% endif %}
+    </div>
+    <h6 style="font-weight: 600">{{data.issue.title}}</h6>
+    <p>{{data.issue.description}}</p>
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-outline-primary quick_action_btns px-3 w-100"
+        style="
+          font-size: 14px;
+          background-color: lightgray;
+          border-radius: 13px !important;
+          padding-top: 12px;
+          padding-bottom: 12px;
+        "
+      >
+        View Issue
+        <i class="bi bi-arrow-right-circle-fill" style="margin-left: 3px"></i>
+      </button>
+    </div>
+  </div>
+  {% endfor %}
+  <!-- divider  -->
+
+  {% else %}
+  <div class="main_card py-4 h-100">
+    <center>
+      <div class="light_cards_container mb-3">
+        <i class="bi-check-circle light_icon_style"></i>
+      </div>
+      <h5 class="blue_primary_title">No Issues Today</h5>
+      <p class="text-secondary">
+        There are no open issues for this project. Everything is currently on
+        track.
+      </p>
+    </center>
+
+    <!-- Action Button  -->
+    <div class="row d-flex justify-content-center">
+      <div class="col-12">
+        <a
+          href="{% url 'issues:log-issue' project.uuid  %}"
+          hx-get="{% url 'issues:log-issue' project.uuid  %}"
+          hx-target="#content"
+          hx-push-url="true"
+        >
+          <button
+            type="button"
+            class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-2 mb-3"
+          >
+            Create Issue <i class="bi bi-arrow-right-circle-fill"></i>
+          </button>
+        </a>
+        <button
+          type="button"
+          class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+        >
+          View all issues <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<hr class="my-4" />
+
+<!-- ======= TASKS  ======= -->
+<section class="section-spacing scroll-section" id="TaskSessionSM">
+  {% if project_data.open_tasks %}
+  <div class="d-flex justify-content-between d-flex align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Tasks ( {{project_data.tasks_count}} )</h5>
+    <p class="mb-0 summary_icon_blue" style="font-weight: 600">
+      View all tasks
+    </p>
+  </div>
+
+  <!-- Action Button  -->
+  <div class="row g-3 d-flex justify-content-center mb-3">
+    <div class="col-12">
+      <a
+        href="{% url 'issues:add-task' project.uuid  %}"
+        hx-get="{% url 'issues:add-task' project.uuid  %}"
+        hx-target="#content"
+        hx-push-url="true"
+      >
+        <button
+          type="button"
+          class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+        >
+          <i class="bi bi-plus-lg"></i> Add Task
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <!-- Task Items  -->
+  {% for data in project_data.open_tasks%}
+  <div
+    class="main_card border_right_card mb-3"
+    style="background-color: #cfe2ff !important"
+  >
+    <div class="d-flex justify-content-between w-100 mb-3">
+      <div>
+        <p class="mb-2 task_text">{{data.task.description}}</p>
+        <!-- STATUSES  -->
+        <div class="d-flex gap-2 mb-2">
+          <!-- PRIORITY  -->
+          {% if data.task.priority == 'high'%}
+          <span class="badge_font badge bg-danger">High Priority</span>
+          {% elif data.task.priority == 'medium'%}
+          <span class="badge_font badge medium_span">Medium Priority</span>
+          {% else %}
+          <span class="badge_font badge bg-success">Low Priority</span>
+          {% endif %}
+
+          <!-- DUE DATE  -->
+          {% if data.task.due_date == today %}
+          <span class="badge_font badge bg-danger"
+            ><i
+              class="bi bi-calendar2-check-fill"
+              style="margin-right: 5px"
+            ></i>
+            Due Today</span
+          >
+          {% else %}
+          <span class="badge_font badge bg-warning text-dark"
+            ><i
+              class="bi bi-calendar2-check-fill"
+              style="margin-right: 5px"
+            ></i>
+            {{data.task_text}}</span
+          >
+          {% endif %}
+        </div>
+        <!-- MY ASSIGNMENT  -->
+        {% if data.task.assigned_to == current_user %}
+        <span class="badge_font badge bg-primary">Assigned to you</span>
+        {% endif %}
+      </div>
+
+      <i class="bi bi-app" style="font-size: 20px; margin-left: 6px"></i>
+    </div>
+    <button
+      type="button"
+      class="btn btn-outline-primary quick_action_btns px-3 w-100"
+      style="
+        font-size: 14px;
+        background-color: lightgray;
+        border-radius: 13px !important;
+        padding-top: 12px;
+        padding-bottom: 12px;
+      "
+    >
+      View Task
+      <i class="bi bi-arrow-right-circle-fill" style="margin-left: 3px"></i>
+    </button>
+  </div>
+  {% endfor %}
+  <!-- END TASK FOR LOOP  -->
+
+  {% else %}
+  <div class="main_card py-4 h-100">
+    <center>
+      <div class="light_cards_container mb-3">
+        <i class="bi-list-check light_icon_style"></i>
+      </div>
+      <h5 class="blue_primary_title">No Tasks Today</h5>
+      <p class="text-secondary">
+        There are no tasks added to this project today.
+      </p>
+    </center>
+    <!-- Action Button  -->
+    <div class="row g-3 d-flex justify-content-center">
+      <div class="col-12">
+        <a
+          href="{% url 'issues:add-task' project.uuid  %}"
+          hx-get="{% url 'issues:add-task' project.uuid  %}"
+          hx-target="#content"
+          hx-push-url="true"
+        >
+          <button
+            type="button"
+            class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-2 mb-3"
+          >
+            Add Task <i class="bi bi-arrow-right-circle-fill"></i>
+          </button>
+        </a>
+        <button
+          type="button"
+          class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+        >
+          View all tasks <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<hr class="my-4" />
+
+<!-- ======= INCIDENTS  ======= -->
+<section class="section-spacing scroll-section">
+  <div
+    class="main_card h-100 py-4"
+    id="project_incidents_sm"
+    hx-swap-oob="innerHTML"
+  >
+    {% include 'partials/project_incidents_partial.html' %}
+  </div>
+</section>
+
+<hr class="my-4" />
+
+<!-- ======= DELIVERIES  ======= -->
+<section class="section-spacing scroll-section">
+  <div
+    class="main_card h-100 py-4"
+    id="project_deliveries_sm"
+    hx-swap-oob="innerHTML"
+  >
+    {% include 'partials/project_deliveries_partial.html' %}
+  </div>
+</section>
+
+<hr class="my-4" />
+
+<!-- ======= PROJECT ACTIVITY  ======= -->
+<section class="section-spacing scroll-section">
+  <div class="main_card py-4">
+    <div class="d-flex gap-2 mb-3">
+      <i
+        class="bi bi-activity fw-bold text-primary"
+        style="font-size: 20px"
+      ></i>
+      <h5 class="fw-bold mb-0">Todays activity</h5>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      {% for group in project_activity %}
+      <li class="list-group-item py-3 bg-light">
+        <h6 class="fw-bold mb-0">{{ group.date|date:"d F Y" }}</h6>
+      </li>
+      {% for data in group.activities %}
+      <li class="list-group-item px-0 py-3">
+        <div class="d-flex gap-3">
+          <!-- <div class="dot_style mt-2"></div> -->
+          <!-- activity icon  -->
+          {% include 'partials/timeline_icons.html' %}
+          <div class="w-100">
+            <div
+              class="d-flex justify-content-between w-100"
+              style="margin-bottom: 4px"
+            >
+              <p class="mb-0" style="font-weight: 600">
+                {{ data.activity_type }}
+              </p>
+              <p class="mb-0" style="font-weight: 600">
+                {{ data.created_at|time:"H:i" }}
+              </p>
+            </div>
+            <p
+              class="text-secondary mb-0"
+              style="font-size: 14px; font-weight: 600x"
+            >
+              {{ data.description }}
+            </p>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+      <!-- divider  -->
+      {% endfor %}
+    </ul>
+    <!-- View All Activity Action  -->
+    {% if project_data.total_activities > 5 %}
+    <h6 class="fw-bold">View all activity →</h6>
+    {% endif%}
+  </div>
+</section>
+
+<hr class="my-4" />
+
+<!-- ======== PROJECT TEAM MEMBERS & CONTRACTORS ======== -->
+<section class="section-spacing scroll-section">
+  <h4 class="new_section_title">Project</h4>
+  <div class="row g-3">
+    <div class="col-12">
+      <div class="main_card h-100">
+        <div class="icons_avatar blue_background mb-3">
+          <i class="bi bi-people"></i>
+        </div>
+        <h6 class="fw-bold mb-2">Team Members</h6>
+        <p class="mb-2 page_header_sub_title issues_sub_text">12 Members</p>
+
+        <div class="d-flex justify-content-between d-flex align-items-center">
+          <p class="mb-0 page_header_sub_title issues_sub_text">
+            View and manage team
+          </p>
+          <i class="bi bi-arrow-right fw-bold" style="font-size: 22px"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end card item  -->
+    <div class="col-12">
+      <div class="main_card h-100">
+        <div class="icons_avatar green_priority mb-3">
+          <i class="bi bi-building"></i>
+        </div>
+        <h6 class="fw-bold mb-2">Subcontractors</h6>
+        <p class="mb-2 page_header_sub_title issues_sub_text">
+          4 Subcontractors
+        </p>
+        <div class="d-flex justify-content-between d-flex align-items-center">
+          <p class="mb-0 page_header_sub_title issues_sub_text">
+            View and manage
+          </p>
+          <i class="bi bi-arrow-right fw-bold" style="font-size: 22px"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end card item  -->
+    <div class="col-12">
+      <div class="main_card h-100">
+        <div class="icons_avatar medium_background mb-3">
+          <i class="bi bi-list-check"></i>
+        </div>
+        <h6 class="fw-bold mb-2">Project History</h6>
+        <p class="mb-2 page_header_sub_title issues_sub_text">
+          Full activity log
+        </p>
+
+        <div class="d-flex justify-content-between d-flex align-items-center">
+          <p class="mb-0 page_header_sub_title issues_sub_text">
+            View all project history
+          </p>
+          <i class="bi bi-arrow-right fw-bold" style="font-size: 22px"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end card item  -->
+    <div class="col-12">
+      <div class="main_card h-100">
+        <div class="icons_avatar medium_background mb-3">
+          <i class="bi bi-gear"></i>
+        </div>
+        <h6 class="fw-bold mb-2">Settings</h6>
+        <p class="mb-2 page_header_sub_title issues_sub_text">
+          Project Settings
+        </p>
+        <div class="d-flex justify-content-between d-flex align-items-center">
+          <p class="mb-0 page_header_sub_title issues_sub_text">
+            Update project details
+          </p>
+          <i class="bi bi-arrow-right fw-bold" style="font-size: 22px"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end card item  -->
+  </div>
+</section>
+
+<!-- ======== FAB FLOATING ACTION BUTTONS ======== -->
+<!-- offcanvas  -->
+<div
+  class="offcanvas offcanvas-bottom"
+  tabindex="-1"
+  id="offcanvasExample"
+  aria-labelledby="offcanvasExampleLabel"
+>
+  <div class="offcanvas-header">
+    <h5
+      class="offcanvas-title"
+      id="offcanvasExampleLabel"
+      style="font-weight: 600"
+    >
+      Project
+    </h5>
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div class="fab_icon">
+              <i class="bi bi-image"></i>
+            </div>
+            <h6 class="mb-0 fw-bold">Start Inspection</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div class="fab_icon">
+              <i class="bi bi-image"></i>
+            </div>
+            <h6 class="mb-0 fw-bold">New Issue</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div class="fab_icon">
+              <i class="bi bi-image"></i>
+            </div>
+            <h6 class="mb-0 fw-bold">New Task</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div class="fab_icon">
+              <i class="bi bi-image"></i>
+            </div>
+            <h6 class="mb-0 fw-bold">Daily Report</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+      <li class="list-group-item px-0">
+        <div class="d-flex align-items-center d-flex justify-content-between">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <div class="fab_icon">
+              <i class="bi bi-image"></i>
+            </div>
+            <h6 class="mb-0 fw-bold">Take Photo</h6>
+          </div>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </li>
+      <!-- end li   -->
+    </ul>
+  </div>
+</div>
+
+<div class="floating-actions">
+  <button
+    class="action-btn"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasExample"
+    aria-controls="offcanvasExample"
+  >
+    <i class="bi bi-plus-lg"></i>
+  </button>
+</div>

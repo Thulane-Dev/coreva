@@ -1,0 +1,146 @@
+{% if incidents %}
+<section>
+  <!-- Large Screen Header  -->
+  <div class="d-none d-md-block">
+    <div class="d-flex justify-content-between d-flex align-items-center mb-4">
+      <h5 class="fw-bold mb-0">Incidents ({{incidents_count}})</h5>
+      <div class="d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-outline-primary rounded-pill quick_action_btns px-3"
+          style="font-size: 14px"
+        >
+          See All
+        </button>
+        <a
+          data-bs-toggle="offcanvas"
+          data-bs-target="#incidentOffcanvas"
+          aria-controls="incidentOffcanvas"
+        >
+          <button
+            class="btn btn-primary section_add_btn rounded-pill d-flex gap-2 d-flex align-items-center px-3"
+          >
+            <i class="bi bi-plus-circle-fill"></i>Add Incident
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Small Screen Header  -->
+  <div class="d-block d-md-none">
+    <div class="d-flex justify-content-between d-flex align-items-center mb-3">
+      <h5 class="fw-bold mb-0">Incidents ( {{incidents_count}} )</h5>
+      <p class="mb-0 summary_icon_blue" style="font-weight: 600">
+        View all incidents
+      </p>
+    </div>
+
+    <!-- Action Button  -->
+    <div class="row g-3 d-flex justify-content-center mb-3">
+      <div class="col-12">
+        <a
+          data-bs-toggle="offcanvas"
+          data-bs-target="#incidentOffcanvas"
+          aria-controls="incidentOffcanvas"
+        >
+          <button
+            type="button"
+            class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+          >
+            <i class="bi bi-plus-lg"></i> Add Incident
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <ul class="list-group list-group-flush">
+    {% for data in incidents %}
+    <li
+      class="list-group-item px-3 py-3 border mb-3"
+      style="background-color: #fff3cd !important; border-radius: 22px"
+    >
+      <div class="d-flex gap-3">
+        <div class="time_line_icon timeline_orange_avatar">
+          <span class="material-symbols-outlined">emergency</span>
+          <!-- <span class="material-symbols-outlined"> add_alert </span> -->
+        </div>
+        <div class="w-100">
+          <p class="mb-1 text-capitalize" style="font-weight: 600">
+            {{data.incident_type}} - {{data.title}}
+          </p>
+          <!-- severity  -->
+          <div
+            class="d-flex justify-content-between d-flex align-items-center w-100"
+          >
+            <div class="d-flex gap-2 w-100">
+              <div>
+                {% if data.severity == 'high' %}
+                <span class="badge bg-danger">High severity</span>
+                {% elif data.severity == 'medium' %}
+                <span class="badge bg-warning text-dark">Medium severity</span>
+                {% else %}
+                <span class="badge bg-primary">Low severity</span>
+                {% endif %}
+              </div>
+              <!-- Time  -->
+              <div>
+                <span class="badge bg-warning text-dark"
+                  >{{data.incident_time|time:"H:i A" }}</span
+                >
+              </div>
+            </div>
+
+            <!-- Action Buttons  -->
+            <i class="bi bi-chevron-right"></i>
+            <button
+              type="button"
+              class="btn btn-outline-primary rounded-pill quick_action_btns px-3 d-none"
+              style="font-size: 14px; background-color: #e9ecef !important"
+            >
+              View Incident
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>
+    <!-- end li  -->
+    {% endfor %}
+  </ul>
+</section>
+{% else %}
+<section>
+  <center>
+    <div class="light_cards_container mb-3">
+      <i class="bi bi-exclamation-triangle light_icon_style"></i>
+    </div>
+    <h5 class="blue_primary_title">No Incidents Today</h5>
+    <p class="text-secondary">No incidents have been recorded for today.</p>
+  </center>
+
+  <!-- Action Button  -->
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-6">
+      <a
+        data-bs-toggle="offcanvas"
+        data-bs-target="#incidentOffcanvas"
+        aria-controls="incidentOffcanvas"
+      >
+        <button
+          type="button"
+          class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-2 mb-3"
+        >
+          Add Incident <i class="bi bi-arrow-right-circle-fill"></i>
+        </button>
+      </a>
+      <button
+        type="button"
+        class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+      >
+        View all incidents <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</section>
+{% endif %}

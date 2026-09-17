@@ -1,0 +1,404 @@
+{% load static %}
+
+<div class="row d-flex justify-content-center">
+  <div class="col-12 col-md-12 col-lg-6">
+    <!-- NEW DELIVERY FORM  -->
+    <section class="delivery_form_page">
+      <div class="delivery_form_container">
+        <!-- ================= HEADER ================= -->
+        <div class="delivery_form_header">
+          <a href="javascript:history.back()" class="delivery_back">
+            <i class="bi bi-chevron-left"></i>
+            <span>Back</span>
+          </a>
+          <div class="dashboard_main_card">
+            <div class="delivery_header_content">
+              <div class="delivery_header_icon">
+                <i class="bi bi-box-seam"></i>
+              </div>
+
+              <div>
+                <div class="delivery_eyebrow">PROJECT DELIVERY</div>
+
+                <h1>Record Delivery</h1>
+
+                <p>
+                  Record materials, equipment, or other items delivered to site.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= FORM ================= -->
+        <form
+          method="POST"
+          action="{% url 'projects:save-new-delivery' project.uuid %}"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+
+          <!-- ================= 01 DELIVERY DETAILS ================= -->
+          <section class="delivery_form_section">
+            <div class="delivery_section_header">
+              <div class="delivery_section_number">01</div>
+
+              <div>
+                <h2>Delivery Details</h2>
+
+                <p>Provide the basic details about this delivery.</p>
+              </div>
+            </div>
+
+            <div class="delivery_form_grid">
+              <!-- Date -->
+              <div class="delivery_field">
+                <label for="delivery_date">
+                  Delivery Date
+                  <span class="delivery_required">*</span>
+                </label>
+
+                <div class="delivery_input_icon">
+                  <i class="bi bi-calendar3"></i>
+
+                  <input
+                    class="inputs_css_style"
+                    type="date"
+                    name="delivery_date"
+                    id="delivery_date"
+                    value="{{ today|date:'Y-m-d' }}"
+                    required
+                    onfocus="this.showPicker()"
+                    onclick="this.showPicker()"
+                  />
+                </div>
+              </div>
+
+              <!-- Time -->
+              <div class="delivery_field">
+                <label for="delivery_time"> Delivery Time </label>
+
+                <div class="delivery_input_icon">
+                  <i class="bi bi-clock"></i>
+
+                  <input
+                    class="inputs_css_style"
+                    type="time"
+                    name="delivery_time"
+                    id="delivery_time"
+                    onfocus="this.showPicker()"
+                    onclick="this.showPicker()"
+                  />
+                </div>
+              </div>
+
+              <!-- Supplier -->
+              <div class="delivery_field delivery_field_full">
+                <label for="supplier">
+                  Supplier
+                  <span class="delivery_required">*</span>
+                </label>
+
+                <div class="delivery_input_icon">
+                  <i class="bi bi-building"></i>
+
+                  <input
+                    class="inputs_css_style"
+                    type="text"
+                    name="supplier"
+                    id="supplier"
+                    placeholder="e.g. ABC Building Supplies"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= 02 DELIVERY ITEMS ================= -->
+          <section class="delivery_form_section">
+            <div class="delivery_section_header delivery_section_header_action">
+              <div class="delivery_section_header_left">
+                <div class="delivery_section_number">02</div>
+
+                <div>
+                  <h2>Delivery Items</h2>
+
+                  <p>
+                    Add the materials or equipment included in this delivery.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                id="add-delivery-item"
+                class="delivery_add_button"
+                onclick="addDeliveryItem('delivery-items')"
+              >
+                <i class="bi bi-plus-lg"></i>
+                <span>Add Item</span>
+              </button>
+            </div>
+
+            <div id="delivery-items">
+              <!-- Dynamic delivery items inserted here -->
+
+              <div class="delivery_empty_items" id="hide-delivery-state">
+                <div class="delivery_empty_icon">
+                  <i class="bi bi-box"></i>
+                </div>
+
+                <div>
+                  <strong>No delivery items added</strong>
+
+                  <span> Add the materials or equipment received. </span>
+                </div>
+
+                <button
+                  type="button"
+                  class="delivery_empty_add"
+                  onclick="addDeliveryItem('delivery-items')"
+                >
+                  <i class="bi bi-plus-lg"></i>
+                  Add Item
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= 03 DELIVERY STATUS ================= -->
+          <section class="delivery_form_section">
+            <div class="delivery_section_header">
+              <div class="delivery_section_number">03</div>
+
+              <div>
+                <h2>Delivery Status</h2>
+
+                <p>Record the condition and status of the delivery.</p>
+              </div>
+            </div>
+
+            <div class="delivery_status_options">
+              <label class="delivery_status_option status_received">
+                <input type="radio" name="status" value="Received" required />
+
+                <div class="delivery_status_content">
+                  <div class="delivery_status_icon">
+                    <i class="bi bi-check-lg"></i>
+                  </div>
+
+                  <div>
+                    <strong>Received</strong>
+                    <span>Everything received as expected</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="delivery_status_option status_partial">
+                <input type="radio" name="status" value="Partially Received" />
+
+                <div class="delivery_status_content">
+                  <div class="delivery_status_icon">
+                    <i class="bi bi-hourglass-split"></i>
+                  </div>
+
+                  <div>
+                    <strong>Partially Received</strong>
+                    <span>Only some items were delivered</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="delivery_status_option status_damaged">
+                <input type="radio" name="status" value="Received Damaged" />
+
+                <div class="delivery_status_content">
+                  <div class="delivery_status_icon">
+                    <i class="bi bi-exclamation-triangle"></i>
+                  </div>
+
+                  <div>
+                    <strong>Received Damaged</strong>
+                    <span>Items arrived damaged</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="delivery_status_option status_rejected">
+                <input type="radio" name="status" value="Rejected" />
+
+                <div class="delivery_status_content">
+                  <div class="delivery_status_icon">
+                    <i class="bi bi-x-lg"></i>
+                  </div>
+
+                  <div>
+                    <strong>Rejected</strong>
+                    <span>Delivery was not accepted</span>
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <!-- Notes -->
+
+            <div class="delivery_field delivery_notes_field">
+              <label for="notes"> Delivery Notes </label>
+
+              <textarea
+                class="inputs_css_style"
+                name="notes"
+                id="notes"
+                rows="4"
+                placeholder="Add any notes about the delivery, quantities, condition, shortages, or other details..."
+              ></textarea>
+            </div>
+          </section>
+
+          <!-- ================= 04 PHOTOS ================= -->
+          <section class="delivery_form_section">
+            <div class="delivery_section_header">
+              <div class="delivery_section_number">04</div>
+
+              <div>
+                <h2>Photos</h2>
+
+                <p>Add photos of the delivery, materials, or delivery note.</p>
+              </div>
+            </div>
+
+            <input
+              type="file"
+              name="attachments"
+              id="attachments"
+              class="d-none"
+              accept="image/*"
+              multiple
+            />
+
+            <div
+              id="attachment-preview"
+              class="incident_photo_preview row g-2 mb-3"
+            ></div>
+
+            <label for="attachments" class="incident_upload">
+              <div class="incident_upload_icon">
+                <i class="bi bi-camera"></i>
+              </div>
+
+              <div class="incident_upload_content">
+                <strong> Add delivery photos </strong>
+
+                <span> Take photos or choose images from your device </span>
+
+                <small id="incident_file_count"> No photos selected </small>
+              </div>
+
+              <i class="bi bi-plus-lg incident_upload_plus"></i>
+            </label>
+          </section>
+
+          <!-- ================= ACTIONS ================= -->
+          <div class="delivery_form_actions">
+            <button
+              type="button"
+              data-bs-dismiss="offcanvas"
+              class="delivery_cancel"
+            >
+              Cancel
+            </button>
+
+            <button type="submit" class="delivery_submit">
+              <i class="bi bi-check-lg"></i>
+              Record Delivery
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- DELIVERY ATTACHMENTS  -->
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const attachmentInput = document.getElementById("attachments");
+
+    const attachmentPreview = document.getElementById("attachment-preview");
+
+    let selectedFiles = [];
+
+    attachmentInput.addEventListener("change", function () {
+      const newFiles = Array.from(this.files);
+
+      selectedFiles = [...selectedFiles, ...newFiles];
+
+      updateInputFiles();
+      renderPreviews();
+    });
+
+
+    function updateInputFiles() {
+      const dataTransfer = new DataTransfer();
+
+      selectedFiles.forEach(function (file) {
+        dataTransfer.items.add(file);
+      });
+
+      attachmentInput.files = dataTransfer.files;
+    }
+
+
+    function renderPreviews() {
+      attachmentPreview.innerHTML = "";
+
+      selectedFiles.forEach(function (file, index) {
+        const col = document.createElement("div");
+
+        col.className = "col-4";
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          col.innerHTML = `
+            <div
+              class="position-relative"
+              style="aspect-ratio: 1 / 1;"
+            >
+
+              <img
+                src="${event.target.result}"
+                class="w-100 h-100 rounded object-fit-cover report_image"
+                alt="${file.name}"
+              >
+
+              <button
+                type="button"
+                class="btn btn-dark btn-sm position-absolute top-0 end-0 m-1 rounded-circle"
+                data-index="${index}"
+                aria-label="Remove photo"
+              >
+                <i class="bi bi-x-lg"></i>
+              </button>
+
+            </div>
+          `;
+
+          col.querySelector("button").addEventListener("click", function () {
+            const fileIndex = parseInt(this.dataset.index);
+
+            selectedFiles.splice(fileIndex, 1);
+
+            updateInputFiles();
+            renderPreviews();
+          });
+        };
+
+        reader.readAsDataURL(file);
+
+        attachmentPreview.appendChild(col);
+      });
+    }
+  });
+</script> -->

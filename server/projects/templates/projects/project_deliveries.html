@@ -1,0 +1,106 @@
+{% load static %}
+<!-- divider  -->
+
+<section class="mb-2">
+  <!-- ================= HEADER ================= -->
+  <div class="delivery_form_header">
+    <a href="javascript:history.back()" class="delivery_back">
+      <i class="bi bi-chevron-left"></i>
+      <span>Back</span>
+    </a>
+    <div class="dashboard_main_card">
+      <div class="delivery_header_content">
+        <div class="delivery_header_icon">
+          <i class="bi bi-truck"></i>
+        </div>
+
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            <div class="delivery_eyebrow">PROJECT DELIVERY</div>
+            <h1>Record Delivery</h1>
+            <p>
+              Record materials, equipment, or other items delivered to site.
+            </p>
+          </div>
+
+          <div class="d-none d-md-block">
+            <a href="{% url 'projects:log-delivery' project.uuid %}">
+              <button type="button" class="project_quick_action primary">
+                <span class="project_quick_action_icon">
+                  <i class="bi bi-plus-lg"></i>
+                </span>
+                <span class="project_quick_action_text"> Add Delivery</span>
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTION BUTTON  -->
+<section class="d-block d-md-none">
+  <a href="{% url 'projects:log-delivery' project.uuid %}">
+    <button type="button" class="project_quick_action primary mb-3">
+      <span class="project_quick_action_icon">
+        <i class="bi bi-plus-lg"></i>
+      </span>
+      <span class="project_quick_action_text"> Add Delivery</span>
+    </button>
+  </a>
+</section>
+
+<section>
+  <div class="deliveries_list">
+    {% for data in deliveries %}
+    <div class="delivery_card scroll-section" id="delivery{{data.id}}">
+      <!-- Status indicator -->
+      <div
+        class="delivery_status_bar {% if data.status == 'Received' %} delivery_status_received {% elif data.status == 'Partially Received' %} delivery_status_partial {% else %} delivery_status_other {% endif %}"
+      ></div>
+      <div class="delivery_card_content">
+        <!-- Delivery Icon -->
+        <div
+          class="delivery_icon {% if data.status == 'Received' %} delivery_icon_received {% elif data.status == 'Partially Received' %} delivery_icon_partial {% else %} delivery_icon_other {% endif %}"
+        >
+          <span class="material-symbols-outlined"> local_shipping </span>
+        </div>
+        <!-- Main Content -->
+        <div class="delivery_main">
+          <!-- Reference -->
+          <div class="delivery_reference">{{ data.reference }}</div>
+          <!-- Supplier -->
+          <h6 class="delivery_supplier mb-0">{{ data.supplier }}</h6>
+          <!-- Meta -->
+          <div class="delivery_meta">
+            <!-- Status -->
+            {% if data.status == 'Received' %}
+            <span class="delivery_badge delivery_badge_received">
+              <span class="delivery_badge_dot"></span> Received
+            </span>
+            {% elif data.status == 'Partially Received' %}
+            <span class="delivery_badge delivery_badge_partial">
+              <span class="delivery_badge_dot"></span> Partially received
+            </span>
+            {% else %}
+            <span class="delivery_badge delivery_badge_other">
+              <span class="delivery_badge_dot"></span> {{ data.status }}
+            </span>
+            {% endif %}
+            <!-- Time -->
+            <span class="delivery_time">
+              <i class="bi bi-clock"></i>
+              {{ data.delivery_time|time:"g:i A" }}
+            </span>
+          </div>
+        </div>
+        <!-- Arrow -->
+        <div class="delivery_arrow">
+          <i class="bi bi-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

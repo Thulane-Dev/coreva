@@ -1,0 +1,502 @@
+{% load static %}
+<!-- divider  -->
+
+<a href="{% url 'dashboard:today' %}">New Dashboard</a>
+
+<!-- ======= Header  ======= -->
+<section class="section-spacing d-none">
+  <h2 class="mb-2 page_project_name">
+    Good morning, {{current_user.first_name}}
+  </h2>
+  <h6 class="fw-bold mb-4">{{ today|date:"l, d F" }}</h6>
+  <div class="main_card">
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <div class="inspection-icon todays_projects">
+        <i class="bi bi-buildings"></i>
+      </div>
+      <h4 class="mb-0 fw-bold">My Projects</h4>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item px-0">
+        <div class="row">
+          <div class="col-2">
+            <p class="mb-0">Total Projects</p>
+          </div>
+          <div class="col">
+            <p class="mb-0 fw-bold">{{total_projects}} Projects</p>
+          </div>
+        </div>
+      </li>
+      <!-- end li  -->
+      <li class="list-group-item px-0">
+        <div class="row">
+          <div class="col-2">
+            <p class="mb-0">Needs Attention Projects</p>
+          </div>
+          <div class="col">
+            <p class="mb-0 fw-bold">
+              {{projects_data.needs_attention_projects}} Projects
+            </p>
+          </div>
+        </div>
+      </li>
+      <!-- end li  -->
+      <li class="list-group-item px-0">
+        <div class="row">
+          <div class="col-2">
+            <p class="mb-0">Up to date Projects</p>
+          </div>
+          <div class="col">
+            <p class="mb-0 fw-bold">{{total_projects}} Projects</p>
+          </div>
+        </div>
+      </li>
+      <!-- end li  -->
+    </ul>
+  </div>
+</section>
+
+<!-- =========================================
+     TODAY'S PAGE HEADER
+========================================= -->
+<section class="todays_page_header section-spacing">
+  <!-- GREETING -->
+  <div class="todays_greeting">
+    <div>
+      <p class="todays_eyebrow mb-1">TODAY</p>
+
+      <h1 class="todays_greeting_title mb-1">
+        Good morning, {{ current_user.first_name }}
+      </h1>
+
+      <p class="todays_date mb-0">{{ today|date:"l, d F Y" }}</p>
+    </div>
+  </div>
+
+  <!-- =====================================
+       PROJECT SUMMARY
+  ====================================== -->
+
+  <div class="todays_projects_summary">
+    <!-- TOTAL -->
+    <div class="today_summary_item">
+      <div class="today_summary_icon blue">
+        <i class="bi bi-buildings"></i>
+      </div>
+
+      <div class="today_summary_content">
+        <span class="today_summary_label"> My Projects </span>
+
+        <strong class="today_summary_value"> {{ total_projects }} </strong>
+      </div>
+    </div>
+
+    <!-- NEEDS ATTENTION -->
+    <div class="today_summary_item">
+      <div class="today_summary_icon red">
+        <i class="bi bi-exclamation-circle"></i>
+      </div>
+
+      <div class="today_summary_content">
+        <span class="today_summary_label"> Needs Attention </span>
+
+        <strong class="today_summary_value">
+          {{ projects_data.needs_attention_projects }}
+        </strong>
+      </div>
+    </div>
+
+    <!-- ON TRACK -->
+    <div class="today_summary_item">
+      <div class="today_summary_icon green">
+        <i class="bi bi-check-circle"></i>
+      </div>
+
+      <div class="today_summary_content">
+        <span class="today_summary_label"> On Track </span>
+
+        <strong class="today_summary_value">
+          {{ projects_data.up_to_date_projects }}
+        </strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================
+       PROJECTS HEADER
+  ====================================== -->
+
+  <div class="todays_projects_header">
+    <div>
+      <div class="d-flex align-items-center gap-2">
+        <h4 class="todays_projects_title mb-0">My Projects</h4>
+
+        <span class="todays_projects_count"> {{ total_projects }} </span>
+      </div>
+
+      <p class="todays_projects_subtitle mb-0">
+        Today's work across your projects
+      </p>
+    </div>
+
+    <div class="todays_projects_actions">
+      <a
+        href="{% url 'projects:add-project'  %}"
+        hx-get="{% url 'projects:add-project'  %}"
+        hx-target="#content"
+        hx-push-url="true"
+        class="today_projects_action today_projects_add"
+      >
+        <i class="bi bi-plus-lg"></i>
+        <span>Add Project</span>
+      </a>
+
+      <a
+        href=""
+        href="{% url 'projects:projects' %}"
+        hx-get="{% url 'projects:projects' %}"
+        hx-target="#content"
+        hx-push-url="true"
+        class="today_projects_action today_projects_all"
+      >
+        <span>See All</span>
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+
+  
+</section>
+
+<section>
+  
+</section>
+
+<!-- Divider  -->
+{% if user_projects %}
+<!-- ======= PROJECTS  ======= -->
+<section class="section-spacing">
+  <div
+    class="d-flex justify-content-between d-flex align-items-center mb-3 d-none"
+  >
+    <h4 class="section_title mb-0">Today's Work</h4>
+
+    <!-- Add Project Button  -->
+    <div class="d-flex gap-2">
+      <a
+        href="{% url 'projects:add-project'  %}"
+        hx-get="{% url 'projects:add-project'  %}"
+        hx-target="#content"
+        hx-push-url="true"
+      >
+        <button
+          type="button"
+          class="btn btn-primary section_btn d-flex gap-2 rounded-pill px-3"
+        >
+          <i class="bi bi-plus-lg"></i> Add Project
+        </button>
+      </a>
+
+      <button
+        type="button"
+        class="btn btn-primary section_btn d-flex gap-2 rounded-pill px-3"
+      >
+        See All
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ======= NEW PROJECTS UI  ======= -->
+  <div class="row g-4">
+    {% for data in projects %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="today-project-card h-100">
+        <!-- =========================
+           PROJECT COVER
+      ========================== -->
+        {% if data.project.cover_image %}
+        <div class="project-cover-wrapper">
+          <img
+            src="{{ data.project.cover_image.url }}"
+            alt="{{ data.project.project_name }}"
+            class="projects_cover_image"
+          />
+
+          <!-- Status overlay -->
+          <div class="project-cover-status">
+            {% if data.project_status == 'active' %}
+            <span class="project-status status-active">
+              <span class="status-dot"></span>
+              Active
+            </span>
+
+            {% elif data.project_status == 'on_hold' %}
+            <span class="project-status status-hold">
+              <span class="status-dot"></span>
+              On Hold
+            </span>
+
+            {% else %}
+            <span class="project-status status-complete">
+              <i class="bi bi-check-circle-fill"></i>
+              Complete
+            </span>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- =========================
+           PROJECT INFORMATION
+      ========================== -->
+        <div class="today-project-content">
+          <div class="project-heading">
+            <div class="project-title-wrapper">
+              <h5 class="project_name_title mb-1">
+                {{data.project.project_name}}
+              </h5>
+
+              <p class="project_location mb-0">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span>
+                  {{data.project.location.street_address}},
+                  {{data.project.location.city}},
+                  {{data.project.location.province}}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- =========================
+             ATTENTION STATUS
+        ========================== -->
+          {% if data.overall_status == 'Needs Attention' %}
+          <div class="attention-banner">
+            <div class="attention-icon">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+
+            <div>
+              <span class="attention-title"> Needs Attention </span>
+              <span class="attention-text">
+                There are items requiring action today
+              </span>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- =========================
+             TODAY'S WORK
+        ========================== -->
+          <div class="todays-work-section">
+            <div class="section-label">
+              <span>Today's Work</span>
+            </div>
+
+            <div class="work-insights">
+              <!-- INSPECTIONS -->
+              <div class="work-insight">
+                <div class="work-insight-icon inspection-icon">
+                  <i class="bi bi-clipboard-check"></i>
+                </div>
+
+                <div class="work-insight-content">
+                  <span class="work-insight-title"> Inspections </span>
+
+                  <span class="work-insight-text">
+                    {{data.project_data.inspection_insight}}
+                    {{data.project_data.failed_inspections}}
+                  </span>
+                </div>
+
+                <i class="bi bi-chevron-right insight-arrow"></i>
+              </div>
+
+              <!-- DAILY REPORT -->
+              <div class="work-insight">
+                <div class="work-insight-icon report-icon">
+                  <i class="bi bi-file-earmark-text"></i>
+                </div>
+
+                <div class="work-insight-content">
+                  <span class="work-insight-title"> Daily Report </span>
+
+                  <span class="work-insight-text">
+                    {{data.project_data.report_insight}}
+                  </span>
+                </div>
+
+                <i class="bi bi-chevron-right insight-arrow"></i>
+              </div>
+
+              <!-- ISSUES -->
+              {% if data.project_data.show_issue_insight == True %}
+              <div class="work-insight">
+                <div class="work-insight-icon issue-icon">
+                  <i class="bi bi-exclamation-circle"></i>
+                </div>
+
+                <div class="work-insight-content">
+                  <span class="work-insight-title"> Issues </span>
+
+                  <span class="work-insight-text">
+                    {{data.project_data.issues_insight_text}}
+                    <!-- divider  -->
+                    {% if data.project_data.overdue_text %}
+                    <strong> {{data.project_data.overdue_text}} </strong>
+                    {% endif %}
+                  </span>
+                </div>
+
+                <i class="bi bi-chevron-right insight-arrow"></i>
+              </div>
+              {% endif %}
+
+              <!-- TASKS -->
+              {% if data.project_data.show_task_insight == True %}
+              <div class="work-insight">
+                <div class="work-insight-icon task-icon">
+                  <i class="bi bi-check2-square"></i>
+                </div>
+
+                <div class="work-insight-content">
+                  <span class="work-insight-title"> Tasks </span>
+
+                  <span class="work-insight-text">
+                    {{data.project_data.tasks_insight_text}}
+                    <!-- divider  -->
+                    {% if data.project_data.overdue_task_text %}
+                    <strong> {{data.project_data.overdue_task_text}} </strong>
+                    {% endif %}
+                  </span>
+                </div>
+
+                <i class="bi bi-chevron-right insight-arrow"></i>
+              </div>
+              {% endif %}
+
+              <!-- MISSED INSPECTIONS -->
+              {% if data.project_data.missed_inspection_count > 0 %}
+              <div class="work-insight work-insight-alert">
+                <div class="work-insight-icon missed-icon">
+                  <i class="bi bi-clock-history"></i>
+                </div>
+
+                <div class="work-insight-content">
+                  <span class="work-insight-title"> Missed Inspections </span>
+
+                  <span class="work-insight-text">
+                    {{data.project_data.missed_inspections_text}}
+                  </span>
+                </div>
+
+                <i class="bi bi-chevron-right insight-arrow"></i>
+              </div>
+              {% endif %}
+
+              <!-- MISSED REPORTS -->
+              {% if data.project_data.missed_report_count > 0 %}
+              <div class="work-insight work-insight-alert">
+                <div class="work-insight-icon missed-icon">
+                  <i class="bi bi-file-earmark-x"></i>
+                </div>
+
+                <div class="work-insight-content">
+                  <span class="work-insight-title"> Missed Daily Reports </span>
+
+                  <span class="work-insight-text">
+                    {{data.project_data.missed_report_text}}
+                  </span>
+                </div>
+
+                <i class="bi bi-chevron-right insight-arrow"></i>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- =========================
+             ACTION
+        ========================== -->
+          <div class="project-card-action">
+            <a
+              href="{% url 'projects:project' data.project.uuid %}"
+              class="today-project-button"
+            >
+              {% if data.overall_status == 'Needs Attention' %}
+              <span>View Work</span>
+              {% else %}
+              <span>View Project</span>
+              {% endif %}
+
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+<!-- ======= NO PROJECTS CREATED  ======= -->
+{% else %}
+<section>
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-7 col-lg-4">
+      <img
+        src="{% static '/images/no_project.png' %}"
+        alt=""
+        class="placeholder_img mb-4"
+      />
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="col-12 col-md-7 col-lg-5">
+        <center>
+          <!-- Message -->
+          <h3 class="card-title mb-3">You Currently Have No Projects Added</h3>
+          <p class="card-text text-secondary mb-4">
+            Get started by adding your first construction project. You'll be
+            able to track daily reports, manage teams, and monitor progress.
+          </p>
+        </center>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="col-12 col-md-5 col-lg-4">
+        <a
+          href="{% url 'projects:add-project'  %}"
+          hx-get="{% url 'projects:add-project'  %}"
+          hx-target="#content"
+          hx-push-url="true"
+        >
+          <button
+            type="submit"
+            class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-4"
+          >
+            Add Your First Project <i class="bi bi-arrow-right"></i>
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <center>
+      <!-- Optional: Help Text -->
+      <div class="mt-4">
+        <small class="text-muted">
+          <i class="fas fa-info-circle"></i>
+          Need help? Watch our
+          <a href="#" class="text-decoration-none blue_text fw-bold"
+            >quick video start guide</a
+          >
+        </small>
+      </div>
+    </center>
+  </div>
+</section>
+{% endif %}
+
+

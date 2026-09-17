@@ -1,0 +1,100 @@
+{% load static %}
+<!-- divider  -->
+
+<!-- HEADER -->
+<div class="incident_form_header">
+  <div class="mb-3">
+    <a href="javascript:history.back()" class="incident_back">
+      <i class="bi bi-chevron-left"></i>
+      <span>Back</span>
+    </a>
+    <div class="dashboard_main_card">
+      <div class="incident_header_content">
+        <div
+          class="incident_header_icon"
+          style="
+            background-color: #f3efff !important;
+            color: rgb(115, 84, 199) !important;
+          "
+        >
+          <i class="bi bi-file-earmark-text-fill"></i>
+        </div>
+
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            <div class="incident_eyebrow">PROJECT</div>
+            <h1>Project Reports</h1>
+            <p>View and manage project daily reports</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    {% for data in reports %}
+    <div class="operation-item issue-item scroll-section mb-3">
+      <!-- ICON -->
+      <div
+        class="operation-icon issue-item-icon"
+        style="
+          background-color: #f3efff !important;
+          color: rgb(115, 84, 199) !important;
+        "
+      >
+        <span class="material-symbols-outlined"> description </span>
+      </div>
+
+      <div class="operation-content">
+        <!-- CONTENT TOP -->
+        <div class="operation-top">
+          <h6 class="operation-title mb-0 font_size_14">{{data.reference}}</h6>
+
+          {% if data.status == 'draft'%}
+          <span
+            class="font_size_11 priority-pill priority-medium text-capitalize"
+          >
+            <span class="priority-dot"></span>
+            {{data.status}}
+          </span>
+          {% else %}
+          <span class="font_size_11 priority-pill priority-low text-capitalize">
+            <span class="priority-dot"></span>
+            {{data.status}}
+          </span>
+          {% endif %}
+        </div>
+
+        <!-- META -->
+        <div class="operation-meta">
+          <span class="meta-pill meta-due font_size_10">
+            <i class="bi bi-calendar2"></i>
+            {{data.report_date|date:"l d F Y" }}
+          </span>
+        </div>
+
+        <!-- BOTTOM -->
+        <div class="operation-bottom">
+          <!-- REPORTED BY  -->
+          <div class="assigned-info">
+            <div class="mini-avatar">
+              {{ data.created_by.first_name|first|upper }}
+            </div>
+
+            <span class="person-label font_size_11">Prepared by</span>
+            <span class="font_size_11">
+              {{ data.created_by.first_name }}
+              <!-- divider  -->
+              {{ data.created_by.last_name }}
+            </span>
+          </div>
+          <button type="button" class="operation-view-button font_size_12">
+            View Report
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+</div>

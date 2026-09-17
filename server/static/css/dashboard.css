@@ -1,0 +1,23 @@
+:root {
+  --primary_color: #010738;
+
+  --secondary_color: #0b1736;
+  --navy_blue_color: #09132d;
+  --green_color: #08855f;
+  --light_green_color: #0ec77a;
+  --grey_text: #4b5563;
+  --blue_color_new: #2d4ada;
+  /* --blue_color_new: #0165fb; */
+}
+
+.placeholder_img {
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.card-title {
+  font-weight: 800;
+}
+
+

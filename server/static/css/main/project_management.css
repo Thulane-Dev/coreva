@@ -1,0 +1,317 @@
+/* =========================================
+   PROJECT MANAGEMENT
+========================================= */
+
+.project_management_section {
+  margin-top: 10px;
+}
+
+.project_management_header {
+  margin-bottom: 16px;
+}
+
+.project_management_subtitle {
+  color: #7b8494;
+  font-size: 13px;
+}
+
+/* =========================================
+   ACTION CARD
+========================================= */
+
+.project_action_card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e7eaf0;
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.project_action_card:hover {
+  color: inherit;
+  border-color: #d7dce5;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(20, 35, 60, 0.07);
+}
+
+/* =========================================
+   TOP
+========================================= */
+
+.project_action_top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+/* =========================================
+   ICON
+========================================= */
+
+.project_action_icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+  font-size: 19px;
+}
+
+.project_action_icon.blue {
+  background: #edf4ff;
+  color: #2563eb;
+}
+
+.project_action_icon.green {
+  background: #ecfdf3;
+  color: #16a34a;
+}
+
+.project_action_icon.purple {
+  background: #f4f0ff;
+  color: #7c3aed;
+}
+
+.project_action_icon.gray {
+  background: #f1f3f6;
+  color: #596273;
+}
+
+/* =========================================
+   ARROW
+========================================= */
+
+.project_action_arrow {
+  color: #a2a9b5;
+  font-size: 18px;
+
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.project_action_card:hover .project_action_arrow {
+  color: #2563eb;
+  transform: translate(2px, -2px);
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.project_action_content {
+  margin-top: auto;
+}
+
+.project_action_title {
+  margin-bottom: 6px;
+  color: #172033;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.project_action_meta {
+  margin-bottom: 7px;
+  color: #4d5869;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.project_action_description {
+  margin: 0;
+  color: #8a93a1;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991.98px) {
+  .project_action_card {
+    padding: 18px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767.98px) {
+  .project_management_subtitle {
+    font-size: 12px;
+  }
+
+  .project_action_card {
+    min-height: 150px;
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .project_action_top {
+    margin-bottom: 14px;
+  }
+
+  .project_action_icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 17px;
+  }
+
+  .project_action_title {
+    font-size: 14px;
+  }
+
+  .project_action_meta {
+    font-size: 12px;
+  }
+
+  .project_action_description {
+    font-size: 11px;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 420px) {
+  .project_action_card {
+    min-height: 138px;
+    padding: 14px;
+  }
+
+  .project_action_arrow {
+    font-size: 16px;
+  }
+
+  .project_action_title {
+    font-size: 13px;
+  }
+
+  .project_action_meta {
+    font-size: 11px;
+  }
+
+  .project_action_description {
+    font-size: 10px;
+  }
+}
+
+/* =========================================
+   FEEDBACK CSS
+========================================= */
+.feedback-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 24px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+/* Small accent strip */
+.feedback-box::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: #2563eb;
+}
+
+/* Icon */
+.feedback-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #e8f0ff;
+  color: #2563eb;
+  font-size: 23px;
+}
+
+/* Text */
+.feedback-content {
+  flex: 1;
+}
+
+.feedback-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #2563eb;
+  margin-bottom: 4px;
+}
+
+.feedback-content h4 {
+  color: #111827;
+}
+
+.feedback-content p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Button */
+.feedback-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.feedback-btn:hover {
+  background: #1d4ed8;
+  color: white;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .feedback-box {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .feedback-content {
+    width: calc(100% - 66px);
+  }
+
+  .feedback-action {
+    width: 100%;
+  }
+
+  .feedback-btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,239 @@
+{% load static %}
+<!-- divider  -->
+
+<section class="inspection_page">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-xl-8">
+      <!-- ================================
+           BACK
+      ================================= -->
+      <a href="javascript:history.back()" class="inspection_back">
+        <i class="bi bi-chevron-left"></i>
+        <span>Back</span>
+      </a>
+
+      <!-- ================================
+           INSPECTION HEADER
+      ================================= -->
+      <section class="inspection_header_card">
+        <div class="inspection_header_top">
+          <div>
+            <div class="inspection_label">DAILY INSPECTION</div>
+
+            <h1 class="inspection_project_name">
+              {{ inspection.project.project_name }}
+            </h1>
+          </div>
+
+          <div class="inspection_status">
+            {% if inspection_data_new.inspection_status == 'Incomplete' %}
+            <span class="inspection_status_badge in_progress">
+              <span class="inspection_status_dot"></span>
+              Incomplete
+            </span>
+            {% elif inspection_data_new.inspection_status == 'Ready to Save' %}
+            <span class="inspection_status_badge complete">
+              <span class="inspection_status_dot"></span>
+              Ready to Save
+            </span>
+            {% else %}
+            <span class="inspection_status_badge complete">
+              <i class="bi bi-check-circle-fill"></i>
+              Complete
+            </span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="inspection_progress_section">
+          <div class="inspection_progress_header">
+            <span>Inspection progress</span>
+
+            <strong>
+              {{ inspection_data_new.total_answered_count }} /
+              {{inspection_data_new.total_questions_count }}
+            </strong>
+          </div>
+
+          <div class="inspection_progress_bar">
+            <div
+              class="inspection_progress_fill"
+              style="--progress-bar: {{ inspection_data_new.inspection_percentage}}%;"
+            ></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================
+        READY TO SAVE ALERT
+      ================================= -->
+      {% if inspection_data_new.inspection_status == 'Ready to Save' %}
+      <div
+        class="ready-save-banner mb-3"
+        style="background-color: #e1eefc !important"
+      >
+        <div
+          class="ready-save-icon"
+          style="background-color: #eef6ff !important"
+        >
+          <i
+            class="bi bi-check-lg"
+            style="color: rgb(49, 113, 189) !important"
+          ></i>
+        </div>
+        <div class="ready-save-content">
+          <span
+            class="ready-save-title"
+            style="color: rgb(49, 113, 189) !important"
+          >
+            Ready to Save
+          </span>
+
+          <span
+            class="ready-save-text"
+            style="color: rgb(49, 113, 189) !important"
+          >
+            All inspection items have been completed
+          </span>
+        </div>
+        <i
+          class="bi bi-exclamation-circle-fill ready-save-check"
+          style="color: rgb(49, 113, 189) !important"
+        ></i>
+      </div>
+      {% elif inspection_data_new.inspection_status == 'Complete' %}
+      <div class="ready-save-banner mb-3">
+        <div class="ready-save-icon">
+          <i class="bi bi-check-lg"></i>
+        </div>
+        <div class="ready-save-content">
+          <span class="ready-save-title"> Ready to Save </span>
+
+          <span class="ready-save-text">
+            All inspection items have been completed
+          </span>
+        </div>
+        <i class="bi bi-check-circle-fill ready-save-check"></i>
+      </div>
+      {% endif %}
+
+      <!-- ================================
+           CATEGORIES
+      ================================= -->
+      <div class="inspection_categories">
+        {% for category in inspection_data_new.categories %}
+        <div class="inspection_category">
+          <!-- CATEGORY HEADER -->
+          <button
+            class="inspection_category_header collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#inspectionCategory{{ category.category.id }}"
+            aria-expanded="false"
+            aria-controls="inspectionCategory{{ category.category.id }}"
+          >
+            <!-- LEFT COMPONENTS UPDATE  -->
+            <div
+              class="inspection_category_left"
+              id="category-count-{{ category.category.id }}"
+            >
+              <div
+                class="inspection_category_icon {% if category.failed_items > 0 %} failed {% elif category.total_answered == category.total_questions %} complete {% else %} pending {% endif %}"
+              >
+                {% if category.failed_items > 0 %}
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                {% elif category.total_answered == category.total_questions %}
+                <i class="bi bi-check-lg"></i>
+                {% else %}
+                <i class="bi bi-clipboard-check"></i>
+                {% endif %}
+              </div>
+
+              <!-- RIGHT COMPONENTS UPDATE  -->
+              <div class="inspection_category_info">
+                <h5 class="font_size_14">{{ category.category.name }}</h5>
+                <span class="font_size_12">
+                  {{ category.total_answered }} /
+                  <!-- divider  -->
+                  {{ category.total_questions}} answered
+                </span>
+              </div>
+            </div>
+
+            <div
+              class="inspection_category_right"
+              id="failed-count-{{ category.category.id }}"
+            >
+              {% if category.failed_items > 0 %}
+              <span class="inspection_category_badge failed font_size_11">
+                {{ category.failed_items }} Failed
+              </span>
+              {% elif category.total_answered == category.total_questions %}
+              <span class="inspection_category_badge complete font_size_11">
+                Complete
+              </span>
+              {% else %}
+              <span class="inspection_category_badge pending font_size_11">
+                Incomplete
+              </span>
+              {% endif %}
+
+              <i class="bi bi-chevron-down inspection_category_chevron"></i>
+            </div>
+          </button>
+          <!-- QUESTIONS -->
+          <div
+            id="inspectionCategory{{ category.category.id }}"
+            class="accordion-collapse collapse"
+          >
+            <div class="inspection_questions">
+              {% for response in category.responses %}
+              <div class="inspection_question_card">
+                {% include "partials/inspection_response_partial.html" %}
+                <div id="response-container-{{ response.id }}">
+                  {% include "partials/created_issue_partial.html" %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- ================================
+           BOTTOM ACTIONS
+      ================================= -->
+      <form
+        method="POST"
+        action="{% url 'inspections:save-inspection' inspection.uuid %}"
+        class="inspection_actions_form"
+      >
+        {% csrf_token %}
+        <div class="inspection_actions">
+          <button type="submit" name="save_draft" class="inspection_save_draft">
+            <i class="bi bi-floppy"></i>
+            <span>Save Draft</span>
+          </button>
+
+          <button type="submit" name="save_inspection" class="inspection_save">
+            <i class="bi bi-check-lg"></i>
+            <span>Save Inspection</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll(".accordion-collapse").forEach((collapse) => {
+    collapse.addEventListener("shown.bs.collapse", function () {
+      this.previousElementSibling.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  });
+</script>

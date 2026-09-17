@@ -1,0 +1,6077 @@
+<!-- ======= BACK BUTTON  ======= -->
+<a onclick="history.back()">
+  <p class="d-flex align-items-center gap-2 back_button mb-3">
+    <i class="bi bi-chevron-left"></i> Back
+  </p>
+</a>
+
+<!-- ======= PROJECT HEADER  ======= -->
+<section class="dark_blue_card section-spacing d-none">
+  <div class="d-flex justify-content-between">
+    <div class="d-flex align-items-center gap-4">
+      <img
+        src="{{ project.cover_image.url }}"
+        alt=""
+        class="new_lg_cover_image"
+      />
+      <div>
+        <p class="project_sub_heading mb-1 text-light">PROJECT</p>
+        <h2 class="mb-2 page_project_name text-white">
+          {{project.project_name}}
+        </h2>
+        <p class="mb-3 project_location text-light">
+          <i class="bi bi-geo-alt-fill" style="margin-right: 5px"></i
+          >{{project.location.street_address}}, {{project.location.city}},
+          {{project.location.province}}
+        </p>
+        <!-- Status  -->
+        <div class="d-flex gap-2 mb-3">
+          <span class="badge bg-success project_header_span rounded-pill"
+            >Active</span
+          >
+          {% if project_data.overall_status == 'Needs Attention' %}
+          <span class="badge bg-danger project_header_span rounded-pill">
+            <i class="bi bi-exclamation-circle" style="margin-right: 7px"></i>
+            {{project_data.overall_status}}</span
+          >
+          {% else %}
+          <span class="badge bg-success project_header_span rounded-pill">
+            <i class="bi bi-check-circle" style="margin-right: 7px"></i>
+            {{project_data.overall_status}}</span
+          >
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <!-- Project Icon  -->
+    <div class="d-none d-lg-block">
+      <div class="inspection-icon">
+        <i class="bi bi-buildings text-white"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= PROJECT INSIGHTS  ======= -->
+<section class="section-spacing d-none">
+  <h4 class="new_section_title">Todays Work</h4>
+  <!-- INSPECTIONS  -->
+  <a href="#DailyInspection">
+    <div class="insights_card_ui d-flex align-items-center gap-3 mb-2">
+      <p class="mb-0">
+        <span style="margin-right: 7px">{{project_data.inspection_icon}}</span>
+        {{project_data.inspection_insight}} {{project_data.failed_inspections}}
+      </p>
+      <div>
+        <button
+          class="btn btn-primary view_work_button rounded-pill d-none d-lg-block"
+        >
+          {{project_data.inspection_action}}
+          <i class="bi bi-arrow-right" style="margin-left: 5px"></i>
+        </button>
+        <i
+          class="bi bi-arrow-right-circle-fill d-block d-lg-none view_work_arrow"
+        ></i>
+      </div>
+    </div>
+  </a>
+
+  <!-- DAILY REPORT INSIGHT  -->
+  <a href="#DailyReport">
+    <div class="insights_card_ui d-flex align-items-center gap-3 mb-2">
+      <p class="mb-0">
+        <span style="margin-right: 7px">{{project_data.report_icon}}</span>
+        {{project_data.report_insight}}
+      </p>
+      <div>
+        <button
+          class="btn btn-primary view_work_button rounded-pill d-none d-lg-block"
+        >
+          {{project_data.report_action}}<i
+            class="bi bi-arrow-right"
+            style="margin-left: 5px"
+          ></i>
+        </button>
+        <i
+          class="bi bi-arrow-right-circle-fill d-block d-lg-none view_work_arrow"
+        ></i>
+      </div>
+    </div>
+  </a>
+
+  <!-- ISSUES INSIGHT  -->
+  {% if project_data.show_issue_insight == True %}
+  <a href="#IssuesSection">
+    <div class="insights_card_ui d-flex align-items-center gap-3 mb-2">
+      <p class="mb-0">
+        <span style="margin-right: 7px">{{project_data.issues_icon}}</span>
+        {{project_data.issues_insight_text}}
+        <!-- divider  -->
+        {% if project_data.overdue_text_sm != '0 overdue issue' %}
+        <strong>{{project_data.overdue_text}}</strong>
+        {% endif %}
+      </p>
+      <div>
+        <button
+          class="btn btn-primary view_work_button rounded-pill d-none d-lg-block"
+        >
+          View issues <i class="bi bi-arrow-right" style="margin-left: 5px"></i>
+        </button>
+        <i
+          class="bi bi-arrow-right-circle-fill d-block d-lg-none view_work_arrow"
+        ></i>
+      </div>
+    </div>
+  </a>
+  {% endif %}
+  <!-- TASKS INSIGHT  -->
+  {% if project_data.show_task_insight == True %}
+  <a href="#TaskSession">
+    <div class="insights_card_ui d-flex align-items-center gap-3 mb-2">
+      <p class="mb-0">
+        <span style="margin-right: 7px">{{project_data.tasks_icon}}</span>
+        {{project_data.tasks_insight_text}}
+        <!-- divider  -->
+        {% if project_data.overdue_task_text_sm != '0 overdue task' %}
+        <strong>{{project_data.overdue_task_text}}</strong>
+        {% endif %}
+      </p>
+      <div>
+        <button
+          class="btn btn-primary view_work_button rounded-pill d-none d-lg-block"
+        >
+          View tasks <i class="bi bi-arrow-right" style="margin-left: 5px"></i>
+        </button>
+        <i
+          class="bi bi-arrow-right-circle-fill d-block d-lg-none view_work_arrow"
+        ></i>
+      </div>
+    </div>
+  </a>
+  {% endif %}
+
+  <!-- MISSED INSPECTIONS & REPORTS  -->
+  {% if project_data.missed_inspection_count > 0 %}
+  <div class="insights_card_ui d-flex align-items-center gap-3 mb-2">
+    <p class="mb-0">
+      <span style="margin-right: 7px"
+        >{{project_data.missed_inspection_icon}}</span
+      >
+      {{project_data.missed_inspections_text}}
+    </p>
+    <div>
+      <a
+        data-bs-toggle="offcanvas"
+        href="#missedInspectionsOffcanvas"
+        aria-controls="missedInspectionsOffcanvas"
+      >
+        <button
+          class="btn btn-primary view_work_button rounded-pill d-none d-lg-block"
+        >
+          View inspections
+          <i class="bi bi-arrow-right" style="margin-left: 5px"></i>
+        </button>
+        <i
+          class="bi bi-arrow-right-circle-fill d-block d-lg-none view_work_arrow"
+        ></i>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+  <!-- divider  -->
+  {% if project_data.missed_report_count > 0 %}
+  <div class="insights_card_ui d-flex align-items-center gap-3 mb-2">
+    <p class="mb-0">
+      <span style="margin-right: 7px">{{project_data.missed_report_icon}}</span>
+      {{project_data.missed_report_text}}
+    </p>
+    <div>
+      <a
+        data-bs-toggle="offcanvas"
+        href="#missedReportsOffcanvas"
+        aria-controls="missedReportsOffcanvas"
+      >
+        <button
+          class="btn btn-primary view_work_button rounded-pill d-none d-lg-block"
+        >
+          View reports
+          <i class="bi bi-arrow-right" style="margin-left: 5px"></i>
+        </button>
+        <i
+          class="bi bi-arrow-right-circle-fill d-block d-lg-none view_work_arrow"
+        ></i>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<!-- ======= QUICK ACTION BUTTONS   ======= -->
+<section class="mb-4 d-none">
+  <h4 class="new_section_title">Project Actions</h4>
+  <div class="d-flex gap-2">
+    <button
+      type="button"
+      class="btn btn-outline-primary rounded-pill quick_action_btns px-3"
+      style="font-size: 15px"
+    >
+      <i class="bi bi-plus-lg" style="margin-right: 3px"></i> Team Member
+    </button>
+    <a
+      href="{% url 'contractors:add-contractor' project.uuid %}"
+      hx-get="{% url 'contractors:add-contractor' project.uuid %}"
+      hx-target="#content"
+      hx-push-url="true"
+    >
+      <button
+        type="button"
+        class="btn btn-outline-primary rounded-pill quick_action_btns px-3"
+        style="font-size: 15px"
+      >
+        <i class="bi bi-plus-lg" style="margin-right: 3px"></i> Sub Contractor
+      </button>
+    </a>
+    <button
+      type="button"
+      class="btn btn-outline-primary rounded-pill quick_action_btns px-3"
+      style="font-size: 15px"
+    >
+      <i class="bi bi-gear" style="margin-right: 3px"></i> Project Settings
+    </button>
+  </div>
+</section>
+
+<section class="section-spacing d-none">
+  <div class="row g-4">
+    <!-- ======= DAILY INSPECTIONS  ======= -->
+    <div class="col-12 col-lg-6 scroll-section" id="DailyInspection">
+      {% if project_data.checklist_items %}
+      <div class="main_card py-4 h-100">
+        <div class="card-gradient data_gradient_border mb-3">
+          <center>
+            <div
+              class="primary_cards_container mb-2"
+              style="
+                height: 50px !important;
+                width: 50px !important;
+                font-size: 20px;
+              "
+            >
+              <i class="bi bi-clipboard2-check-fill dark_icon_style"></i>
+            </div>
+            <h5 class="fw-bold text-white">Daily Inspection</h5>
+            <!-- INSPECTION STATUS  -->
+            {% if project_data.inspection_status == 'Incomplete' %}
+            <span
+              class="badge bg-warning text-dark project_header_span rounded-pill new_font_weight_600"
+              ><i class="bi bi-exclamation-circle" style="margin-right: 7px"></i
+              >{{project_data.inspection_status}}</span
+            >
+            {% elif project_data.inspection_status == 'Ready to Save' %}
+            <span
+              class="badge bg-warning text-dark project_header_span rounded-pill new_font_weight_600"
+              ><i class="bi bi-check-circle" style="margin-right: 7px"></i
+              >{{project_data.inspection_status}}</span
+            >
+            {% else %}
+            <span
+              class="badge bg-success project_header_span rounded-pill new_font_weight_600"
+            >
+              <i class="bi bi-check-circle-fill" style="margin-right: 7px"></i>
+              {{project_data.inspection_status}}</span
+            >
+            {% endif %}
+          </center>
+        </div>
+        <!-- Checklist Category Items  -->
+        <ul class="list-group list-group-flush">
+          {% for category in project_data.checklist_items %}
+          <li class="list-group-item px-0 py-3">
+            <div class="row">
+              <!-- category name  -->
+              <div class="col">
+                <div class="d-flex align-items-center gap-2">
+                  <div
+                    class="dot_style"
+                    style="background-color: #1e35d0 !important"
+                  ></div>
+                  <p class="mb-0 category_name">{{ category.name }}</p>
+                </div>
+              </div>
+              <!-- status  -->
+              <div class="col-3">
+                {% if category.status == 'missing' %}
+                <span
+                  class="badge {{category.status}} complete_status_badge rounded-pill text-capitalize"
+                >
+                  <span style="margin-right: 5px">
+                    {{ category.an_questions }}/{{category.tot_question}}
+                  </span>
+                  Pending
+                </span>
+                {% else %}
+                <span
+                  class="badge {{category.status}} complete_status_badge rounded-pill text-capitalize"
+                >
+                  <span style="margin-right: 5px">
+                    {{ category.an_questions }}/{{category.tot_question}}
+                  </span>
+                  {{category.status}}
+                </span>
+                {% endif %}
+              </div>
+              <!-- Failed Items  -->
+              <div class="col-2">
+                {% if category.failed_questions != 0 %}
+                <span class="badge bg-danger complete_status_badge rounded-pill"
+                  >{{category.failed_questions }} Failed</span
+                >
+                {% endif %}
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <!-- Action Button  -->
+        <div class="row d-flex justify-content-center mt-3">
+          <div class="col-6">
+            <button
+              type="button"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+            >
+              View History <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+          <div class="col-6">
+            <a href="{% url 'inspections:inspection-new' project.uuid %}">
+              <button
+                type="button"
+                class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+              >
+                {{project_data.inspection_btn}}
+                <i class="bi bi-arrow-right-circle-fill"></i>
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="card-gradient py-4 h-100">
+        <center>
+          <div class="primary_cards_container mb-3">
+            <i class="bi bi-clipboard2-check-fill dark_icon_style"></i>
+          </div>
+          <h5 class="dark_primary_title mb-2">Daily Inspection Missing</h5>
+          <p class="text-white status_missing_count">
+            {{project_data.inspections_questions_count}} items to check
+          </p>
+        </center>
+
+        <!-- Action Button  -->
+        <div class="row d-flex justify-content-center">
+          <div class="col-6">
+            <a href="{% url 'inspections:inspection-new' project.uuid %}">
+              <button
+                type="button"
+                class="btn btn-light light_button w-100 d-flex justify-content-center gap-3 mb-3"
+              >
+                {{project_data.inspection_btn}}
+                <i class="bi bi-arrow-right-circle-fill"></i>
+              </button>
+            </a>
+            <button
+              type="button"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+            >
+              View History <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <!-- ======= DAILY REPORT  ======= -->
+    <div class="col-12 col-lg-6 scroll-section" id="DailyReport">
+      {% if project_data.report %}
+      <div class="main_card py-4 h-100">
+        <div class="daily_report_blue_card">
+          <center>
+            <div
+              class="gradient_avatar_circle mb-2"
+              style="
+                height: 50px !important;
+                width: 50px !important;
+                font-size: 20px;
+              "
+            >
+              <i
+                class="bi bi-file-earmark-text-fill dark_icon_style text-white"
+              ></i>
+            </div>
+            <h5 class="fw-bold blue_color_text_heading">Daily Report</h5>
+            {% if project_data.report.status == 'submitted' %}
+            <p class="mb-0">
+              This daily report has been completed and submitted successfully.
+            </p>
+            {% else %}
+            <p class="mb-0">
+              This report is incomplete continue and submit todays report.
+            </p>
+            {% endif %}
+          </center>
+        </div>
+        <!-- Report Data  -->
+        <ul class="list-group list-group-flush mt-3">
+          <li class="list-group-item px-0 py-3">
+            <div
+              class="d-flex justify-content-between d-flex align-items-center"
+            >
+              <p class="mb-0">Status</p>
+              {% if project_data.report.status == 'submitted' %}
+              <span
+                class="badge bg-success complete_status_badge rounded-pill text-capitalize px-5"
+                >{{project_data.report_status}}</span
+              >
+              {% else %}
+              <span
+                class="badge bg-warning text-dark complete_status_badge rounded-pill text-capitalize px-5"
+                >{{project_data.report_status}}</span
+              >
+              {% endif %}
+            </div>
+          </li>
+          <!-- end li  -->
+          <li class="list-group-item px-0 py-3">
+            <div
+              class="d-flex justify-content-between d-flex align-items-center"
+            >
+              <p class="mb-0">Report Date</p>
+              <p class="new_font_weight_600 text-capitalize mb-0">
+                {{project_data.report.report_date}}
+              </p>
+            </div>
+          </li>
+          <li class="list-group-item px-0 py-3">
+            <div
+              class="d-flex justify-content-between d-flex align-items-center"
+            >
+              <p class="mb-0">Generated At</p>
+              <p class="new_font_weight_600 text-capitalize mb-0">
+                {{project_data.report.created_at|time:"g:i A" }}
+              </p>
+            </div>
+          </li>
+          <!-- end li  -->
+          <li class="list-group-item px-0 py-3">
+            <div
+              class="d-flex justify-content-between d-flex align-items-center"
+            >
+              <p class="mb-0">Submitted At</p>
+              {% if project_data.report.submitted_at == None %}
+              <p class="new_font_weight_600 text-capitalize mb-0 text-danger">
+                Not submitted
+              </p>
+              {% else %}
+              <p class="new_font_weight_600 text-capitalize mb-0">
+                {{project_data.report.submitted_at}}
+              </p>
+              {% endif %}
+            </div>
+          </li>
+          <!-- end li  -->
+          <li class="list-group-item px-0 py-3">
+            <div
+              class="d-flex justify-content-between d-flex align-items-center"
+            >
+              <p class="mb-0">Prepared By</p>
+              <p class="new_font_weight_600 text-capitalize mb-0">
+                {{project_data.report.created_by.first_name}}
+                {{project_data.report.created_by.last_name}}
+              </p>
+            </div>
+          </li>
+          <!-- end li  -->
+          {% if project_data.report.completed_by %}
+          <li class="list-group-item px-0 py-3">
+            <div
+              class="d-flex justify-content-between d-flex align-items-center"
+            >
+              <p class="mb-0">Completed By</p>
+              <p class="new_font_weight_600 text-capitalize mb-0">
+                {{project_data.report.completed_by.first_name}}
+                {{project_data.report.completed_by.last_name}}
+              </p>
+            </div>
+          </li>
+          {% endif %}
+          <!-- end li  -->
+        </ul>
+
+        <div class="row mt-3">
+          <div class="col-6">
+            <button
+              type="button"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+            >
+              View History <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+          <div class="col-6">
+            <a
+              href="{% url 'report:create-report' project.uuid %}"
+              hx-get="{% url 'report:create-report' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+            >
+              <button
+                type="button"
+                class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3"
+              >
+                Continue Report <i class="bi bi-arrow-right-circle-fill"></i>
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="main_card py-4 h-100">
+        <center>
+          <div class="dark_blue_avatar_container mb-3">
+            <i class="bi bi-file-earmark-text-fill text-light"></i>
+          </div>
+          <h5 class="blue_primary_title mb-2">
+            Daily Report <span class="text-danger">Missing</span>
+          </h5>
+          <p class="text-secondary">
+            The daily report for this project hasn’t been completed yet.
+          </p>
+        </center>
+
+        <!-- Action Button  -->
+        <div class="row d-flex justify-content-center">
+          <div class="col-6">
+            <a
+              href="{% url 'report:create-report' project.uuid %}"
+              hx-get="{% url 'report:create-report' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+            >
+              <button
+                type="button"
+                class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-2 mb-3"
+              >
+                Create Daily Report
+                <i class="bi bi-arrow-right-circle-fill"></i>
+              </button>
+            </a>
+            <button
+              type="button"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+            >
+              View History <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <!-- ======= ISSUES  ======= -->
+    <div class="col-12 col-lg-6 scroll-section" id="IssuesSection">
+      {% if project_data.open_issues %}
+      <div class="main_card py-4 h-100">
+        <div
+          class="d-flex justify-content-between d-flex align-items-center mb-3"
+        >
+          <h5 class="fw-bold mb-0">
+            Open Issues ({{project_data.open_issues_count}})
+          </h5>
+          <div class="d-flex gap-2">
+            <a
+              href="{% url 'issues:project-issues' project.uuid %}"
+              hx-get="{% url 'issues:project-issues' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary rounded-pill quick_action_btns px-3"
+                style="font-size: 14px"
+              >
+                See All
+              </button>
+            </a>
+            <a
+              href="{% url 'issues:log-issue' project.uuid  %}"
+              hx-get="{% url 'issues:log-issue' project.uuid  %}"
+              hx-target="#content"
+              hx-push-url="true"
+            >
+              <button
+                class="btn btn-primary section_add_btn rounded-pill d-flex gap-2 d-flex align-items-center px-3"
+              >
+                <i class="bi bi-plus-circle-fill"></i>Add Issue
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <!-- Issues List  -->
+        <ul class="list-group list-group-flush">
+          {% for data in project_data.open_issues %}
+          <li
+            class="list-group-item px-3 py-3 border mb-3"
+            style="background-color: #f8d7da !important; border-radius: 22px"
+          >
+            <!-- ISSUE TITLE  -->
+            <div class="d-flex gap-3 mb-1">
+              <div class="time_line_icon timeline_red_avatar">
+                <span class="material-symbols-outlined">warning</span>
+              </div>
+              <div class="w-100">
+                <p class="mb-0 new_font_weight_600">{{data.issue.title}}</p>
+                <p class="mb-2">{{data.issue.description}}</p>
+                <div
+                  class="d-flex justify-content-between d-flex align-items-center w-100"
+                >
+                  <!-- STATUSES  -->
+                  <div class="d-flex gap-2">
+                    <!-- PRIORITY  -->
+                    {% if data.issue.priority == 'high'%}
+                    <span class="badge_font badge bg-danger"
+                      >High Priority</span
+                    >
+                    {% elif data.issue.priority == 'medium'%}
+                    <span class="badge_font badge medium_span"
+                      >Medium Priority</span
+                    >
+                    {% else %}
+                    <span class="badge_font badge bg-success"
+                      >Low Priority</span
+                    >
+                    {% endif %}
+
+                    <!-- DUE DATE  -->
+                    {% if data.issue.due_date == today %}
+                    <span class="badge_font badge bg-danger"
+                      ><i
+                        class="bi bi-calendar2-check-fill"
+                        style="margin-right: 5px"
+                      ></i>
+                      Due Today</span
+                    >
+                    {% else %}
+                    <span class="badge_font badge bg-warning text-dark"
+                      ><i
+                        class="bi bi-calendar2-check-fill"
+                        style="margin-right: 5px"
+                      ></i>
+                      {{data.issue_text}}</span
+                    >
+                    {% endif %}
+
+                    <!-- MY ASSIGNMENT  -->
+                    {% if data.issue.assigned_to == current_user %}
+                    <span class="badge_font badge bg-primary"
+                      >Assigned to you</span
+                    >
+                    {% endif %}
+                  </div>
+
+                  <!-- ACTION BUTTON  -->
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary rounded-pill quick_action_btns px-3"
+                    style="font-size: 13px"
+                  >
+                    View Issue
+                    <i
+                      class="bi bi-arrow-right-circle-fill"
+                      style="margin-left: 3px"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          {% endfor %}
+        </ul>
+
+        <!-- View All Button  -->
+        {% if project_data.open_issues_count > 4 %}
+        <div class="row d-flex justify-content-center">
+          <div class="col-8">
+            <button
+              type="button"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark mt-4"
+            >
+              View all {{project_data.open_issues_count}} issues
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="main_card py-4 h-100">
+        <center>
+          <div class="light_cards_container mb-3">
+            <i class="bi-check-circle light_icon_style"></i>
+          </div>
+          <h5 class="blue_primary_title">No Issues Today</h5>
+          <p class="text-secondary">
+            There are no open issues for this project. Everything is currently
+            on track.
+          </p>
+        </center>
+
+        <!-- Action Button  -->
+        <div class="row d-flex justify-content-center">
+          <div class="col-6">
+            <a
+              href="{% url 'issues:log-issue' project.uuid  %}"
+              hx-get="{% url 'issues:log-issue' project.uuid  %}"
+              hx-target="#content"
+              hx-push-url="true"
+            >
+              <button
+                type="button"
+                class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-2 mb-3"
+              >
+                Add Issue <i class="bi bi-arrow-right-circle-fill"></i>
+              </button>
+            </a>
+            <button
+              type="button"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+            >
+              View History <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endif%}
+    </div>
+    <!-- ======= TASKS  ======= -->
+    <div class="col-12 col-lg-6 scroll-section" id="TaskSession">
+      {% if project_data.open_tasks %}
+      <div class="main_card py-4 h-100">
+        <div
+          class="d-flex justify-content-between d-flex align-items-center mb-3"
+        >
+          <h5 class="fw-bold mb-0">Tasks ({{project_data.tasks_count}})</h5>
+          <div class="d-flex gap-2">
+            <button
+              type="button"
+              class="btn btn-outline-primary rounded-pill quick_action_btns px-3"
+              style="font-size: 14px"
+            >
+              See All
+            </button>
+            <a
+              href="{% url 'issues:add-task' project.uuid  %}"
+              hx-get="{% url 'issues:add-task' project.uuid  %}"
+              hx-target="#content"
+              hx-push-url="true"
+            >
+              <button
+                class="btn btn-primary section_add_btn rounded-pill d-flex gap-2 d-flex align-items-center px-3"
+              >
+                <i class="bi bi-plus-circle-fill"></i>Add Task
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <!-- Task Items  -->
+        <ul class="list-group list-group-flush">
+          {% for data in project_data.open_tasks%}
+          <li
+            class="list-group-item px-3 py-3 border mb-3"
+            style="background-color: #cfe2ff !important; border-radius: 22px"
+          >
+            <div class="d-flex gap-3">
+              <div class="time_line_icon timeline_green_avatar">
+                <span class="material-symbols-outlined"> assignment </span>
+              </div>
+
+              <div class="w-100">
+                <p class="mb-2">{{data.task.description}}</p>
+                <div
+                  class="d-flex justify-content-between d-flex align-items-center w-100"
+                >
+                  <!-- STATUSES  -->
+                  <div class="d-flex gap-2">
+                    <!-- PRIORITY  -->
+                    {% if data.task.priority == 'high'%}
+                    <span class="badge_font badge bg-danger"
+                      >High Priority</span
+                    >
+                    {% elif data.task.priority == 'medium'%}
+                    <span class="badge_font badge medium_span"
+                      >Medium Priority</span
+                    >
+                    {% else %}
+                    <span class="badge_font badge bg-success"
+                      >Low Priority</span
+                    >
+                    {% endif %}
+
+                    <!-- DUE DATE  -->
+                    {% if data.task.due_date == today %}
+                    <span class="badge_font badge bg-danger"
+                      ><i
+                        class="bi bi-calendar2-check-fill"
+                        style="margin-right: 5px"
+                      ></i>
+                      Due Today</span
+                    >
+                    {% else %}
+                    <span class="badge_font badge bg-warning text-dark"
+                      ><i
+                        class="bi bi-calendar2-check-fill"
+                        style="margin-right: 5px"
+                      ></i>
+                      {{data.task_text}}</span
+                    >
+                    {% endif %}
+
+                    <!-- MY ASSIGNMENT  -->
+                    {% if data.task.assigned_to == current_user %}
+                    <span class="badge_font badge bg-primary"
+                      >Assigned to you</span
+                    >
+                    {% endif %}
+                  </div>
+                  <!-- ACTION BUTTON  -->
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary rounded-pill quick_action_btns px-3"
+                    style="font-size: 13px"
+                  >
+                    View Task
+                    <i
+                      class="bi bi-arrow-right-circle-fill"
+                      style="margin-left: 3px"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+
+        <!-- View All Button  -->
+        {% if project_data.overdue_tasks_count > 4 %}
+        <div class="row d-flex justify-content-center">
+          <div class="col-8">
+            <button
+              type="button"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark mt-4"
+            >
+              View all {{project_data.overdue_tasks_count}} tasks
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="main_card py-4 h-100">
+        <center>
+          <div class="light_cards_container mb-3">
+            <i class="bi-list-check light_icon_style"></i>
+          </div>
+          <h5 class="blue_primary_title">No Tasks Today</h5>
+          <p class="text-secondary">
+            There are no tasks added to this project yet.
+          </p>
+        </center>
+
+        <!-- Action Button  -->
+        <div class="row d-flex justify-content-center">
+          <div class="col-6">
+            <a
+              href="{% url 'issues:add-task' project.uuid  %}"
+              hx-get="{% url 'issues:add-task' project.uuid  %}"
+              hx-target="#content"
+              hx-push-url="true"
+            >
+              <button
+                type="button"
+                class="btn btn-primary w-100 primary_button d-flex justify-content-center gap-3 mt-2 mb-3"
+              >
+                Add Task <i class="bi bi-arrow-right-circle-fill"></i>
+              </button>
+            </a>
+            <button
+              type="button"
+              class="btn btn-outline-primary secondary_outline_btn w-100 d-flex justify-content-center gap-3 text-dark"
+            >
+              View History <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <!-- ======= Incidents  ======= -->
+    <div class="col-12 col-lg-6">
+      <div class="main_card h-100 py-4" id="project_incidents">
+        {% include 'partials/project_incidents_partial.html' %}
+      </div>
+    </div>
+    <!-- ======= Deliveries  ======= -->
+    <div class="col-12 col-lg-6">
+      <div class="main_card h-100 py-4" id="project_deliveries">
+        {% include 'partials/project_deliveries_partial.html' %}
+      </div>
+    </div>
+    <!-- ======= ACTIVITY  ======= -->
+    {% if project_activity %}
+    <div class="col-12">
+      <div class="main_card py-4">
+        <div
+          class="d-flex justify-content-between d-flex align-items-center mb-4"
+        >
+          <h5 class="fw-bold mb-0">Todays Activity</h5>
+          <p class="view_details_p mb-0" style="font-size: 16px !important">
+            See All
+            <i class="bi bi-arrow-right" style="margin-left: 5px"></i>
+          </p>
+        </div>
+        <ul class="list-group list-group-flush">
+          {% for group in project_activity %}
+          <li class="list-group-item py-4 bg-light">
+            <h6 class="fw-bold mb-0">{{ group.date|date:"d F Y" }}</h6>
+          </li>
+          {% for data in group.activities %}
+          <li class="list-group-item px-0 py-3">
+            <div class="d-flex gap-3">
+              <!-- <div class="time_line_icon timeline_green_avatar">
+                <i class="bi bi-clipboard2-check"></i>
+              </div> -->
+              <!-- activity icon  -->
+              {% include 'partials/timeline_icons.html' %}
+
+              <p
+                class="mb-0 text-secondary"
+                style="font-size: 14px; font-weight: 600"
+              >
+                {{ data.created_at|time:"H:i" }}
+              </p>
+              <div>
+                <p class="mb-1 fw-bold">{{ data.activity_type }}</p>
+                <p class="text-secondary mb-0">{{ data.description }}</p>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+          <!-- end li  -->
+          {% endfor %}
+          <!-- end li  -->
+
+          <li class="list-group-item px-0 py-3 d-none">
+            <div class="d-flex gap-3">
+              <div class="time_line_icon timeline_yellow_avatar">
+                <i class="bi bi-exclamation-triangle"></i>
+              </div>
+              <p
+                class="mb-0 text-secondary"
+                style="font-size: 14px; font-weight: 600"
+              >
+                07:30
+              </p>
+              <div>
+                <p class="mb-1 fw-bold">Issue Complete</p>
+                <p class="text-secondary mb-0">
+                  Morning Inspection completed by Jane Doe
+                </p>
+              </div>
+            </div>
+          </li>
+          <!-- end li  -->
+          <li class="list-group-item px-0 py-3 d-none">
+            <div class="d-flex gap-3">
+              <div class="time_line_icon timeline_blue_avatar">
+                <i class="bi bi-list-check"></i>
+              </div>
+              <p
+                class="mb-0 text-secondary"
+                style="font-size: 14px; font-weight: 600"
+              >
+                07:30
+              </p>
+              <div>
+                <p class="mb-1 fw-bold">Task Complete</p>
+                <p class="text-secondary mb-0">
+                  Morning Inspection completed by Jane Doe
+                </p>
+              </div>
+            </div>
+          </li>
+          <!-- end li  -->
+          <li class="list-group-item px-0 py-3 d-none">
+            <div class="d-flex gap-3">
+              <div class="time_line_icon timeline_red_avatar">
+                <i class="bi bi-file-earmark-text"></i>
+              </div>
+              <p
+                class="mb-0 text-secondary"
+                style="font-size: 14px; font-weight: 600"
+              >
+                07:30
+              </p>
+              <div>
+                <p class="mb-1 fw-bold">Daily Report Complete</p>
+                <p class="text-secondary mb-0">
+                  Morning Inspection completed by Jane Doe
+                </p>
+              </div>
+            </div>
+          </li>
+          <!-- end li  -->
+        </ul>
+        <!-- View All Activity Action  -->
+        {% if project_data.total_activities > 5%}
+        <h6 class="fw-bold mt-3">View all activity →</h6>
+        {% endif%}
+      </div>
+    </div>
+    {% endif%}
+  </div>
+</section>
+
+<!-- ======== PROJECT TEAM MEMBERS & CONTRACTORS ======== -->
+<section class="section-spacing scroll-section d-none">
+  <h4 class="new_section_title">Project</h4>
+  <div class="row g-3">
+    <div class="col-3">
+      <div class="main_card h-100">
+        <div class="icons_avatar blue_background mb-3">
+          <i class="bi bi-people"></i>
+        </div>
+        <h6 class="fw-bold mb-2">Team Members</h6>
+        <p class="mb-2 page_header_sub_title issues_sub_text">12 Members</p>
+
+        <div class="d-flex justify-content-between d-flex align-items-center">
+          <p class="mb-0 page_header_sub_title issues_sub_text">
+            View and manage team
+          </p>
+          <i class="bi bi-arrow-right fw-bold" style="font-size: 22px"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end card item  -->
+    <div class="col-3">
+      <div class="main_card h-100">
+        <div class="icons_avatar green_priority mb-3">
+          <i class="bi bi-building"></i>
+        </div>
+        <h6 class="fw-bold mb-2">Subcontractors</h6>
+        <p class="mb-2 page_header_sub_title issues_sub_text">
+          4 Subcontractors
+        </p>
+        <div class="d-flex justify-content-between d-flex align-items-center">
+          <p class="mb-0 page_header_sub_title issues_sub_text">
+            View and manage
+          </p>
+          <i class="bi bi-arrow-right fw-bold" style="font-size: 22px"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end card item  -->
+    <div class="col-3">
+      <div class="main_card h-100">
+        <div class="icons_avatar medium_background mb-3">
+          <i class="bi bi-list-check"></i>
+        </div>
+        <h6 class="fw-bold mb-2">Project History</h6>
+        <p class="mb-2 page_header_sub_title issues_sub_text">
+          Full activity log
+        </p>
+
+        <div class="d-flex justify-content-between d-flex align-items-center">
+          <p class="mb-0 page_header_sub_title issues_sub_text">
+            View all project history
+          </p>
+          <i class="bi bi-arrow-right fw-bold" style="font-size: 22px"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end card item  -->
+    <div class="col-3">
+      <div class="main_card h-100">
+        <div class="icons_avatar medium_background mb-3">
+          <i class="bi bi-gear"></i>
+        </div>
+        <h6 class="fw-bold mb-2">Settings</h6>
+        <p class="mb-2 page_header_sub_title issues_sub_text">
+          Project Settings
+        </p>
+        <div class="d-flex justify-content-between d-flex align-items-center">
+          <p class="mb-0 page_header_sub_title issues_sub_text">
+            Update project details
+          </p>
+          <i class="bi bi-arrow-right fw-bold" style="font-size: 22px"></i>
+        </div>
+      </div>
+    </div>
+    <!-- end card item  -->
+  </div>
+</section>
+
+<!-- ========================================= PROJECT DETAILS HEADER ========================================= -->
+<section class="project_details_header section-spacing">
+  <div class="project_header_inner">
+    <!-- ========================= PROJECT IDENTITY ========================== -->
+    <div class="project_identity">
+      <!-- Cover Image -->
+      <div class="project_cover_wrapper">
+        {% if project.cover_image %}
+        <img
+          src="{{ project.cover_image.url }}"
+          alt="{{ project.project_name }}"
+          class="project_cover_image"
+        />
+        {% else %}
+        <div class="project_cover_placeholder">
+          <span class="material-symbols-outlined"> construction </span>
+        </div>
+        {% endif %}
+      </div>
+      <!-- Project Information -->
+      <div class="project_header_info">
+        <div class="project_label">PROJECT</div>
+        <h1 class="project_header_name">{{ project.project_name }}</h1>
+        <div class="project_header_location">
+          <i class="bi bi-geo-alt-fill"></i>
+          <span>
+            {{ project.location.street_address }}, {{ project.location.city }},
+            {{ project.location.province }}
+          </span>
+        </div>
+        <!-- ========================= PROJECT STATUS ========================== -->
+        <div class="project_status_group">
+          <!-- Project Status -->
+          <span class="project_status active">
+            <span class="status_dot"></span> Active
+          </span>
+          <!-- Overall Status -->
+          {% if project_data.overall_status == 'Needs Attention' %}
+          <span class="project_status attention">
+            <i class="bi bi-exclamation-circle-fill"></i> Needs Attention
+          </span>
+          {% else %}
+          <span class="project_status healthy">
+            <i class="bi bi-check-circle-fill"></i> {{
+            project_data.overall_status }}
+          </span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <!-- ========================= PROJECT ICON ========================== -->
+    <div class="project_header_icon d-none d-lg-flex">
+      <span class="material-symbols-outlined"> apartment </span>
+    </div>
+  </div>
+
+  <style>
+    /* ========================================= PROJECT DETAILS HEADER ========================================= */
+    .project_details_header {
+      position: relative;
+      overflow: hidden;
+      background: #172a46;
+      border-radius: 18px;
+    } /* subtle background detail */
+    .project_details_header::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -100px;
+      top: -140px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.035);
+      pointer-events: none;
+    } /* ========================================= INNER ========================================= */
+    .project_header_inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      padding: 26px 30px;
+    } /* ========================================= PROJECT IDENTITY ========================================= */
+    .project_identity {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-width: 0;
+    } /* ========================================= COVER IMAGE ========================================= */
+    .project_cover_wrapper {
+      flex: 0 0 auto;
+    }
+    .project_cover_image,
+    .project_cover_placeholder {
+      width: 92px;
+      height: 92px;
+      border-radius: 15px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
+    }
+    .project_cover_placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.65);
+    }
+    .project_cover_placeholder .material-symbols-outlined {
+      font-size: 34px;
+    } /* ========================================= PROJECT INFORMATION ========================================= */
+    .project_header_info {
+      min-width: 0;
+    }
+    .project_label {
+      margin-bottom: 5px;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+    .project_header_name {
+      margin: 0 0 7px;
+      color: #fff;
+      font-size: 26px;
+      font-weight: 750;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    .project_header_location {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      max-width: 750px;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .project_header_location i {
+      flex: 0 0 auto;
+      margin-top: 2px;
+      font-size: 12px;
+    } /* ========================================= STATUS GROUP ========================================= */
+    .project_status_group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 14px;
+    }
+    .project_status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 27px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 650;
+    } /* ========================================= ACTIVE ========================================= */
+    .project_status.active {
+      background: rgba(25, 135, 84, 0.18);
+      color: #75d6a3;
+      border: 1px solid rgba(117, 214, 163, 0.18);
+    }
+    .status_dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #43c982;
+      box-shadow: 0 0 0 3px rgba(67, 201, 130, 0.12);
+    } /* ========================================= NEEDS ATTENTION ========================================= */
+    .project_status.attention {
+      background: rgba(220, 53, 69, 0.17);
+      color: #ff9ca5;
+      border: 1px solid rgba(255, 156, 165, 0.16);
+    }
+    .project_status.attention i {
+      font-size: 11px;
+    } /* ========================================= HEALTHY ========================================= */
+    .project_status.healthy {
+      background: rgba(25, 135, 84, 0.17);
+      color: #75d6a3;
+      border: 1px solid rgba(117, 214, 163, 0.16);
+    }
+    .project_status.healthy i {
+      font-size: 11px;
+    } /* ========================================= PROJECT ICON ========================================= */
+    .project_header_icon {
+      flex: 0 0 auto;
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.07);
+      color: rgba(255, 255, 255, 0.65);
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .project_header_icon .material-symbols-outlined {
+      font-size: 29px;
+    } /* ========================================= TABLET ========================================= */
+    @media (max-width: 991.98px) {
+      .project_header_inner {
+        padding: 23px 24px;
+      }
+      .project_cover_image,
+      .project_cover_placeholder {
+        width: 82px;
+        height: 82px;
+      }
+      .project_header_name {
+        font-size: 23px;
+      }
+    } /* ========================================= MOBILE ========================================= */
+    @media (max-width: 767.98px) {
+      .project_details_header {
+        border-radius: 15px;
+      }
+      .project_header_inner {
+        padding: 20px 18px;
+        display: block;
+      }
+      .project_identity {
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .project_cover_image,
+      .project_cover_placeholder {
+        width: 64px;
+        height: 64px;
+        border-radius: 12px;
+      }
+      .project_cover_placeholder .material-symbols-outlined {
+        font-size: 26px;
+      }
+      .project_label {
+        margin-bottom: 4px;
+        font-size: 9px;
+      }
+      .project_header_name {
+        font-size: 20px;
+        line-height: 1.25;
+      }
+      .project_header_location {
+        font-size: 11px;
+        line-height: 1.4;
+      }
+      .project_status_group {
+        margin-top: 11px;
+        gap: 6px;
+      }
+      .project_status {
+        min-height: 25px;
+        padding: 0 8px;
+        font-size: 10px;
+      }
+    } /* ========================================= SMALL PHONES ========================================= */
+    @media (max-width: 420px) {
+      .project_header_inner {
+        padding: 17px 14px;
+      }
+      .project_identity {
+        gap: 12px;
+      }
+      .project_cover_image,
+      .project_cover_placeholder {
+        width: 55px;
+        height: 55px;
+        border-radius: 10px;
+      }
+      .project_header_name {
+        font-size: 17px;
+      }
+      .project_header_location {
+        font-size: 10px;
+      }
+      .project_status {
+        min-height: 24px;
+        font-size: 9px;
+        padding: 0 7px;
+      }
+    }
+  </style>
+</section>
+
+<!-- =========================================================
+     TODAY'S WORK
+========================================================= -->
+<section class="section-spacing">
+  <div class="todays-work-header">
+    <div>
+      <h4 class="new_section_title mb-1">Today's Work</h4>
+      <p class="todays-work-subtitle mb-0">
+        Activity and actions for this project
+      </p>
+    </div>
+  </div>
+
+  <div class="todays-work-list">
+    <!-- =====================================================
+         INSPECTIONS
+    ====================================================== -->
+    <a href="#DailyInspection" class="today-work-link">
+      <div class="today-work-card">
+        <div class="today-work-icon inspection-work-icon">
+          <span class="material-symbols-outlined"> fact_check </span>
+        </div>
+
+        <div class="today-work-content">
+          <div class="today-work-title-row">
+            <h6 class="today-work-title mb-0">Daily Inspections</h6>
+          </div>
+
+          <p class="today-work-description mb-0">
+            {{project_data.inspection_insight}}
+            {{project_data.failed_inspections}}
+          </p>
+        </div>
+
+        <div class="today-work-action">
+          <span class="today-work-action-text">
+            {{project_data.inspection_action}}
+          </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- =====================================================
+         DAILY REPORT
+    ====================================================== -->
+    <a href="#DailyReport" class="today-work-link">
+      <div class="today-work-card">
+        <div class="today-work-icon report-work-icon">
+          <span class="material-symbols-outlined"> description </span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0">Daily Report</h6>
+
+          <p class="today-work-description mb-0">
+            {{project_data.report_insight}}
+          </p>
+        </div>
+
+        <div class="today-work-action">
+          <span class="today-work-action-text">
+            {{project_data.report_action}}
+          </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- =====================================================
+         ISSUES
+    ====================================================== -->
+    {% if project_data.show_issue_insight == True %}
+
+    <a href="#IssuesSection" class="today-work-link">
+      <div class="today-work-card">
+        <div class="today-work-icon issue-work-icon">
+          <span class="material-symbols-outlined"> warning </span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0">Issues</h6>
+
+          <p class="today-work-description mb-0">
+            {{project_data.issues_insight_text}}
+            <!-- divider  -->
+            {% if project_data.overdue_text_sm != '0 overdue issue' %}
+            <span class="today-overdue-text">
+              {{project_data.overdue_text}}
+            </span>
+            {% endif %}
+          </p>
+        </div>
+
+        <div class="today-work-action">
+          <span class="today-work-action-text"> View issues </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    {% endif %}
+
+    <!-- =====================================================
+         TASKS
+    ====================================================== -->
+    {% if project_data.show_task_insight == True %}
+
+    <a href="#TaskSession" class="today-work-link">
+      <div class="today-work-card">
+        <div class="today-work-icon task-work-icon">
+          <span class="material-symbols-outlined"> task_alt </span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0">Tasks</h6>
+
+          <p class="today-work-description mb-0">
+            {{project_data.tasks_insight_text}}
+            <!-- divider  -->
+            {% if project_data.overdue_task_text_sm != '0 overdue task' %}
+            <span class="today-overdue-text">
+              {{project_data.overdue_task_text}}
+            </span>
+            {% endif %}
+          </p>
+        </div>
+
+        <div class="today-work-action">
+          <span class="today-work-action-text"> View tasks </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
+
+    {% endif %}
+
+    <!-- =====================================================
+         MISSED INSPECTIONS
+    ====================================================== -->
+    {% if project_data.missed_inspection_count > 0 %}
+
+    <div class="today-work-card today-work-warning">
+      <div class="today-work-icon missed-work-icon">
+        <span class="material-symbols-outlined"> event_busy </span>
+      </div>
+
+      <div class="today-work-content">
+        <h6 class="today-work-title mb-0">Missed Inspections</h6>
+
+        <p class="today-work-description mb-0">
+          {{project_data.missed_inspections_text}}
+        </p>
+      </div>
+
+      <div class="today-work-action">
+        <a
+          data-bs-toggle="offcanvas"
+          href="#missedInspectionsOffcanvas"
+          aria-controls="missedInspectionsOffcanvas"
+          class="today-work-action-link"
+        >
+          <span class="today-work-action-text"> View inspections </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    {% endif %}
+
+    <!-- =====================================================
+         MISSED REPORTS
+    ====================================================== -->
+    {% if project_data.missed_report_count > 0 %}
+
+    <div class="today-work-card today-work-warning">
+      <div class="today-work-icon missed-work-icon">
+        <span class="material-symbols-outlined"> assignment_late </span>
+      </div>
+
+      <div class="today-work-content">
+        <h6 class="today-work-title mb-0">Missed Daily Reports</h6>
+
+        <p class="today-work-description mb-0">
+          {{project_data.missed_report_text}}
+        </p>
+      </div>
+
+      <div class="today-work-action">
+        <a
+          data-bs-toggle="offcanvas"
+          href="#missedReportsOffcanvas"
+          aria-controls="missedReportsOffcanvas"
+          class="today-work-action-link"
+        >
+          <span class="today-work-action-text"> View reports </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    {% endif %}
+  </div>
+</section>
+<style>
+  /* =========================================================
+   TODAY'S WORK HEADER
+========================================================= */
+
+  .todays-work-header {
+    margin-bottom: 14px;
+  }
+
+  .todays-work-subtitle {
+    color: #8a9198;
+    font-size: 12px;
+  }
+
+  /* =========================================================
+   WORK LIST
+========================================================= */
+
+  .todays-work-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* =========================================================
+   WORK LINK
+========================================================= */
+
+  .today-work-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* =========================================================
+   WORK CARD
+========================================================= */
+
+  .today-work-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    min-height: 70px;
+
+    padding: 12px 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #e8eaed;
+    border-radius: 13px;
+
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .today-work-link:hover .today-work-card {
+    border-color: #d9dde2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.045);
+    transform: translateY(-1px);
+  }
+
+  /* =========================================================
+   ICON
+========================================================= */
+
+  .today-work-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+  }
+
+  .today-work-icon .material-symbols-outlined {
+    font-size: 20px;
+  }
+
+  /* INSPECTION */
+
+  .inspection-work-icon {
+    background: #edf6ff;
+    color: #2878c8;
+  }
+
+  /* REPORT */
+
+  .report-work-icon {
+    background: #f3efff;
+    color: #7354c7;
+  }
+
+  /* ISSUE */
+
+  .issue-work-icon {
+    background: #fff0f1;
+    color: #d63948;
+  }
+
+  /* TASK */
+
+  .task-work-icon {
+    background: #edf8f1;
+    color: #2c9650;
+  }
+
+  /* MISSED */
+
+  .missed-work-icon {
+    background: #fff5df;
+    color: #b57908;
+  }
+
+  /* =========================================================
+   CONTENT
+========================================================= */
+
+  .today-work-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .today-work-title {
+    color: #252a2f;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .today-work-description {
+    margin-top: 4px !important;
+
+    color: #7c838a;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  /* =========================================================
+   OVERDUE
+========================================================= */
+
+  .today-overdue-text {
+    display: inline-block;
+
+    margin-left: 4px;
+
+    color: #d63948;
+    font-weight: 700;
+  }
+
+  /* =========================================================
+   ACTION
+========================================================= */
+
+  .today-work-action {
+    flex-shrink: 0;
+  }
+
+  .today-work-action-link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .today-work-action-text {
+    color: #0d6efd;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .today-work-arrow {
+    width: 27px;
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f6ff;
+    color: #0d6efd;
+
+    transition: transform 0.2s ease;
+  }
+
+  .today-work-arrow i {
+    font-size: 11px;
+  }
+
+  .today-work-link:hover .today-work-arrow {
+    transform: translateX(2px);
+  }
+
+  /* =========================================================
+   WARNING CARD
+========================================================= */
+
+  .today-work-warning {
+    background: #fffaf7;
+    border-color: #f4e5d7;
+  }
+
+  /* =========================================================
+   MOBILE
+========================================================= */
+
+  @media (max-width: 767px) {
+    .todays-work-header {
+      margin-bottom: 12px;
+    }
+
+    .todays-work-subtitle {
+      font-size: 11px;
+    }
+
+    .today-work-list {
+      gap: 7px;
+    }
+
+    .today-work-card {
+      min-height: 64px;
+      gap: 10px;
+
+      padding: 10px 11px;
+
+      border-radius: 11px;
+    }
+
+    .today-work-icon {
+      width: 35px;
+      height: 35px;
+      min-width: 35px;
+
+      border-radius: 9px;
+    }
+
+    .today-work-icon .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    .today-work-title {
+      font-size: 12px;
+    }
+
+    .today-work-description {
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .today-work-action-text {
+      display: none;
+    }
+
+    .today-work-arrow {
+      width: 29px;
+      height: 29px;
+    }
+
+    .today-work-arrow i {
+      font-size: 11px;
+    }
+  }
+
+  /* =========================================================
+   SMALL PHONES
+========================================================= */
+
+  @media (max-width: 380px) {
+    .today-work-card {
+      gap: 9px;
+      padding: 9px 10px;
+    }
+
+    .today-work-icon {
+      width: 33px;
+      height: 33px;
+      min-width: 33px;
+    }
+
+    .today-work-title {
+      font-size: 11px;
+    }
+
+    .today-work-description {
+      font-size: 9px;
+    }
+
+    .today-work-arrow {
+      width: 26px;
+      height: 26px;
+    }
+  }
+</style>
+<!-- END TODAYS WORK  -->
+
+<!-- ======= QUICK ACTIONS ======= -->
+<section class="project_quick_actions section-spacing">
+  <div class="project_quick_actions_header">
+    <div>
+      <h4 class="new_section_title mb-1">Quick Actions</h4>
+      <p class="project_quick_actions_subtitle mb-0">Common project actions</p>
+    </div>
+  </div>
+  <div class="project_quick_actions_list">
+    <!-- ADD TEAM MEMBER -->
+    <button type="button" class="project_quick_action primary">
+      <span class="project_quick_action_icon">
+        <i class="bi bi-person-plus"></i>
+      </span>
+
+      <span class="project_quick_action_text"> Add Team Member </span>
+    </button>
+
+    <!-- ADD SUBCONTRACTOR -->
+    <a
+      href="{% url 'contractors:add-contractor' project.uuid %}"
+      hx-get="{% url 'contractors:add-contractor' project.uuid %}"
+      hx-target="#content"
+      hx-push-url="true"
+      class="project_quick_action"
+    >
+      <span class="project_quick_action_icon">
+        <i class="bi bi-building-add"></i>
+      </span>
+
+      <span class="project_quick_action_text"> Add Subcontractor </span>
+    </a>
+
+    <!-- PROJECT SETTINGS -->
+    <button type="button" class="project_quick_action">
+      <span class="project_quick_action_icon">
+        <i class="bi bi-gear"></i>
+      </span>
+
+      <span class="project_quick_action_text"> Project Settings </span>
+    </button>
+  </div>
+
+  <style>
+    /* =========================================
+       PROJECT QUICK ACTIONS
+    ========================================= */
+
+    .project_quick_actions {
+      margin-top: 6px;
+    }
+
+    .project_quick_actions_header {
+      margin-bottom: 14px;
+    }
+
+    .project_quick_actions_subtitle {
+      color: #858e9d;
+      font-size: 13px;
+    }
+
+    /* =========================================
+       ACTION LIST
+    ========================================= */
+
+    .project_quick_actions_list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* =========================================
+       ACTION BUTTON
+    ========================================= */
+
+    .project_quick_action {
+      min-height: 42px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      padding: 8px 15px;
+
+      background: #ffffff;
+      border: 1px solid #dfe4eb;
+      border-radius: 10px;
+
+      color: #394456;
+      font-size: 13px;
+      font-weight: 600;
+
+      text-decoration: none;
+      cursor: pointer;
+
+      transition:
+        background-color 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .project_quick_action:hover {
+      background: #f8fafc;
+      border-color: #cbd2dc;
+      color: #172033;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(20, 35, 60, 0.06);
+    }
+
+    .project_quick_action:active {
+      transform: translateY(0);
+    }
+
+    /* =========================================
+       ICON
+    ========================================= */
+
+    .project_quick_action_icon {
+      width: 26px;
+      height: 26px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 7px;
+
+      background: #f1f4f8;
+      color: #526071;
+
+      font-size: 13px;
+    }
+
+    .project_quick_action.primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #ffffff;
+    }
+
+    .project_quick_action.primary .project_quick_action_icon {
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+    }
+
+    .project_quick_action.primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+      color: #ffffff;
+    }
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @media (max-width: 767.98px) {
+      .project_quick_actions_subtitle {
+        font-size: 12px;
+      }
+
+      .project_quick_actions_list {
+        gap: 8px;
+      }
+
+      .project_quick_action {
+        min-height: 44px;
+        padding: 8px 13px;
+        font-size: 12px;
+        border-radius: 10px;
+      }
+
+      .project_quick_action_icon {
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+      }
+    }
+
+    /* =========================================
+       SMALL PHONES
+    ========================================= */
+
+    @media (max-width: 420px) {
+      .project_quick_actions_list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project_quick_action {
+        width: 100%;
+        padding: 8px 10px;
+        font-size: 11px;
+      }
+
+      .project_quick_action.primary {
+        grid-column: span 2;
+      }
+    }
+  </style>
+</section>
+
+<!-- =========================================================
+     DAILY INSPECTIONS AND DAILY REPORT
+========================================================= -->
+<section class="section-spacing">
+  <div class="row g-3">
+    <!-- =========================================================
+     DAILY INSPECTION
+========================================================= -->
+    <div class="col-12 col-lg-6 scroll-section" id="DailyInspection">
+      {% if project_data.checklist_items %}
+
+      <div class="inspection-report-card h-100">
+        <!-- HEADER -->
+        <div class="inspection-report-header">
+          <div class="inspection-report-heading">
+            <div class="section-icon inspection-section-icon">
+              <span class="material-symbols-outlined"> fact_check </span>
+            </div>
+
+            <div>
+              <h5 class="section-main-title mb-0">Daily Inspection</h5>
+
+              <span class="section-subtitle"> Today's safety checklist </span>
+            </div>
+          </div>
+
+          <!-- INSPECTION STATUS -->
+          {% if project_data.inspection_status == 'Incomplete' %}
+
+          <span class="status-pill status-incomplete">
+            <span class="status-dot"></span>
+            {{project_data.inspection_status}}
+          </span>
+
+          {% elif project_data.inspection_status == 'Ready to Save' %}
+
+          <span class="status-pill status-ready">
+            <i class="bi bi-check-circle"></i>
+            {{project_data.inspection_status}}
+          </span>
+
+          {% else %}
+
+          <span class="status-pill status-complete">
+            <i class="bi bi-check-circle-fill"></i>
+            {{project_data.inspection_status}}
+          </span>
+
+          {% endif %}
+        </div>
+
+        <!-- CHECKLIST SUMMARY -->
+        <div class="inspection-summary">
+          <div>
+            <span class="summary-label"> Checklist progress </span>
+
+            <div class="inspection-progress-wrapper">
+              <div class="inspection-progress">
+                <div
+                  class="inspection-progress-bar"
+                  style="width: {{project_data.inspection_progress}}%;"
+                ></div>
+              </div>
+
+              <span class="inspection-progress-text">
+                {{project_data.inspection_answered}} /
+                {{project_data.inspections_questions_count}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CATEGORY LIST -->
+        <div class="inspection-category-list">
+          {% for category in project_data.checklist_items %}
+
+          <div class="inspection-category">
+            <div class="category-left">
+              <span
+                class="category-status-dot {% if category.status == 'complete' %} category-complete {% elif category.status == 'started' %} category-started {% else %} category-missing {% endif %}"
+              ></span>
+
+              <div class="category-content">
+                <span class="category-title"> {{category.name}} </span>
+
+                <span class="category-progress-text">
+                  {{category.an_questions}} / {{category.tot_question}} answered
+                </span>
+              </div>
+            </div>
+
+            <div class="category-right">
+              {% if category.failed_questions != 0 %}
+
+              <span class="failed-pill">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                {{category.failed_questions}} failed
+              </span>
+
+              {% endif %}
+              <!-- divider  -->
+              {% if category.status == 'missing' %}
+
+              <span class="category-status status-missing"> Pending </span>
+
+              {% else %}
+
+              <span
+                class="category-status {% if category.status == 'complete' %} status-complete-soft {% elif category.status == 'started' %} status-started-soft {% else %} status-missing {% endif %}"
+              >
+                {{category.status}}
+              </span>
+
+              {% endif %}
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="inspection-report-actions">
+          <button type="button" class="secondary-action-button">
+            <span>View History</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+
+          <a
+            href="{% url 'inspections:inspection-new' project.uuid %}"
+            class="primary-action-button"
+          >
+            <span>{{project_data.inspection_btn}}</span>
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      {% else %}
+
+      <!-- =====================================================
+       INSPECTION MISSING
+  ====================================================== -->
+
+      <div class="inspection-report-card empty-inspection-card h-100">
+        <div class="empty-operation-state">
+          <div class="empty-operation-icon inspection-empty-icon">
+            <span class="material-symbols-outlined"> fact_check </span>
+          </div>
+
+          <span class="missing-label"> ACTION REQUIRED </span>
+
+          <h5>Daily Inspection Missing</h5>
+
+          <p>
+            Today's safety inspection has not been started yet. There are
+            <strong>{{project_data.inspections_questions_count}}</strong>
+            items to check.
+          </p>
+
+          <div class="empty-operation-actions">
+            <a
+              href="{% url 'inspections:inspection-new' project.uuid %}"
+              class="primary-action-button"
+            >
+              <span>{{project_data.inspection_btn}}</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+
+            <button type="button" class="secondary-action-button">
+              <span>View History</span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+
+    <!-- =========================================================
+     DAILY REPORT
+========================================================= -->
+    <div class="col-12 col-lg-6 scroll-section" id="DailyReport">
+      {% if project_data.report %}
+
+      <div class="inspection-report-card h-100">
+        <!-- HEADER -->
+        <div class="inspection-report-header">
+          <div class="inspection-report-heading">
+            <div class="section-icon report-section-icon">
+              <span class="material-symbols-outlined"> description </span>
+            </div>
+
+            <div>
+              <h5 class="section-main-title mb-0">Daily Report</h5>
+
+              <span class="section-subtitle"> Today's project report </span>
+            </div>
+          </div>
+
+          <!-- REPORT STATUS -->
+          {% if project_data.report.status == 'submitted' %}
+
+          <span class="status-pill status-complete">
+            <i class="bi bi-check-circle-fill"></i>
+            Submitted
+          </span>
+
+          {% else %}
+
+          <span class="status-pill status-incomplete">
+            <span class="status-dot"></span>
+            Incomplete
+          </span>
+
+          {% endif %}
+        </div>
+
+        <!-- REPORT MESSAGE -->
+        <div
+          class="report-status-banner {% if project_data.report.status == 'submitted' %} report-success-banner {% else %} report-incomplete-banner {% endif %}"
+        >
+          <div class="report-banner-icon">
+            {% if project_data.report.status == 'submitted' %}
+
+            <i class="bi bi-check-lg"></i>
+
+            {% else %}
+
+            <i class="bi bi-pencil-fill"></i>
+
+            {% endif %}
+          </div>
+
+          <div>
+            {% if project_data.report.status == 'submitted' %}
+
+            <strong> Report submitted </strong>
+
+            <span> This daily report has been completed successfully. </span>
+
+            {% else %}
+
+            <strong> Report incomplete </strong>
+
+            <span> Continue the report and submit today's information. </span>
+
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- REPORT DETAILS -->
+        <div class="report-details">
+          <!-- STATUS -->
+          <div class="report-detail-row">
+            <div class="report-detail-label">
+              <i class="bi bi-circle-half"></i>
+              Status
+            </div>
+
+            {% if project_data.report.status == 'submitted' %}
+
+            <span class="detail-status detail-status-success">
+              {{project_data.report_status}}
+            </span>
+
+            {% else %}
+
+            <span class="detail-status detail-status-warning">
+              {{project_data.report_status}}
+            </span>
+
+            {% endif %}
+          </div>
+
+          <!-- DATE -->
+          <div class="report-detail-row">
+            <div class="report-detail-label">
+              <i class="bi bi-calendar3"></i>
+              Report Date
+            </div>
+
+            <span class="report-detail-value">
+              {{project_data.report.report_date}}
+            </span>
+          </div>
+
+          <!-- CREATED -->
+          <div class="report-detail-row">
+            <div class="report-detail-label">
+              <i class="bi bi-clock"></i>
+              Created
+            </div>
+
+            <span class="report-detail-value">
+              {{project_data.report.created_at|time:"g:i A"}}
+            </span>
+          </div>
+
+          <!-- SUBMITTED -->
+          <div class="report-detail-row">
+            <div class="report-detail-label">
+              <i class="bi bi-send"></i>
+              Submitted
+            </div>
+
+            {% if project_data.report.submitted_at == None %}
+
+            <span class="report-detail-value report-not-submitted">
+              Not submitted
+            </span>
+
+            {% else %}
+
+            <span class="report-detail-value">
+              {{project_data.report.submitted_at}}
+            </span>
+
+            {% endif %}
+          </div>
+
+          <!-- PREPARED BY -->
+          <div class="report-detail-row">
+            <div class="report-detail-label">
+              <i class="bi bi-person"></i>
+              Prepared by
+            </div>
+
+            <span class="report-detail-value">
+              {{project_data.report.created_by.first_name}}
+              {{project_data.report.created_by.last_name}}
+            </span>
+          </div>
+
+          <!-- COMPLETED BY -->
+          {% if project_data.report.completed_by %}
+
+          <div class="report-detail-row">
+            <div class="report-detail-label">
+              <i class="bi bi-person-check"></i>
+              Completed by
+            </div>
+
+            <span class="report-detail-value">
+              {{project_data.report.completed_by.first_name}}
+              {{project_data.report.completed_by.last_name}}
+            </span>
+          </div>
+
+          {% endif %}
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="inspection-report-actions">
+          <button type="button" class="secondary-action-button">
+            <span>View History</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+
+          <a
+            href="{% url 'report:create-report' project.uuid %}"
+            hx-get="{% url 'report:create-report' project.uuid %}"
+            hx-target="#content"
+            hx-push-url="true"
+            class="primary-action-button"
+          >
+            {% if project_data.report.status == 'submitted' %}
+            <span>View Report</span>
+            {% else %}
+            <span>Continue Report</span>
+            {% endif %}
+
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      {% else %}
+
+      <!-- =====================================================
+       REPORT MISSING
+  ====================================================== -->
+
+      <div class="inspection-report-card empty-report-card h-100">
+        <div class="empty-operation-state">
+          <div class="empty-operation-icon report-empty-icon">
+            <span class="material-symbols-outlined"> description </span>
+          </div>
+
+          <span class="missing-label"> ACTION REQUIRED </span>
+
+          <h5>Daily Report Missing</h5>
+
+          <p>Today's daily report hasn't been created for this project yet.</p>
+
+          <div class="empty-operation-actions">
+            <a
+              href="{% url 'report:create-report' project.uuid %}"
+              hx-get="{% url 'report:create-report' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+              class="primary-action-button"
+            >
+              <span>Create Daily Report</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+
+            <button type="button" class="secondary-action-button">
+              <span>View History</span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+
+    <style>
+      /* =========================================================
+   SHARED CARD
+========================================================= */
+
+      .inspection-report-card {
+        background: #ffffff;
+
+        border: 1px solid #e7e9ec;
+        border-radius: 18px;
+
+        padding: 20px;
+      }
+
+      /* =========================================================
+   HEADER
+========================================================= */
+
+      .inspection-report-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        margin-bottom: 18px;
+      }
+
+      .inspection-report-heading {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+
+        min-width: 0;
+      }
+
+      .section-icon {
+        width: 41px;
+        height: 41px;
+        min-width: 41px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 11px;
+      }
+
+      .section-icon .material-symbols-outlined {
+        font-size: 20px;
+      }
+
+      .inspection-section-icon {
+        background: #edf6ff;
+        color: #2878c8;
+      }
+
+      .report-section-icon {
+        background: #f3efff;
+        color: #7354c7;
+      }
+
+      .section-main-title {
+        color: #22272c;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .section-subtitle {
+        display: block;
+
+        margin-top: 2px;
+
+        color: #9299a1;
+        font-size: 10px;
+      }
+
+      /* =========================================================
+   STATUS PILLS
+========================================================= */
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 6px 9px;
+
+        border-radius: 999px;
+
+        font-size: 10px;
+        font-weight: 700;
+
+        white-space: nowrap;
+      }
+
+      .status-pill i {
+        font-size: 10px;
+      }
+
+      .status-dot {
+        width: 6px;
+        height: 6px;
+
+        border-radius: 50%;
+      }
+
+      .status-incomplete {
+        background: #fff5df;
+        color: #9b7105;
+      }
+
+      .status-incomplete .status-dot {
+        background: #e0a500;
+      }
+
+      .status-ready {
+        background: #eef6ff;
+        color: #3171bd;
+      }
+
+      .status-complete {
+        background: #edf8f1;
+        color: #29844a;
+      }
+
+      /* =========================================================
+   INSPECTION SUMMARY
+========================================================= */
+
+      .inspection-summary {
+        padding: 12px 13px;
+
+        margin-bottom: 13px;
+
+        background: #f8f9fa;
+
+        border: 1px solid #eef0f2;
+        border-radius: 11px;
+      }
+
+      .summary-label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #7d858d;
+
+        font-size: 10px;
+        font-weight: 600;
+      }
+
+      .inspection-progress-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .inspection-progress {
+        flex: 1;
+
+        height: 6px;
+
+        background: #e5e8eb;
+
+        border-radius: 999px;
+
+        overflow: hidden;
+      }
+
+      .inspection-progress-bar {
+        height: 100%;
+
+        background: #2878c8;
+
+        border-radius: inherit;
+      }
+
+      .inspection-progress-text {
+        color: #4e565e;
+
+        font-size: 10px;
+        font-weight: 700;
+
+        white-space: nowrap;
+      }
+
+      /* =========================================================
+   CATEGORY LIST
+========================================================= */
+
+      .inspection-category-list {
+        display: flex;
+        flex-direction: column;
+
+        border: 1px solid #eceef0;
+        border-radius: 12px;
+
+        overflow: hidden;
+      }
+
+      .inspection-category {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 10px;
+
+        padding: 11px 12px;
+
+        border-bottom: 1px solid #eef0f2;
+      }
+
+      .inspection-category:last-child {
+        border-bottom: none;
+      }
+
+      .category-left {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        min-width: 0;
+      }
+
+      .category-status-dot {
+        width: 8px;
+        height: 8px;
+        min-width: 8px;
+
+        border-radius: 50%;
+      }
+
+      .category-complete {
+        background: #2ca253;
+      }
+
+      .category-started {
+        background: #e2a700;
+      }
+
+      .category-missing {
+        background: #adb5bd;
+      }
+
+      .category-content {
+        display: flex;
+        flex-direction: column;
+
+        min-width: 0;
+      }
+
+      .category-title {
+        color: #353b41;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .category-progress-text {
+        margin-top: 2px;
+
+        color: #9aa0a6;
+
+        font-size: 9px;
+      }
+
+      .category-right {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        flex-shrink: 0;
+      }
+
+      .category-status,
+      .failed-pill {
+        padding: 4px 7px;
+
+        border-radius: 6px;
+
+        font-size: 9px;
+        font-weight: 700;
+
+        white-space: nowrap;
+      }
+
+      .status-missing {
+        background: #f1f2f3;
+        color: #737a81;
+      }
+
+      .status-complete-soft {
+        background: #edf8f1;
+        color: #29844a;
+      }
+
+      .status-started-soft {
+        background: #fff5df;
+        color: #997000;
+      }
+
+      .failed-pill {
+        background: #fff0f1;
+        color: #c83241;
+      }
+
+      .failed-pill i {
+        font-size: 8px;
+        margin-right: 2px;
+      }
+
+      /* =========================================================
+   REPORT BANNER
+========================================================= */
+
+      .report-status-banner {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 11px;
+
+        margin-bottom: 12px;
+
+        border-radius: 11px;
+      }
+
+      .report-success-banner {
+        background: #edf8f1;
+        color: #287e47;
+      }
+
+      .report-incomplete-banner {
+        background: #fff7e7;
+        color: #927000;
+      }
+
+      .report-banner-icon {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: rgba(255, 255, 255, 0.65);
+      }
+
+      .report-banner-icon i {
+        font-size: 13px;
+      }
+
+      .report-status-banner strong {
+        display: block;
+
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .report-status-banner span {
+        display: block;
+
+        margin-top: 2px;
+
+        font-size: 9px;
+        opacity: 0.8;
+      }
+
+      /* =========================================================
+   REPORT DETAILS
+========================================================= */
+
+      .report-details {
+        border: 1px solid #eceef0;
+        border-radius: 12px;
+
+        overflow: hidden;
+      }
+
+      .report-detail-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        min-height: 43px;
+
+        padding: 8px 12px;
+
+        border-bottom: 1px solid #eef0f2;
+      }
+
+      .report-detail-row:last-child {
+        border-bottom: none;
+      }
+
+      .report-detail-label {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+
+        color: #858c94;
+
+        font-size: 10px;
+      }
+
+      .report-detail-label i {
+        width: 14px;
+
+        color: #a2a8ae;
+        font-size: 10px;
+      }
+
+      .report-detail-value {
+        color: #3c4248;
+
+        font-size: 10px;
+        font-weight: 700;
+
+        text-align: right;
+      }
+
+      .detail-status {
+        padding: 4px 8px;
+
+        border-radius: 999px;
+
+        font-size: 9px;
+        font-weight: 700;
+
+        text-transform: capitalize;
+      }
+
+      .detail-status-success {
+        background: #edf8f1;
+        color: #29844a;
+      }
+
+      .detail-status-warning {
+        background: #fff5df;
+        color: #997000;
+      }
+
+      .report-not-submitted {
+        color: #d63948;
+      }
+
+      /* =========================================================
+   ACTIONS
+========================================================= */
+
+      .inspection-report-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
+
+        margin-top: 15px;
+      }
+
+      .primary-action-button,
+      .secondary-action-button {
+        min-height: 39px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        padding: 9px 12px;
+
+        border-radius: 9px;
+
+        font-size: 10px;
+        font-weight: 700;
+
+        text-decoration: none;
+
+        cursor: pointer;
+      }
+
+      .primary-action-button {
+        border: 1px solid #0d6efd;
+
+        background: #0d6efd;
+        color: #ffffff;
+      }
+
+      .primary-action-button:hover {
+        background: #0b5ed7;
+        color: #ffffff;
+      }
+
+      .secondary-action-button {
+        border: 1px solid #dfe3e6;
+
+        background: #ffffff;
+        color: #4d555c;
+      }
+
+      .secondary-action-button:hover {
+        background: #f8f9fa;
+      }
+
+      .primary-action-button i,
+      .secondary-action-button i {
+        font-size: 10px;
+      }
+
+      /* =========================================================
+   EMPTY STATES
+========================================================= */
+
+      .empty-inspection-card,
+      .empty-report-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .empty-operation-state {
+        width: 100%;
+
+        max-width: 370px;
+
+        padding: 35px 20px;
+
+        text-align: center;
+      }
+
+      .empty-operation-icon {
+        width: 55px;
+        height: 55px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 auto 12px;
+
+        border-radius: 15px;
+      }
+
+      .empty-operation-icon .material-symbols-outlined {
+        font-size: 25px;
+      }
+
+      .inspection-empty-icon {
+        background: #edf6ff;
+        color: #2878c8;
+      }
+
+      .report-empty-icon {
+        background: #f3efff;
+        color: #7354c7;
+      }
+
+      .missing-label {
+        display: inline-block;
+
+        margin-bottom: 7px;
+
+        color: #d18a00;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        letter-spacing: 0.08em;
+      }
+
+      .empty-operation-state h5 {
+        margin-bottom: 7px;
+
+        color: #252a2f;
+
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .empty-operation-state p {
+        margin-bottom: 20px;
+
+        color: #858c94;
+
+        font-size: 11px;
+        line-height: 1.55;
+      }
+
+      .empty-operation-state p strong {
+        color: #353b41;
+      }
+
+      .empty-operation-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
+
+        max-width: 320px;
+
+        margin: 0 auto;
+      }
+
+      /* =========================================================
+   TABLET
+========================================================= */
+
+      @media (max-width: 991px) {
+        .inspection-report-card {
+          padding: 17px;
+        }
+      }
+
+      /* =========================================================
+   MOBILE
+========================================================= */
+
+      @media (max-width: 576px) {
+        .inspection-report-card {
+          padding: 15px;
+
+          border-radius: 15px;
+        }
+
+        .inspection-report-header {
+          gap: 10px;
+        }
+
+        .inspection-report-heading {
+          gap: 9px;
+        }
+
+        .section-icon {
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
+
+          border-radius: 10px;
+        }
+
+        .section-icon .material-symbols-outlined {
+          font-size: 18px;
+        }
+
+        .section-main-title {
+          font-size: 14px;
+        }
+
+        .section-subtitle {
+          font-size: 9px;
+        }
+
+        .status-pill {
+          padding: 5px 7px;
+
+          font-size: 9px;
+        }
+
+        /* Inspection */
+
+        .inspection-summary {
+          padding: 10px;
+        }
+
+        .inspection-category {
+          padding: 10px;
+        }
+
+        .category-title {
+          font-size: 10px;
+        }
+
+        .category-progress-text {
+          font-size: 8px;
+        }
+
+        .category-status,
+        .failed-pill {
+          font-size: 8px;
+          padding: 4px 6px;
+        }
+
+        /* Report */
+
+        .report-detail-row {
+          min-height: 41px;
+
+          padding: 8px 10px;
+        }
+
+        .report-detail-label {
+          font-size: 9px;
+        }
+
+        .report-detail-value {
+          font-size: 9px;
+        }
+
+        .report-status-banner {
+          padding: 10px;
+        }
+
+        /* Buttons */
+
+        .inspection-report-actions {
+          gap: 7px;
+        }
+
+        .primary-action-button,
+        .secondary-action-button {
+          min-height: 40px;
+
+          padding: 9px 8px;
+
+          font-size: 9px;
+        }
+      }
+
+      /* =========================================================
+   SMALL PHONES
+========================================================= */
+
+      @media (max-width: 380px) {
+        .inspection-report-header {
+          align-items: flex-start;
+        }
+
+        .inspection-report-heading {
+          min-width: 0;
+        }
+
+        .status-pill {
+          font-size: 8px;
+        }
+
+        .inspection-category {
+          align-items: flex-start;
+        }
+
+        .category-right {
+          flex-direction: column;
+          align-items: flex-end;
+        }
+
+        .empty-operation-state {
+          padding: 28px 10px;
+        }
+
+        .empty-operation-actions {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </div>
+</section>
+
+<!-- =========================================================
+     ISSUES AND TASKS
+========================================================= -->
+<section class="section-spacing">
+  <!-- =========================================================
+     ISSUES
+========================================================= -->
+  <div class="row g-3">
+    <div class="col-12 col-lg-6 scroll-section" id="IssuesSection">
+      {% if project_data.open_issues %}
+
+      <div class="operations-card h-100">
+        <!-- SECTION HEADER -->
+        <div class="operations-header">
+          <div class="operations-heading">
+            <div class="section-icon issue-section-icon">
+              <span class="material-symbols-outlined">warning</span>
+            </div>
+
+            <div>
+              <h5 class="operations-title mb-0">Open Issues</h5>
+
+              <span class="operations-count">
+                {{project_data.open_issues_count}} open
+              </span>
+            </div>
+          </div>
+
+          <div class="operations-actions">
+            <a
+              href="{% url 'issues:project-issues' project.uuid %}"
+              hx-get="{% url 'issues:project-issues' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+              class="section-link"
+            >
+              See All
+            </a>
+
+            <a
+              href="{% url 'issues:log-issue' project.uuid %}"
+              hx-get="{% url 'issues:log-issue' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+              class="section-add-button"
+            >
+              <i class="bi bi-plus-lg"></i>
+              <span>Add Issue</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- ISSUES LIST -->
+        <div class="operations-list">
+          {% for data in project_data.open_issues %}
+
+          <div class="operation-item issue-item">
+            <!-- ICON -->
+            <div class="operation-icon issue-item-icon">
+              <span class="material-symbols-outlined">warning</span>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="operation-content">
+              <div class="operation-top">
+                <h6 class="operation-title mb-0">{{data.issue.title}}</h6>
+
+                <!-- PRIORITY -->
+                {% if data.issue.priority == 'high' %}
+                <span class="priority-pill priority-high">
+                  <span class="priority-dot"></span>
+                  High
+                </span>
+
+                {% elif data.issue.priority == 'medium' %}
+                <span class="priority-pill priority-medium">
+                  <span class="priority-dot"></span>
+                  Medium
+                </span>
+
+                {% else %}
+                <span class="priority-pill priority-low">
+                  <span class="priority-dot"></span>
+                  Low
+                </span>
+                {% endif %}
+              </div>
+
+              <!-- DESCRIPTION -->
+              {% if data.issue.description %}
+              <p class="operation-description">{{data.issue.description}}</p>
+              {% endif %}
+
+              <!-- META -->
+              <div class="operation-meta">
+                <!-- DUE DATE -->
+                {% if data.issue.due_date == today %}
+
+                <span class="meta-pill meta-due-today">
+                  <i class="bi bi-calendar2-check-fill"></i>
+                  Due Today
+                </span>
+
+                {% else %}
+
+                <span class="meta-pill meta-due">
+                  <i class="bi bi-calendar2"></i>
+                  {{data.issue_text}}
+                </span>
+
+                {% endif %}
+
+                <!-- ASSIGNED TO YOU -->
+                {% if data.issue.assigned_to == current_user %}
+
+                <span class="meta-pill meta-assigned">
+                  <i class="bi bi-person-check-fill"></i>
+                  Assigned to you
+                </span>
+
+                {% endif %}
+              </div>
+
+              <!-- BOTTOM -->
+              <div class="operation-bottom">
+                <div class="assigned-info">
+                  <div class="mini-avatar">
+                    {{data.issue.assigned_to.first_name|first|upper}}
+                  </div>
+
+                  <span>
+                    {{data.issue.assigned_to.first_name}}
+                    {{data.issue.assigned_to.last_name}}
+                  </span>
+                </div>
+
+                <button type="button" class="operation-view-button">
+                  View Issue
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+
+        <!-- VIEW ALL -->
+        {% if project_data.open_issues_count > 4 %}
+
+        <a
+          href="{% url 'issues:project-issues' project.uuid %}"
+          hx-get="{% url 'issues:project-issues' project.uuid %}"
+          hx-target="#content"
+          hx-push-url="true"
+          class="view-all-button"
+        >
+          <span> View all {{project_data.open_issues_count}} issues </span>
+
+          <i class="bi bi-arrow-right"></i>
+        </a>
+
+        {% endif %}
+      </div>
+
+      {% else %}
+
+      <!-- EMPTY ISSUES STATE -->
+      <div class="operations-card empty-operation-card h-100">
+        <div class="empty-state">
+          <div class="empty-icon issue-empty-icon">
+            <i class="bi bi-check-lg"></i>
+          </div>
+
+          <h5>No Open Issues</h5>
+
+          <p>
+            There are currently no open issues for this project. Everything is
+            on track.
+          </p>
+
+          <div class="empty-actions">
+            <a
+              href="{% url 'issues:log-issue' project.uuid %}"
+              hx-get="{% url 'issues:log-issue' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+              class="empty-primary-button"
+            >
+              <i class="bi bi-plus-lg"></i>
+              Add Issue
+            </a>
+
+            <button type="button" class="empty-secondary-button">
+              View History
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+
+    <!-- =========================================================
+     TASKS
+========================================================= -->
+    <div class="col-12 col-lg-6 scroll-section" id="TaskSession">
+      {% if project_data.open_tasks %}
+
+      <div class="operations-card h-100">
+        <!-- SECTION HEADER -->
+        <div class="operations-header">
+          <div class="operations-heading">
+            <div class="section-icon task-section-icon">
+              <span class="material-symbols-outlined"> assignment </span>
+            </div>
+
+            <div>
+              <h5 class="operations-title mb-0">Open Tasks</h5>
+
+              <span class="operations-count">
+                {{project_data.tasks_count}} open
+              </span>
+            </div>
+          </div>
+
+          <div class="operations-actions">
+            <button type="button" class="section-link">See All</button>
+
+            <a
+              href="{% url 'issues:add-task' project.uuid %}"
+              hx-get="{% url 'issues:add-task' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+              class="section-add-button"
+            >
+              <i class="bi bi-plus-lg"></i>
+              <span>Add Task</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- TASK LIST -->
+        <div class="operations-list">
+          {% for data in project_data.open_tasks %}
+
+          <div class="operation-item task-item">
+            <!-- ICON -->
+            <div class="operation-icon task-item-icon">
+              <span class="material-symbols-outlined"> assignment </span>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="operation-content">
+              <div class="operation-top">
+                <h6 class="operation-title mb-0">{{data.task.description}}</h6>
+
+                <!-- PRIORITY -->
+                {% if data.task.priority == 'high' %}
+
+                <span class="priority-pill priority-high">
+                  <span class="priority-dot"></span>
+                  High
+                </span>
+
+                {% elif data.task.priority == 'medium' %}
+
+                <span class="priority-pill priority-medium">
+                  <span class="priority-dot"></span>
+                  Medium
+                </span>
+
+                {% else %}
+
+                <span class="priority-pill priority-low">
+                  <span class="priority-dot"></span>
+                  Low
+                </span>
+
+                {% endif %}
+              </div>
+
+              <!-- META -->
+              <div class="operation-meta">
+                <!-- DUE DATE -->
+                {% if data.task.due_date == today %}
+
+                <span class="meta-pill meta-due-today">
+                  <i class="bi bi-calendar2-check-fill"></i>
+                  Due Today
+                </span>
+
+                {% else %}
+
+                <span class="meta-pill meta-due">
+                  <i class="bi bi-calendar2"></i>
+                  {{data.task_text}}
+                </span>
+
+                {% endif %}
+
+                <!-- ASSIGNED TO YOU -->
+                {% if data.task.assigned_to == current_user %}
+
+                <span class="meta-pill meta-assigned">
+                  <i class="bi bi-person-check-fill"></i>
+                  Assigned to you
+                </span>
+
+                {% endif %}
+              </div>
+
+              <!-- BOTTOM -->
+              <div class="operation-bottom">
+                <div class="assigned-info">
+                  <div class="mini-avatar task-avatar">
+                    {{data.task.assigned_to.first_name|first|upper}}
+                  </div>
+
+                  <span>
+                    {{data.task.assigned_to.first_name}}
+                    {{data.task.assigned_to.last_name}}
+                  </span>
+                </div>
+
+                <button type="button" class="operation-view-button">
+                  View Task
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+
+        <!-- VIEW ALL -->
+        {% if project_data.overdue_tasks_count > 4 %}
+
+        <button type="button" class="view-all-button">
+          <span> View all {{project_data.overdue_tasks_count}} tasks </span>
+
+          <i class="bi bi-arrow-right"></i>
+        </button>
+
+        {% endif %}
+      </div>
+
+      {% else %}
+
+      <!-- EMPTY TASK STATE -->
+      <div class="operations-card empty-operation-card h-100">
+        <div class="empty-state">
+          <div class="empty-icon task-empty-icon">
+            <i class="bi bi-list-check"></i>
+          </div>
+
+          <h5>No Open Tasks</h5>
+
+          <p>There are currently no open tasks for this project.</p>
+
+          <div class="empty-actions">
+            <a
+              href="{% url 'issues:add-task' project.uuid %}"
+              hx-get="{% url 'issues:add-task' project.uuid %}"
+              hx-target="#content"
+              hx-push-url="true"
+              class="empty-primary-button"
+            >
+              <i class="bi bi-plus-lg"></i>
+              Add Task
+            </a>
+
+            <button type="button" class="empty-secondary-button">
+              View History
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+  </div>
+  <style>
+    /* =========================================================
+   OPERATIONS CARD
+========================================================= */
+
+    .operations-card {
+      background: #ffffff;
+      border: 1px solid #e8eaed;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    /* =========================================================
+   SECTION HEADER
+========================================================= */
+
+    .operations-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .operations-heading {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 11px;
+    }
+
+    .section-icon .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    .issue-section-icon {
+      background: #fff0f1;
+      color: #d63948;
+    }
+
+    .task-section-icon {
+      background: #edf5ff;
+      color: #3679c9;
+    }
+
+    .operations-title {
+      color: #202428;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .operations-count {
+      display: block;
+      margin-top: 2px;
+
+      color: #9299a1;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .operations-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .section-link {
+      border: 0;
+      background: transparent;
+
+      padding: 7px 8px;
+
+      color: #6c757d;
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 600;
+
+      cursor: pointer;
+    }
+
+    .section-link:hover {
+      color: #0d6efd;
+    }
+
+    .section-add-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+
+      padding: 8px 12px;
+
+      border-radius: 9px;
+
+      background: #0d6efd;
+      color: #ffffff;
+
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 600;
+
+      white-space: nowrap;
+    }
+
+    .section-add-button:hover {
+      color: #ffffff;
+      background: #0b5ed7;
+    }
+
+    /* =========================================================
+   LIST
+========================================================= */
+
+    .operations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    /* =========================================================
+   OPERATION ITEM
+========================================================= */
+
+    .operation-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+
+      padding: 13px;
+
+      border: 1px solid #eceef0;
+      border-radius: 13px;
+
+      background: #ffffff;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .operation-item:hover {
+      border-color: #dfe3e7;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    /* =========================================================
+   OPERATION ICON
+========================================================= */
+
+    .operation-icon {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9px;
+    }
+
+    .operation-icon .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    .issue-item-icon {
+      background: #fff2f2;
+      color: #d63948;
+    }
+
+    .task-item-icon {
+      background: #eef5ff;
+      color: #3679c9;
+    }
+
+    /* =========================================================
+   CONTENT
+========================================================= */
+
+    .operation-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .operation-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .operation-title {
+      color: #292d32;
+
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 700;
+
+      overflow-wrap: anywhere;
+    }
+
+    .operation-description {
+      margin: 5px 0 0;
+
+      color: #777f87;
+
+      font-size: 12px;
+      line-height: 1.5;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* =========================================================
+   PRIORITY
+========================================================= */
+
+    .priority-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+
+      padding: 4px 8px;
+
+      border-radius: 999px;
+
+      font-size: 10px;
+      font-weight: 700;
+
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .priority-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .priority-high {
+      background: #fff0f1;
+      color: #c52f3e;
+    }
+
+    .priority-high .priority-dot {
+      background: #dc3545;
+    }
+
+    .priority-medium {
+      background: #fff7df;
+      color: #987000;
+    }
+
+    .priority-medium .priority-dot {
+      background: #e3a900;
+    }
+
+    .priority-low {
+      background: #edf8f1;
+      color: #278449;
+    }
+
+    .priority-low .priority-dot {
+      background: #2ca253;
+    }
+
+    /* =========================================================
+   META
+========================================================= */
+
+    .operation-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+
+      margin-top: 9px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+
+      padding: 4px 7px;
+
+      border-radius: 7px;
+
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .meta-pill i {
+      font-size: 10px;
+    }
+
+    .meta-due {
+      background: #f4f5f6;
+      color: #6f767d;
+    }
+
+    .meta-due-today {
+      background: #fff0f1;
+      color: #c52f3e;
+    }
+
+    .meta-assigned {
+      background: #edf4ff;
+      color: #356fc1;
+    }
+
+    /* =========================================================
+   BOTTOM
+========================================================= */
+
+    .operation-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+
+      margin-top: 11px;
+      padding-top: 10px;
+
+      border-top: 1px solid #f0f1f2;
+    }
+
+    .assigned-info {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      min-width: 0;
+
+      color: #747b82;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .mini-avatar {
+      width: 25px;
+      height: 25px;
+      min-width: 25px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: #f0f1f2;
+      color: #555d65;
+
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .task-avatar {
+      background: #edf4ff;
+      color: #3679c9;
+    }
+
+    .operation-view-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+
+      border: 0;
+      background: transparent;
+
+      padding: 4px 0;
+
+      color: #0d6efd;
+
+      font-size: 10px;
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+    .operation-view-button:hover {
+      color: #0a58ca;
+    }
+
+    .operation-view-button i {
+      font-size: 10px;
+    }
+
+    /* =========================================================
+   VIEW ALL
+========================================================= */
+
+    .view-all-button {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      margin-top: 14px;
+      padding: 10px;
+
+      border: 1px solid #e2e5e8;
+      border-radius: 9px;
+
+      background: #ffffff;
+      color: #4f565d;
+
+      text-decoration: none;
+
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .view-all-button:hover {
+      background: #f8f9fa;
+      color: #0d6efd;
+    }
+
+    .view-all-button i {
+      font-size: 11px;
+    }
+
+    /* =========================================================
+   EMPTY STATE
+========================================================= */
+
+    .empty-operation-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .empty-state {
+      width: 100%;
+      max-width: 380px;
+
+      padding: 30px 15px;
+
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 50px;
+      height: 50px;
+
+      margin: 0 auto 13px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 14px;
+
+      font-size: 21px;
+    }
+
+    .issue-empty-icon {
+      background: #edf8f1;
+      color: #2d9a50;
+    }
+
+    .task-empty-icon {
+      background: #edf4ff;
+      color: #3679c9;
+    }
+
+    .empty-state h5 {
+      margin-bottom: 6px;
+
+      color: #252a2f;
+
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .empty-state p {
+      margin-bottom: 20px;
+
+      color: #858c93;
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .empty-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      max-width: 230px;
+
+      margin: 0 auto;
+    }
+
+    .empty-primary-button,
+    .empty-secondary-button {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+
+      padding: 10px 14px;
+
+      border-radius: 9px;
+
+      font-size: 11px;
+      font-weight: 600;
+
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .empty-primary-button {
+      border: 0;
+
+      background: #0d6efd;
+      color: #ffffff;
+    }
+
+    .empty-primary-button:hover {
+      background: #0b5ed7;
+      color: #ffffff;
+    }
+
+    .empty-secondary-button {
+      border: 1px solid #dfe3e6;
+
+      background: #ffffff;
+      color: #454b51;
+    }
+
+    .empty-secondary-button:hover {
+      background: #f8f9fa;
+    }
+
+    /* =========================================================
+   MOBILE
+========================================================= */
+
+    @media (max-width: 991px) {
+      .operations-card {
+        padding: 17px;
+      }
+    }
+
+    /* =========================================================
+   MOBILE PHONES
+========================================================= */
+
+    @media (max-width: 576px) {
+      .operations-card {
+        padding: 15px;
+        border-radius: 15px;
+      }
+
+      .operations-header {
+        align-items: flex-start;
+        margin-bottom: 14px;
+      }
+
+      .operations-heading {
+        gap: 9px;
+      }
+
+      .section-icon {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        border-radius: 10px;
+      }
+
+      .section-icon .material-symbols-outlined {
+        font-size: 18px;
+      }
+
+      .operations-title {
+        font-size: 14px;
+      }
+
+      .operations-count {
+        font-size: 10px;
+      }
+
+      .operations-actions {
+        gap: 3px;
+      }
+
+      .section-link {
+        padding: 6px;
+        font-size: 11px;
+      }
+
+      .section-add-button {
+        padding: 8px 9px;
+        font-size: 11px;
+      }
+
+      .section-add-button span {
+        display: none;
+      }
+
+      .section-add-button i {
+        margin: 0;
+      }
+
+      /* ITEMS */
+
+      .operation-item {
+        gap: 9px;
+        padding: 11px;
+        border-radius: 11px;
+      }
+
+      .operation-icon {
+        width: 31px;
+        height: 31px;
+        min-width: 31px;
+      }
+
+      .operation-icon .material-symbols-outlined {
+        font-size: 16px;
+      }
+
+      .operation-title {
+        font-size: 12px;
+      }
+
+      .operation-description {
+        font-size: 11px;
+      }
+
+      /* Priority */
+
+      .priority-pill {
+        padding: 4px 7px;
+        font-size: 9px;
+      }
+
+      .priority-dot {
+        width: 5px;
+        height: 5px;
+      }
+
+      /* Meta */
+
+      .operation-meta {
+        margin-top: 8px;
+      }
+
+      .meta-pill {
+        padding: 4px 6px;
+        font-size: 9px;
+      }
+
+      /* Bottom */
+
+      .operation-bottom {
+        margin-top: 9px;
+        padding-top: 9px;
+      }
+
+      .assigned-info {
+        font-size: 9px;
+      }
+
+      .mini-avatar {
+        width: 23px;
+        height: 23px;
+        min-width: 23px;
+        font-size: 8px;
+      }
+
+      .operation-view-button {
+        font-size: 9px;
+      }
+    }
+
+    /* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+    @media (max-width: 380px) {
+      .operations-header {
+        flex-wrap: wrap;
+      }
+
+      .operations-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .operation-top {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .priority-pill {
+        align-self: flex-start;
+      }
+
+      .operation-bottom {
+        align-items: flex-start;
+      }
+
+      .assigned-info {
+        max-width: 55%;
+      }
+
+      .assigned-info span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</section>
+
+<!-- =========================================================
+     INCIDENTS AND DELIVERIES
+========================================================= -->
+<div class="row">
+  <div class="col-12 col-md-6">
+    {% if incidents %}
+    <section class="incidents_section">
+      <!-- ========================= SECTION HEADER ========================== -->
+      <div class="incidents_header">
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="incidents_title mb-0">Incidents</h5>
+            <span class="incidents_count"> {{ incidents_count }} </span>
+          </div>
+          <p class="incidents_subtitle mb-0">Incidents recorded today</p>
+        </div>
+        <div class="incidents_header_actions">
+          <!-- Desktop -->
+          <button
+            type="button"
+            class="btn incidents_history_btn d-none d-md-inline-flex"
+          >
+            View all
+          </button>
+          <button
+            type="button"
+            class="btn incidents_add_btn"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#incidentOffcanvas"
+            aria-controls="incidentOffcanvas"
+          >
+            <i class="bi bi-plus-lg"></i>
+            <span class="d-none d-sm-inline">Add Incident</span>
+            <span class="d-sm-none">Add</span>
+          </button>
+        </div>
+      </div>
+      <!-- ========================= INCIDENT LIST ========================== -->
+      <div class="incidents_list">
+        {% for data in incidents %}
+        <div class="incident_card">
+          <!-- Severity indicator -->
+          <div
+            class="incident_severity_bar {% if data.severity == 'high' %} incident_severity_high {% elif data.severity == 'medium' %} incident_severity_medium {% else %} incident_severity_low {% endif %}"
+          ></div>
+          <div class="incident_card_content">
+            <!-- Icon -->
+            <div
+              class="incident_icon {% if data.severity == 'high' %} incident_icon_high {% elif data.severity == 'medium' %} incident_icon_medium {% else %} incident_icon_low {% endif %}"
+            >
+              <span class="material-symbols-outlined"> emergency </span>
+            </div>
+            <!-- Main content -->
+            <div class="incident_main">
+              <!-- Type -->
+              <div class="incident_type">{{ data.incident_type }}</div>
+              <!-- Title -->
+              <h6 class="incident_title_text mb-0">{{ data.title }}</h6>
+              <!-- Meta -->
+              <div class="incident_meta">
+                <!-- Severity -->
+                {% if data.severity == 'high' %}
+                <span class="incident_badge incident_badge_high">
+                  <span class="incident_badge_dot"></span> High severity
+                </span>
+                {% elif data.severity == 'medium' %}
+                <span class="incident_badge incident_badge_medium">
+                  <span class="incident_badge_dot"></span> Medium severity
+                </span>
+                {% else %}
+                <span class="incident_badge incident_badge_low">
+                  <span class="incident_badge_dot"></span> Low severity
+                </span>
+                {% endif %}
+                <!-- Time -->
+                <span class="incident_time">
+                  <i class="bi bi-clock"></i> {{ data.incident_time|time:"g:i A"
+                  }}
+                </span>
+              </div>
+            </div>
+            <!-- Arrow -->
+            <div class="incident_arrow">
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- Mobile View All -->
+      <button type="button" class="btn incidents_mobile_view_all d-md-none">
+        View all incidents <i class="bi bi-arrow-right"></i>
+      </button>
+    </section>
+    {% else %}
+    <!-- ========================= EMPTY STATE ========================== -->
+    <section class="incidents_empty_section">
+      <div class="incident_empty_icon">
+        <span class="material-symbols-outlined"> emergency </span>
+      </div>
+      <h5 class="incident_empty_title">No incidents today</h5>
+      <p class="incident_empty_text">
+        No incidents have been recorded for this project today.
+      </p>
+      <div class="incident_empty_actions">
+        <button
+          type="button"
+          class="btn incidents_add_btn w-100"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#incidentOffcanvas"
+          aria-controls="incidentOffcanvas"
+        >
+          <i class="bi bi-plus-lg"></i> Add Incident
+        </button>
+        <button type="button" class="btn incidents_history_btn w-100">
+          View all incidents <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+    {% endif %}
+
+    <style>
+      /* ========================================= INCIDENTS SECTION ========================================= */
+      .incidents_section {
+        width: 100%;
+      } /* ========================================= HEADER ========================================= */
+      .incidents_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+      .incidents_title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #172033;
+      }
+      .incidents_count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 26px;
+        height: 24px;
+        padding: 0 8px;
+        border-radius: 999px;
+        background: #f1f3f5;
+        color: #495057;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .incidents_subtitle {
+        margin-top: 4px;
+        color: #8a94a6;
+        font-size: 13px;
+      }
+      .incidents_header_actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      } /* ========================================= BUTTONS ========================================= */
+      .incidents_add_btn {
+        min-height: 40px;
+        padding: 0 16px;
+        border: none;
+        border-radius: 10px;
+        background: #0d6efd;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+      }
+      .incidents_add_btn:hover {
+        background: #0b5ed7;
+        color: #fff;
+      }
+      .incidents_history_btn {
+        min-height: 40px;
+        padding: 0 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        background: #fff;
+        color: #495057;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+      }
+      .incidents_history_btn:hover {
+        background: #f8f9fa;
+      } /* ========================================= INCIDENT LIST ========================================= */
+      .incidents_list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      } /* ========================================= INCIDENT CARD ========================================= */
+      .incident_card {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid #e7eaf0;
+        border-radius: 14px;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease,
+          transform 0.15s ease;
+      }
+      .incident_card:hover {
+        border-color: #d8dde6;
+        box-shadow: 0 4px 16px rgba(20, 30, 50, 0.06);
+        transform: translateY(-1px);
+      } /* ========================================= SEVERITY BAR ========================================= */
+      .incident_severity_bar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 4px;
+      }
+      .incident_severity_high {
+        background: #dc3545;
+      }
+      .incident_severity_medium {
+        background: #f59f00;
+      }
+      .incident_severity_low {
+        background: #0d6efd;
+      } /* ========================================= CARD CONTENT ========================================= */
+      .incident_card_content {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 17px 16px 20px;
+      } /* ========================================= ICON ========================================= */
+      .incident_icon {
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .incident_icon .material-symbols-outlined {
+        font-size: 22px;
+      }
+      .incident_icon_high {
+        background: #fff0f1;
+        color: #dc3545;
+      }
+      .incident_icon_medium {
+        background: #fff7e6;
+        color: #e67700;
+      }
+      .incident_icon_low {
+        background: #eef5ff;
+        color: #0d6efd;
+      } /* ========================================= MAIN ========================================= */
+      .incident_main {
+        flex: 1;
+        min-width: 0;
+      }
+      .incident_type {
+        margin-bottom: 3px;
+        color: #8a94a6;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .incident_title_text {
+        color: #172033;
+        font-size: 15px;
+        font-weight: 650;
+        line-height: 1.35;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      } /* ========================================= META ========================================= */
+      .incident_meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 9px;
+      }
+      .incident_badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 650;
+      }
+      .incident_badge_dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+      }
+      .incident_badge_high {
+        background: #fff0f1;
+        color: #c92a2a;
+      }
+      .incident_badge_high .incident_badge_dot {
+        background: #dc3545;
+      }
+      .incident_badge_medium {
+        background: #fff7e6;
+        color: #d97706;
+      }
+      .incident_badge_medium .incident_badge_dot {
+        background: #f59f00;
+      }
+      .incident_badge_low {
+        background: #eef5ff;
+        color: #0d6efd;
+      }
+      .incident_badge_low .incident_badge_dot {
+        background: #0d6efd;
+      }
+      .incident_time {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: #7b8494;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .incident_time i {
+        font-size: 11px;
+      } /* ========================================= ARROW ========================================= */
+      .incident_arrow {
+        flex: 0 0 auto;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f7f8fa;
+        color: #7b8494;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .incident_arrow i {
+        font-size: 13px;
+      } /* ========================================= MOBILE VIEW ALL ========================================= */
+      .incidents_mobile_view_all {
+        width: 100%;
+        margin-top: 10px;
+        padding: 11px;
+        border: 1px solid #e3e6eb;
+        border-radius: 10px;
+        background: #fff;
+        color: #0d6efd;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .incidents_mobile_view_all i {
+        margin-left: 5px;
+      } /* ========================================= EMPTY STATE ========================================= */
+      .incidents_empty_section {
+        padding: 30px 20px;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #e7eaf0;
+        border-radius: 16px;
+      }
+      .incident_empty_icon {
+        width: 54px;
+        height: 54px;
+        margin: 0 auto 14px;
+        border-radius: 15px;
+        background: #f1f5f9;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .incident_empty_icon .material-symbols-outlined {
+        font-size: 26px;
+      }
+      .incident_empty_title {
+        margin-bottom: 5px;
+        color: #172033;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .incident_empty_text {
+        max-width: 360px;
+        margin: 0 auto 20px;
+        color: #8a94a6;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .incident_empty_actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 360px;
+        margin: 0 auto;
+      }
+      .incident_empty_actions .incidents_history_btn {
+        min-height: 42px;
+      } /* ========================================= TABLET ========================================= */
+      @media (max-width: 767.98px) {
+        .incidents_header {
+          margin-bottom: 14px;
+        }
+        .incidents_subtitle {
+          font-size: 12px;
+        }
+        .incidents_add_btn {
+          min-height: 38px;
+          padding: 0 13px;
+        }
+        .incident_card_content {
+          padding: 14px 13px 14px 17px;
+          gap: 11px;
+        }
+        .incident_icon {
+          flex-basis: 40px;
+          width: 40px;
+          height: 40px;
+          border-radius: 11px;
+        }
+        .incident_icon .material-symbols-outlined {
+          font-size: 20px;
+        }
+        .incident_title_text {
+          font-size: 14px;
+        }
+        .incident_arrow {
+          width: 30px;
+          height: 30px;
+        }
+      } /* ========================================= SMALL PHONES ========================================= */
+      @media (max-width: 420px) {
+        .incidents_header {
+          align-items: flex-start;
+        }
+        .incidents_title {
+          font-size: 16px;
+        }
+        .incidents_count {
+          min-width: 24px;
+          height: 22px;
+        }
+        .incidents_subtitle {
+          display: none;
+        }
+        .incidents_add_btn {
+          min-width: 42px;
+          width: 42px;
+          padding: 0;
+          border-radius: 10px;
+        }
+        .incident_card_content {
+          padding: 13px 10px 13px 15px;
+        }
+        .incident_meta {
+          gap: 6px;
+        }
+        .incident_badge {
+          font-size: 10px;
+          padding: 4px 7px;
+        }
+        .incident_time {
+          font-size: 10px;
+        }
+        .incident_arrow {
+          width: 28px;
+          height: 28px;
+        }
+      }
+    </style>
+  </div>
+  <div class="col-12 col-md-6">
+    {% if deliveries %}
+    <section class="deliveries_section">
+      <!-- ========================= SECTION HEADER ========================== -->
+      <div class="deliveries_header">
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="deliveries_title mb-0">Deliveries</h5>
+            <span class="deliveries_count"> {{ deliveries_count }} </span>
+          </div>
+          <p class="deliveries_subtitle mb-0">Deliveries recorded today</p>
+        </div>
+        <div class="deliveries_header_actions">
+          <!-- Desktop -->
+          <button
+            type="button"
+            class="btn deliveries_history_btn d-none d-md-inline-flex"
+          >
+            View all
+          </button>
+          <button
+            type="button"
+            class="btn deliveries_add_btn"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasDelivery"
+            aria-controls="offcanvasDelivery"
+          >
+            <i class="bi bi-plus-lg"></i>
+            <span class="d-none d-sm-inline"> Add Delivery </span>
+            <span class="d-sm-none"> Add </span>
+          </button>
+        </div>
+      </div>
+      <!-- ========================= DELIVERIES LIST ========================== -->
+      <div class="deliveries_list">
+        {% for data in deliveries %}
+        <div class="delivery_card">
+          <!-- Status indicator -->
+          <div
+            class="delivery_status_bar {% if data.status == 'Received' %} delivery_status_received {% elif data.status == 'Partially Received' %} delivery_status_partial {% else %} delivery_status_other {% endif %}"
+          ></div>
+          <div class="delivery_card_content">
+            <!-- Delivery Icon -->
+            <div
+              class="delivery_icon {% if data.status == 'Received' %} delivery_icon_received {% elif data.status == 'Partially Received' %} delivery_icon_partial {% else %} delivery_icon_other {% endif %}"
+            >
+              <span class="material-symbols-outlined"> local_shipping </span>
+            </div>
+            <!-- Main Content -->
+            <div class="delivery_main">
+              <!-- Reference -->
+              <div class="delivery_reference">{{ data.reference }}</div>
+              <!-- Supplier -->
+              <h6 class="delivery_supplier mb-0">{{ data.supplier }}</h6>
+              <!-- Meta -->
+              <div class="delivery_meta">
+                <!-- Status -->
+                {% if data.status == 'Received' %}
+                <span class="delivery_badge delivery_badge_received">
+                  <span class="delivery_badge_dot"></span> Received
+                </span>
+                {% elif data.status == 'Partially Received' %}
+                <span class="delivery_badge delivery_badge_partial">
+                  <span class="delivery_badge_dot"></span> Partially received
+                </span>
+                {% else %}
+                <span class="delivery_badge delivery_badge_other">
+                  <span class="delivery_badge_dot"></span> {{ data.status }}
+                </span>
+                {% endif %}
+                <!-- Time -->
+                <span class="delivery_time">
+                  <i class="bi bi-clock"></i> {{ data.delivery_time|time:"g:i A"
+                  }}
+                </span>
+              </div>
+            </div>
+            <!-- Arrow -->
+            <div class="delivery_arrow">
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- Mobile View All -->
+      <button type="button" class="btn deliveries_mobile_view_all d-md-none">
+        View all deliveries <i class="bi bi-arrow-right"></i>
+      </button>
+    </section>
+    {% else %}
+    <!-- ========================= EMPTY STATE ========================== -->
+    <section class="deliveries_empty_section">
+      <div class="delivery_empty_icon">
+        <span class="material-symbols-outlined"> local_shipping </span>
+      </div>
+      <h5 class="delivery_empty_title">No deliveries today</h5>
+      <p class="delivery_empty_text">
+        No deliveries have been recorded for this project today.
+      </p>
+      <div class="delivery_empty_actions">
+        <button
+          type="button"
+          class="btn deliveries_add_btn w-100"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasDelivery"
+          aria-controls="offcanvasDelivery"
+        >
+          <i class="bi bi-plus-lg"></i> Add Delivery
+        </button>
+        <button type="button" class="btn deliveries_history_btn w-100">
+          View all deliveries <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+    {% endif %}
+
+    <style>
+      /* ========================================= DELIVERIES SECTION ========================================= */
+      .deliveries_section {
+        width: 100%;
+      } /* ========================================= HEADER ========================================= */
+      .deliveries_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+      .deliveries_title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #172033;
+      }
+      .deliveries_count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 26px;
+        height: 24px;
+        padding: 0 8px;
+        border-radius: 999px;
+        background: #f1f3f5;
+        color: #495057;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .deliveries_subtitle {
+        margin-top: 4px;
+        color: #8a94a6;
+        font-size: 13px;
+      }
+      .deliveries_header_actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      } /* ========================================= BUTTONS ========================================= */
+      .deliveries_add_btn {
+        min-height: 40px;
+        padding: 0 16px;
+        border: none;
+        border-radius: 10px;
+        background: #0d6efd;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+      }
+      .deliveries_add_btn:hover {
+        background: #0b5ed7;
+        color: #fff;
+      }
+      .deliveries_history_btn {
+        min-height: 40px;
+        padding: 0 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        background: #fff;
+        color: #495057;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+      }
+      .deliveries_history_btn:hover {
+        background: #f8f9fa;
+      } /* ========================================= DELIVERY LIST ========================================= */
+      .deliveries_list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      } /* ========================================= DELIVERY CARD ========================================= */
+      .delivery_card {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid #e7eaf0;
+        border-radius: 14px;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease,
+          transform 0.15s ease;
+      }
+      .delivery_card:hover {
+        border-color: #d8dde6;
+        box-shadow: 0 4px 16px rgba(20, 30, 50, 0.06);
+        transform: translateY(-1px);
+      } /* ========================================= STATUS BAR ========================================= */
+      .delivery_status_bar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 4px;
+      }
+      .delivery_status_received {
+        background: #198754;
+      }
+      .delivery_status_partial {
+        background: #0dcaf0;
+      }
+      .delivery_status_other {
+        background: #dc3545;
+      } /* ========================================= CARD CONTENT ========================================= */
+      .delivery_card_content {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 17px 16px 20px;
+      } /* ========================================= ICON ========================================= */
+      .delivery_icon {
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .delivery_icon .material-symbols-outlined {
+        font-size: 22px;
+      }
+      .delivery_icon_received {
+        background: #edf8f2;
+        color: #198754;
+      }
+      .delivery_icon_partial {
+        background: #eefaff;
+        color: #087f9c;
+      }
+      .delivery_icon_other {
+        background: #fff0f1;
+        color: #dc3545;
+      } /* ========================================= MAIN ========================================= */
+      .delivery_main {
+        flex: 1;
+        min-width: 0;
+      }
+      .delivery_reference {
+        margin-bottom: 3px;
+        color: #8a94a6;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .delivery_supplier {
+        color: #172033;
+        font-size: 15px;
+        font-weight: 650;
+        line-height: 1.35;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      } /* ========================================= META ========================================= */
+      .delivery_meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 9px;
+      }
+      .delivery_badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 650;
+      }
+      .delivery_badge_dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+      }
+      .delivery_badge_received {
+        background: #edf8f2;
+        color: #157347;
+      }
+      .delivery_badge_received .delivery_badge_dot {
+        background: #198754;
+      }
+      .delivery_badge_partial {
+        background: #eefaff;
+        color: #087f9c;
+      }
+      .delivery_badge_partial .delivery_badge_dot {
+        background: #0dcaf0;
+      }
+      .delivery_badge_other {
+        background: #fff0f1;
+        color: #c92a2a;
+      }
+      .delivery_badge_other .delivery_badge_dot {
+        background: #dc3545;
+      }
+      .delivery_time {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: #7b8494;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .delivery_time i {
+        font-size: 11px;
+      } /* ========================================= ARROW ========================================= */
+      .delivery_arrow {
+        flex: 0 0 auto;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f7f8fa;
+        color: #7b8494;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .delivery_arrow i {
+        font-size: 13px;
+      } /* ========================================= MOBILE VIEW ALL ========================================= */
+      .deliveries_mobile_view_all {
+        width: 100%;
+        margin-top: 10px;
+        padding: 11px;
+        border: 1px solid #e3e6eb;
+        border-radius: 10px;
+        background: #fff;
+        color: #0d6efd;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .deliveries_mobile_view_all i {
+        margin-left: 5px;
+      } /* ========================================= EMPTY STATE ========================================= */
+      .deliveries_empty_section {
+        padding: 30px 20px;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #e7eaf0;
+        border-radius: 16px;
+      }
+      .delivery_empty_icon {
+        width: 54px;
+        height: 54px;
+        margin: 0 auto 14px;
+        border-radius: 15px;
+        background: #eef8f3;
+        color: #198754;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .delivery_empty_icon .material-symbols-outlined {
+        font-size: 26px;
+      }
+      .delivery_empty_title {
+        margin-bottom: 5px;
+        color: #172033;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .delivery_empty_text {
+        max-width: 360px;
+        margin: 0 auto 20px;
+        color: #8a94a6;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .delivery_empty_actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 360px;
+        margin: 0 auto;
+      }
+      .delivery_empty_actions .deliveries_history_btn {
+        min-height: 42px;
+      } /* ========================================= TABLET / MOBILE ========================================= */
+      @media (max-width: 767.98px) {
+        .deliveries_header {
+          margin-bottom: 14px;
+        }
+        .deliveries_subtitle {
+          font-size: 12px;
+        }
+        .deliveries_add_btn {
+          min-height: 38px;
+          padding: 0 13px;
+        }
+        .delivery_card_content {
+          padding: 14px 13px 14px 17px;
+          gap: 11px;
+        }
+        .delivery_icon {
+          flex-basis: 40px;
+          width: 40px;
+          height: 40px;
+          border-radius: 11px;
+        }
+        .delivery_icon .material-symbols-outlined {
+          font-size: 20px;
+        }
+        .delivery_supplier {
+          font-size: 14px;
+        }
+        .delivery_arrow {
+          width: 30px;
+          height: 30px;
+        }
+      } /* ========================================= SMALL PHONES ========================================= */
+      @media (max-width: 420px) {
+        .deliveries_header {
+          align-items: flex-start;
+        }
+        .deliveries_title {
+          font-size: 16px;
+        }
+        .deliveries_count {
+          min-width: 24px;
+          height: 22px;
+        }
+        .deliveries_subtitle {
+          display: none;
+        }
+        .deliveries_add_btn {
+          min-width: 42px;
+          width: 42px;
+          padding: 0;
+          border-radius: 10px;
+        }
+        .delivery_card_content {
+          padding: 13px 10px 13px 15px;
+        }
+        .delivery_meta {
+          gap: 6px;
+        }
+        .delivery_badge {
+          font-size: 10px;
+          padding: 4px 7px;
+        }
+        .delivery_time {
+          font-size: 10px;
+        }
+        .delivery_arrow {
+          width: 28px;
+          height: 28px;
+        }
+      }
+    </style>
+  </div>
+</div>
+
+<!-- =========================================================
+   PROJECT ACTIVITY 
+========================================================= -->
+<div class="row mt-5 mb-4">
+  <!-- ========================================= PROJECT ACTIVITY ========================================= -->
+  {% if project_activity %}
+  <div class="col-12">
+    <section class="project_activity_card">
+      <!-- ========================= HEADER ========================== -->
+      <div class="project_activity_header">
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="project_activity_title mb-0">Project Activity</h5>
+            {% if project_data.total_activities %}
+            <span class="project_activity_count">
+              {{ project_data.total_activities }}
+            </span>
+            {% endif %}
+          </div>
+          <p class="project_activity_subtitle mb-0">
+            Recent activity across this project
+          </p>
+        </div>
+        <button type="button" class="btn project_activity_view_all">
+          <span class="d-none d-sm-inline"> View all </span>
+          <span class="d-sm-none"> All </span> <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+      <!-- ========================= ACTIVITY TIMELINE ========================== -->
+      <div class="project_activity_timeline">
+        {% for group in project_activity %}
+        <!-- DATE -->
+        <div class="activity_date_divider">
+          <span class="activity_date_label">
+            {{ group.date|date:"d F Y" }}
+          </span>
+        </div>
+        <!-- ACTIVITIES -->
+        <div class="activity_day">
+          {% for data in group.activities %}
+          <div class="activity_item">
+            <!-- TIME -->
+            <div class="activity_time">{{ data.created_at|time:"g:i A" }}</div>
+            <!-- ICON / TIMELINE -->
+            <div class="activity_timeline">
+              <div class="activity_icon_wrapper">
+                {% include 'partials/timeline_icons.html' %}
+              </div>
+            </div>
+            <!-- CONTENT -->
+            <div class="activity_content">
+              <div class="activity_content_header">
+                <h6 class="activity_type mb-0">{{ data.activity_type }}</h6>
+              </div>
+              {% if data.description %}
+              <p class="activity_description mb-0">{{ data.description }}</p>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+      <!-- ========================= FOOTER ========================== -->
+      {% if project_data.total_activities > 5 %}
+      <div class="project_activity_footer">
+        <button type="button" class="btn project_activity_footer_btn">
+          View all activity <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+      {% endif %}
+    </section>
+  </div>
+  {% endif %}
+
+  <style>
+    /* ========================================= PROJECT ACTIVITY ========================================= */
+    .project_activity_card {
+      width: 100%;
+      padding: 22px;
+      background: #fff;
+      border: 1px solid #e7eaf0;
+      border-radius: 16px;
+    } /* ========================================= HEADER ========================================= */
+    .project_activity_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .project_activity_title {
+      color: #172033;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .project_activity_count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 26px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #f1f3f5;
+      color: #495057;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .project_activity_subtitle {
+      margin-top: 4px;
+      color: #8a94a6;
+      font-size: 13px;
+    } /* ========================================= VIEW ALL ========================================= */
+    .project_activity_view_all {
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      background: #fff;
+      color: #0d6efd;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+    .project_activity_view_all:hover {
+      background: #f8f9fa;
+      color: #0b5ed7;
+    } /* ========================================= TIMELINE ========================================= */
+    .project_activity_timeline {
+      position: relative;
+    } /* ========================================= DATE DIVIDER ========================================= */
+    .activity_date_divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0 14px;
+    }
+    .activity_date_divider:first-child {
+      margin-top: 0;
+    }
+    .activity_date_divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      margin-left: 12px;
+      background: #edf0f3;
+    }
+    .activity_date_label {
+      color: #7b8494;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    } /* ========================================= ACTIVITY DAY ========================================= */
+    .activity_day {
+      position: relative;
+    } /* ========================================= ACTIVITY ITEM ========================================= */
+    .activity_item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 72px 42px minmax(0, 1fr);
+      column-gap: 12px;
+      min-height: 72px;
+    } /* ========================================= VERTICAL TIMELINE ========================================= */
+    .activity_timeline {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    } /* Line */
+    .activity_timeline::after {
+      content: "";
+      position: absolute;
+      top: 42px;
+      bottom: -1px;
+      width: 1px;
+      background: #e9ecef;
+    } /* Remove line from final activity */
+    .activity_item:last-child .activity_timeline::after {
+      display: none;
+    } /* ========================================= ACTIVITY ICON ========================================= */
+    .activity_icon_wrapper {
+      position: relative;
+      z-index: 2;
+      width: 36px;
+      height: 36px;
+      margin-top: 1px;
+      border: 3px solid #fff;
+      border-radius: 11px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px #e6e9ee;
+    }
+    .activity_icon_wrapper .time_line_icon {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: none;
+    }
+    .activity_icon_wrapper .material-symbols-outlined {
+      font-size: 18px;
+    }
+    .activity_icon_wrapper i {
+      font-size: 15px;
+    } /* ========================================= TIME ========================================= */
+    .activity_time {
+      padding-top: 8px;
+      color: #8a94a6;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: right;
+      white-space: nowrap;
+    } /* ========================================= CONTENT ========================================= */
+    .activity_content {
+      min-width: 0;
+      padding: 5px 0 20px;
+    }
+    .activity_type {
+      color: #172033;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .activity_description {
+      margin-top: 4px;
+      color: #7b8494;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.5;
+    } /* ========================================= FOOTER ========================================= */
+    .project_activity_footer {
+      margin-top: 4px;
+      padding-top: 15px;
+      border-top: 1px solid #edf0f3;
+    }
+    .project_activity_footer_btn {
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: #0d6efd;
+      font-size: 13px;
+      font-weight: 650;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .project_activity_footer_btn:hover {
+      color: #0b5ed7;
+    } /* ========================================= MOBILE ========================================= */
+    @media (max-width: 767.98px) {
+      .project_activity_card {
+        padding: 17px 15px;
+        border-radius: 14px;
+      }
+      .project_activity_header {
+        margin-bottom: 18px;
+      }
+      .project_activity_title {
+        font-size: 16px;
+      }
+      .project_activity_subtitle {
+        font-size: 12px;
+      }
+      .project_activity_view_all {
+        min-height: 36px;
+        padding: 0 11px;
+        font-size: 12px;
+      }
+      .activity_item {
+        grid-template-columns: 58px 36px minmax(0, 1fr);
+        column-gap: 9px;
+        min-height: 68px;
+      }
+      .activity_icon_wrapper {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+      }
+      .activity_icon_wrapper .material-symbols-outlined {
+        font-size: 16px;
+      }
+      .activity_icon_wrapper i {
+        font-size: 13px;
+      }
+      .activity_timeline::after {
+        top: 38px;
+      }
+      .activity_time {
+        padding-top: 7px;
+        font-size: 10px;
+      }
+      .activity_content {
+        padding-bottom: 18px;
+      }
+      .activity_type {
+        font-size: 13px;
+      }
+      .activity_description {
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .activity_date_label {
+        font-size: 10px;
+      }
+    } /* ========================================= SMALL PHONES ========================================= */
+    @media (max-width: 420px) {
+      .project_activity_card {
+        padding: 15px 12px;
+      }
+      .project_activity_subtitle {
+        display: none;
+      }
+      .project_activity_count {
+        min-width: 23px;
+        height: 22px;
+        font-size: 11px;
+      }
+      .activity_item {
+        grid-template-columns: 52px 32px minmax(0, 1fr);
+        column-gap: 7px;
+      }
+      .activity_icon_wrapper {
+        width: 30px;
+        height: 30px;
+      }
+      .activity_timeline::after {
+        top: 36px;
+      }
+      .activity_time {
+        font-size: 9px;
+      }
+      .activity_type {
+        font-size: 12px;
+      }
+      .activity_description {
+        font-size: 11px;
+      }
+    }
+  </style>
+</div>
+
+<!-- =========================================================
+   Project Management
+========================================================= -->
+<section class="section-spacing project_management_section">
+  <div class="project_management_header">
+    <div>
+      <h4 class="new_section_title mb-1">Project Management</h4>
+      <p class="project_management_subtitle mb-0">
+        Manage people, project information and settings
+      </p>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <!-- TEAM -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <a href="#" class="project_action_card">
+        <div class="project_action_top">
+          <div class="project_action_icon blue">
+            <i class="bi bi-people"></i>
+          </div>
+
+          <i class="bi bi-arrow-up-right project_action_arrow"></i>
+        </div>
+
+        <div class="project_action_content">
+          <h6 class="project_action_title">Team Members</h6>
+
+          <p class="project_action_meta">12 members</p>
+
+          <p class="project_action_description">View and manage project team</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- SUBCONTRACTORS -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <a href="#" class="project_action_card">
+        <div class="project_action_top">
+          <div class="project_action_icon green">
+            <i class="bi bi-building"></i>
+          </div>
+
+          <i class="bi bi-arrow-up-right project_action_arrow"></i>
+        </div>
+
+        <div class="project_action_content">
+          <h6 class="project_action_title">Subcontractors</h6>
+
+          <p class="project_action_meta">4 subcontractors</p>
+
+          <p class="project_action_description">
+            View and manage subcontractors
+          </p>
+        </div>
+      </a>
+    </div>
+
+    <!-- ACTIVITY -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <a href="#" class="project_action_card">
+        <div class="project_action_top">
+          <div class="project_action_icon purple">
+            <i class="bi bi-clock-history"></i>
+          </div>
+
+          <i class="bi bi-arrow-up-right project_action_arrow"></i>
+        </div>
+
+        <div class="project_action_content">
+          <h6 class="project_action_title">Activity Log</h6>
+
+          <p class="project_action_meta">Full project history</p>
+
+          <p class="project_action_description">View all project activity</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="col-12 col-md-6 col-xl-3">
+      <a href="#" class="project_action_card">
+        <div class="project_action_top">
+          <div class="project_action_icon gray">
+            <i class="bi bi-gear"></i>
+          </div>
+
+          <i class="bi bi-arrow-up-right project_action_arrow"></i>
+        </div>
+
+        <div class="project_action_content">
+          <h6 class="project_action_title">Project Settings</h6>
+
+          <p class="project_action_meta">Project configuration</p>
+
+          <p class="project_action_description">Update project details</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <style>
+    /* =========================================
+   PROJECT MANAGEMENT
+========================================= */
+
+    .project_management_section {
+      margin-top: 10px;
+    }
+
+    .project_management_header {
+      margin-bottom: 16px;
+    }
+
+    .project_management_subtitle {
+      color: #7b8494;
+      font-size: 13px;
+    }
+
+    /* =========================================
+   ACTION CARD
+========================================= */
+
+    .project_action_card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 20px;
+      background: #ffffff;
+      border: 1px solid #e7eaf0;
+      border-radius: 16px;
+      text-decoration: none;
+      color: inherit;
+
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .project_action_card:hover {
+      color: inherit;
+      border-color: #d7dce5;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(20, 35, 60, 0.07);
+    }
+
+    /* =========================================
+   TOP
+========================================= */
+
+    .project_action_top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    /* =========================================
+   ICON
+========================================= */
+
+    .project_action_icon {
+      width: 42px;
+      height: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+      font-size: 19px;
+    }
+
+    .project_action_icon.blue {
+      background: #edf4ff;
+      color: #2563eb;
+    }
+
+    .project_action_icon.green {
+      background: #ecfdf3;
+      color: #16a34a;
+    }
+
+    .project_action_icon.purple {
+      background: #f4f0ff;
+      color: #7c3aed;
+    }
+
+    .project_action_icon.gray {
+      background: #f1f3f6;
+      color: #596273;
+    }
+
+    /* =========================================
+   ARROW
+========================================= */
+
+    .project_action_arrow {
+      color: #a2a9b5;
+      font-size: 18px;
+
+      transition:
+        color 0.18s ease,
+        transform 0.18s ease;
+    }
+
+    .project_action_card:hover .project_action_arrow {
+      color: #2563eb;
+      transform: translate(2px, -2px);
+    }
+
+    /* =========================================
+   CONTENT
+========================================= */
+
+    .project_action_content {
+      margin-top: auto;
+    }
+
+    .project_action_title {
+      margin-bottom: 6px;
+      color: #172033;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .project_action_meta {
+      margin-bottom: 7px;
+      color: #4d5869;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .project_action_description {
+      margin: 0;
+      color: #8a93a1;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    /* =========================================
+   TABLET
+========================================= */
+
+    @media (max-width: 991.98px) {
+      .project_action_card {
+        padding: 18px;
+      }
+    }
+
+    /* =========================================
+   MOBILE
+========================================= */
+
+    @media (max-width: 767.98px) {
+      .project_management_subtitle {
+        font-size: 12px;
+      }
+
+      .project_action_card {
+        min-height: 150px;
+        padding: 16px;
+        border-radius: 14px;
+      }
+
+      .project_action_top {
+        margin-bottom: 14px;
+      }
+
+      .project_action_icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        font-size: 17px;
+      }
+
+      .project_action_title {
+        font-size: 14px;
+      }
+
+      .project_action_meta {
+        font-size: 12px;
+      }
+
+      .project_action_description {
+        font-size: 11px;
+      }
+    }
+
+    /* =========================================
+   SMALL PHONES
+========================================= */
+
+    @media (max-width: 420px) {
+      .project_action_card {
+        min-height: 138px;
+        padding: 14px;
+      }
+
+      .project_action_arrow {
+        font-size: 16px;
+      }
+
+      .project_action_title {
+        font-size: 13px;
+      }
+
+      .project_action_meta {
+        font-size: 11px;
+      }
+
+      .project_action_description {
+        font-size: 10px;
+      }
+    }
+  </style>
+</section>

@@ -1,0 +1,162 @@
+{% load static %}
+<!-- divider  -->
+
+<!-- =====================================
+      PAGE HEADER
+====================================== -->
+<a href="javascript:history.back()" class="incident_back">
+  <i class="bi bi-chevron-left"></i>
+  <span>Back</span>
+</a>
+<div class="dashboard_main_card mb-3">
+  <div class="form_page_header mb-0">
+    <div class="form_page_icon">
+      <i class="bi bi-check2-square"></i>
+    </div>
+
+    <div class="d-flex justify-content-between w-100">
+      <div>
+        <div class="form_page_eyebrow">PROJECT</div>
+        <h1 class="form_page_title">Project Tasks</h1>
+        <p class="form_page_subtitle mb-0">Review and manage project tasks.</p>
+      </div>
+      <a href="{% url 'issues:project-tasks' project.uuid %}">
+        <button type="button" class="project_quick_action primary mb-3">
+          <span class="project_quick_action_icon">
+            <i class="bi bi-plus-lg"></i>
+          </span>
+          <span class="project_quick_action_text"> Add Task</span>
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<section class="section-spacing">
+  {% for data in tasks %}
+  <div
+    class="operation-item task-item scroll-section mb-3"
+    id="project_task{{data.task.id}}"
+  >
+    <!-- ICON -->
+    <div class="operation-icon task-item-icon">
+      <span class="material-symbols-outlined"> assignment </span>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="operation-content">
+      <div class="operation-top">
+        <div>
+          <!-- divider  -->
+          {% if data.task.status == 'open'%}
+          <span
+            class="font_size_11 priority-pill priority-high text-capitalize"
+            style="margin-bottom: 10px"
+          >
+            <span class="priority-dot"></span>
+            {{data.task.status}}
+          </span>
+          {% else %}
+          <span
+            class="font_size_11 priority-pill priority-low text-capitalize"
+            style="margin-bottom: 10px"
+          >
+            <span class="priority-dot"></span>
+            {{data.task.status}}
+          </span>
+          {% endif %}
+
+          <h6 class="operation-title mb-0" style="font-weight: 600 !important">
+            {{data.task.description}}
+          </h6>
+        </div>
+
+        <!-- PRIORITY -->
+        {% if data.task.priority == 'high' %}
+
+        <span class="priority-pill priority-high font_size_11">
+          <span class="priority-dot"></span>
+          High
+        </span>
+
+        {% elif data.task.priority == 'medium' %}
+
+        <span class="priority-pill priority-medium font_size_11">
+          <span class="priority-dot"></span>
+          Medium
+        </span>
+
+        {% else %}
+
+        <span class="priority-pill priority-low font_size_11">
+          <span class="priority-dot"></span>
+          Low
+        </span>
+
+        {% endif %}
+      </div>
+
+      <!-- META -->
+      <div class="operation-meta">
+        <!-- DUE DATE -->
+        {% if data.task.due_date == today %}
+
+        <span class="meta-pill meta-due-today font_size_10">
+          <i class="bi bi-calendar2-check-fill"></i>
+          Due Today
+        </span>
+
+        {% else %}
+
+        <span class="meta-pill meta-due font_size_10">
+          <i class="bi bi-calendar2"></i>
+          {{data.task_text}}
+        </span>
+
+        {% endif %}
+
+        <!-- ASSIGNED TO YOU -->
+        {% if data.task.assigned_to == current_user %}
+
+        <span class="meta-pill meta-assigned font_size_10">
+          <i class="bi bi-person-check-fill"></i>
+          Assigned to you
+        </span>
+        {% else %}
+        <span
+          class="meta-pill meta-assigned font_size_10"
+          style="
+            background-color: #f4f5f6 !important;
+            color: rgb(111, 118, 125) !important;
+          "
+        >
+          <i class="bi bi-person-fill"></i>
+          Unassigned
+        </span>
+        {% endif %}
+      </div>
+
+      <!-- BOTTOM -->
+      <div class="operation-bottom">
+        <!-- CREATED BY  -->
+        <div class="assigned-info">
+          <div class="mini-avatar">
+            {{ data.task.created_by.first_name |first|upper }}
+          </div>
+          <span class="person-label font_size_11">Created by</span>
+          <span class="font_size_11">
+            {{ data.task.created_by.first_name }}
+            <!-- divider  -->
+            {{ data.task.created_by.last_name }}
+          </span>
+        </div>
+
+        <button type="button" class="operation-view-button font_size_12">
+          View Task
+          <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</section>
