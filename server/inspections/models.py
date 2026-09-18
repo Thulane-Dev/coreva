@@ -50,6 +50,7 @@ class InspectionModel(models.Model):
         ("draft", "Draft"),
     )
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    reference = models.CharField(max_length=200, null=True, blank=True)
     project = models.ForeignKey(ProjectModel, null=True, blank=True,
                                 on_delete=models.SET_NULL, related_name='project_inspection')
     inspection_date = models.DateField(blank=True, null=True)

@@ -299,6 +299,34 @@
                 <i class="bi bi-chevron-right insight-arrow"></i>
               </div>
               {% endif %}
+              <!-- New Issue Comments -->
+              {% if data.project_data.comments_issues_list %}
+              <div class="work-insight">
+                <div
+                  class="work-insight-icon task-icon"
+                  style="
+                    background-color: #e8f1ff !important;
+                    color: rgb(37, 99, 235) !important;
+                  "
+                >
+                  <i class="bi bi-chat-left"></i>
+                </div>
+                <div class="work-insight-content">
+                  <span class="work-insight-title">
+                    {% if data.project_data.comments_issues_list|length == 1 %}
+                    1 issue has a new comment {% else %}
+                    {{data.project_data.comments_issues_list|length}} issues
+                    have new comments {% endif %}
+                  </span>
+
+                  <span class="work-insight-text"
+                    >New comments added to issues.</span
+                  >
+                </div>
+
+                <i class="bi bi-chevron-right insight-arrow"></i>
+              </div>
+              {% endif %}
 
               <!-- TASKS -->
               {% if data.project_data.show_task_insight == True %}
@@ -321,6 +349,34 @@
                     </strong>
                     {% endif %}
                   </span>
+                </div>
+
+                <i class="bi bi-chevron-right insight-arrow"></i>
+              </div>
+              {% endif %}
+              <!-- New Issue Comments -->
+              {% if data.project_data.comments_tasks_list %}
+              <div class="work-insight">
+                <div
+                  class="work-insight-icon task-icon"
+                  style="
+                    background-color: #e8f1ff !important;
+                    color: rgb(37, 99, 235) !important;
+                  "
+                >
+                  <i class="bi bi-chat-left"></i>
+                </div>
+                <div class="work-insight-content">
+                  <span class="work-insight-title">
+                    {% if data.project_data.comments_tasks_list|length == 1 %} 1
+                    task has a new comment {% else %}
+                    {{data.project_data.comments_tasks_list|length}} tasks have
+                    new comments {% endif %}
+                  </span>
+
+                  <span class="work-insight-text"
+                    >New comments added to tasks.</span
+                  >
                 </div>
 
                 <i class="bi bi-chevron-right insight-arrow"></i>

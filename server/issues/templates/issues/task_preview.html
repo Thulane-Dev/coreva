@@ -383,8 +383,30 @@
             <div class="issue_form_group">
               <label> Status </label>
               <select name="status" class="issue_form_input">
-                <option value="open" {% if issue.status == 'open' %}selected{% endif %}>Open</option>
-                <option value="closed" {% if issue.status == 'closed' %}selected{% endif %}>Closed</option>
+                <option
+                  value="open"
+                  {%
+                  if
+                  issue.status=""
+                  ="open"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  Open
+                </option>
+                <option
+                  value="closed"
+                  {%
+                  if
+                  issue.status=""
+                  ="closed"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  Closed
+                </option>
               </select>
             </div>
             <!-- PRIORITY -->

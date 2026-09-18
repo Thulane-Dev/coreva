@@ -28,4 +28,7 @@ urlpatterns = [
          views.save_issue_comment, name='save-issue-comment'),
     path('mark-issue-read/<uuid:issue_uuid>/',
          views.mark_issue_read, name='mark-issue-read'),
+    # Tasks Urls
+    path('task/<uuid:issue_uuid>/',
+         views.TasksPreview, name='task'),
 ]

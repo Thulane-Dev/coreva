@@ -37,7 +37,9 @@ def get_all_projects_data(
             "project_data": project_data,
             "project_status": data.status,
             "overall_status": project_data['overall_status'],
-            "inspection_status": project_data['inspection_status']
+            "inspection_status": project_data['inspection_status'],
+            "comments_issues_list": project_data['comments_issues_list'],
+            "comments_tasks_list": project_data['comments_tasks_list'],
         }
 
         projects_list.append(project_object)

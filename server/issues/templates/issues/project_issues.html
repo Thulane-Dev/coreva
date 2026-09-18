@@ -45,13 +45,111 @@
 
 <section class="d-block d-md-none">
   <a href="{% url 'issues:log-issue' project.uuid %}">
-    <button type="button" class="project_quick_action primary">
+    <button type="button" class="project_quick_action primary mb-3">
       <span class="project_quick_action_icon">
         <i class="bi bi-plus-lg"></i>
       </span>
       <span class="project_quick_action_text"> Add Issue</span>
     </button>
   </a>
+</section>
+
+<!-- ======== ISSUES ======== -->
+<section class="issues-filters mb-4">
+  <div class="issues-filters-inner">
+
+    <!-- Search -->
+    <div class="issues-search">
+      <i class="bi bi-search"></i>
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search issues..."
+        aria-label="Search issues"
+      >
+    </div>
+
+    <!-- Filters -->
+    <div class="issues-filter-group">
+
+      <!-- Status -->
+      <div class="issue-filter">
+        <label for="statusFilter">Status</label>
+        <select id="statusFilter" class="form-select">
+          <option selected>All statuses</option>
+          <option value="open">Open</option>
+          <option value="in_progress">In Progress</option>
+          <option value="resolved">Resolved</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+
+      <!-- Priority -->
+      <div class="issue-filter">
+        <label for="priorityFilter">Priority</label>
+        <select id="priorityFilter" class="form-select">
+          <option selected>All priorities</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+
+      <!-- Assignee -->
+      <div class="issue-filter">
+        <label for="assigneeFilter">Assigned to</label>
+        <select id="assigneeFilter" class="form-select">
+          <option selected>Everyone</option>
+          <option value="unassigned">Unassigned</option>
+          <option value="me">Assigned to me</option>
+        </select>
+      </div>
+
+      <!-- More -->
+      <button
+        type="button"
+        class="issues-more-btn"
+        data-bs-toggle="collapse"
+        data-bs-target="#moreIssueFilters"
+        aria-expanded="false"
+      >
+        <i class="bi bi-sliders2"></i>
+        <span>More filters</span>
+        <i class="bi bi-chevron-down filter-chevron"></i>
+      </button>
+
+    </div>
+
+    <!-- More Filters -->
+    <div class="collapse" id="moreIssueFilters">
+      <div class="more-filters">
+
+        <div class="issue-filter">
+          <label for="dateFilter">Date</label>
+          <select id="dateFilter" class="form-select">
+            <option selected>Any date</option>
+            <option value="today">Created today</option>
+            <option value="week">Created this week</option>
+            <option value="updated">Recently updated</option>
+          </select>
+        </div>
+
+        <div class="issue-filter">
+          <label for="commentFilter">Comments</label>
+          <select id="commentFilter" class="form-select">
+            <option selected>All comments</option>
+            <option value="unread">Unread comments</option>
+          </select>
+        </div>
+
+        <button type="button" class="clear-filters-btn">
+          Clear filters
+        </button>
+
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <!-- ======== ISSUES ======== -->
@@ -157,6 +255,25 @@
             Unassigned
           </span>
           {% endif %}
+          <!-- comments alert  -->
+          {% if data.comment_count > 0 %}
+          <span class="comment-notification">
+            <span class="comment-notification-icon">
+              <i class="bi bi-chat-left-text-fill"></i>
+            </span>
+
+            <span class="comment-notification-text">
+              {{ data.comment_count }}
+              <!-- divider  -->
+              {% if data.comment_count == 1 %} New comment {% else %}
+              <!-- divider  -->
+              New comments {% endif %}
+            </span>
+
+            <span class="comment-notification-dot"></span>
+          </span>
+          {% endif %}
+          <!-- comments alert  end -->
         </div>
 
         <!-- BOTTOM -->

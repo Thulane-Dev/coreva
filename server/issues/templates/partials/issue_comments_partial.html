@@ -20,7 +20,9 @@
 {% if comments %}
 <div class="issue_comments_list">
   {% for comment in comments %}
-  <div class="issue_comment">
+  <div
+    class="issue_comment {% if comment.is_read == False %} alert_card {% endif %}"
+  >
     <div class="issue_comment_avatar">
       {% if comment.comment_by %}
       <!-- divider  -->
@@ -82,6 +84,7 @@
       </form>
       {% else %}
       <p>{{ comment.comment|linebreaksbr }}</p>
+      {% endif %}
 
       <!-- Attachments  -->
       <div class="row">
@@ -180,7 +183,6 @@
         {% endfor %}
       </div>
       <!-- Attachments End -->
-      {% endif %}
     </div>
   </div>
   {% endfor %}

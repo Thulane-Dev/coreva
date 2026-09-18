@@ -144,7 +144,6 @@
          ISSUES
     ====================================================== -->
     {% if project_data.show_issue_insight == True %}
-
     <a href="#IssuesSection" class="today-work-link">
       <div class="today-work-card">
         <div class="today-work-icon issue-work-icon">
@@ -187,14 +186,47 @@
         </div>
       </div>
     </a>
+    {% endif %}
 
+    <!-- New Issue Comments -->
+    {% if project_data.comments_issues_list %}
+    <a
+      data-bs-toggle="offcanvas"
+      href="#IssuesComments"
+      role="button"
+      aria-controls="IssuesComments"
+    >
+      <div class="today-work-card comment-work-card" style="cursor: pointer">
+        <div class="today-work-icon comment-work-icon">
+          <span class="material-symbols-outlined">chat_bubble</span>
+        </div>
+
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0">
+            {% if project_data.comments_issues_list|length == 1 %} 1 Issue has
+            new comment {% else %} {{ project_data.comments_issues_list|length}}
+            issues have new comments {% endif %}
+          </h6>
+
+          <p class="today-work-description mb-0">
+            New comments have been added to your issues
+          </p>
+        </div>
+        <div class="today-work-action d-flex align-items-center gap-2">
+          <span class="today-work-action-text"> View comments </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
     {% endif %}
 
     <!-- =====================================================
          TASKS
     ====================================================== -->
     {% if project_data.show_task_insight == True %}
-
     <a href="#TaskSession" class="today-work-link">
       <div class="today-work-card">
         <div class="today-work-icon task-work-icon">
@@ -237,7 +269,39 @@
         </div>
       </div>
     </a>
+    {% endif %}
+    <!-- New Issue Comments -->
+    {% if project_data.comments_tasks_list %}
+    <a
+      data-bs-toggle="offcanvas"
+      data-bs-target="#CommentTasks"
+      aria-controls="CommentTasks"
+    >
+      <div class="today-work-card comment-work-card">
+        <div class="today-work-icon comment-work-icon">
+          <span class="material-symbols-outlined">chat_bubble</span>
+        </div>
 
+        <div class="today-work-content">
+          <h6 class="today-work-title mb-0">
+            {% if project_data.comments_tasks_list|length == 1 %} 1 Task has new
+            comment {% else %} {{ project_data.comments_tasks_list|length }}
+            tasks have new comments {% endif %}
+          </h6>
+
+          <p class="today-work-description mb-0">
+            New comments have been added to your tasks
+          </p>
+        </div>
+        <div class="today-work-action d-flex align-items-center gap-2">
+          <span class="today-work-action-text"> View comments </span>
+
+          <span class="today-work-arrow">
+            <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+    </a>
     {% endif %}
 
     <!-- =====================================================
@@ -300,6 +364,167 @@
       </div>
     </a>
     {% endif %}
+  </div>
+</section>
+
+<!-- =======  TODAY'S WORK COMMENTS OFFCANVAS ======= -->
+<section>
+  <!-- ISSUES OFFCANVAS  -->
+  <div
+    class="offcanvas offcanvas-start offcanvas_background_new"
+    tabindex="-1"
+    id="IssuesComments"
+    aria-labelledby="IssuesCommentsLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="IssuesCommentsLabel"></h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- ================= HEADER ================= -->
+      <div class="dashboard_main_card mb-3">
+        <div class="missed_inspections_header mb-0">
+          <div
+            class="missed_inspections_header_icon"
+            style="
+              background-color: #e8f1ff !important;
+              color: rgb(37, 99, 235) !important;
+            "
+          >
+            <i class="bi bi-chat-left-dots-fill"></i>
+          </div>
+
+          <div>
+            <div class="missed_inspections_eyebrow">ISSUES</div>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <h1
+                class="missed_inspections_title mb-0"
+                style="font-size: 16px !important"
+              >
+                Issues with New Comments
+              </h1>
+
+              <span class="missed_inspections_count">
+                {{ project_data.comments_issues_list|length }}
+              </span>
+            </div>
+
+            <p class="missed_inspections_subtitle mb-0">
+              Issues that have new comments waiting for your attention.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ISSUE COMMENTS  -->
+      {% for issue in project_data.comments_issues_list %}
+      <a href="{% url 'issues:issue' issue.uuid %}">
+        <div class="today-work-card mb-2">
+          <div class="today-work-icon inspection-work-icon">
+            <span class="material-symbols-outlined"> chat_bubble</span>
+          </div>
+          <div class="today-work-content">
+            <div class="today-work-title-row">
+              <h6 class="today-work-title mb-0">{{issue.title}}</h6>
+              <p class="today-work-description mb-0 text-capitalize">
+                {{issue.priority}} priority
+              </p>
+            </div>
+          </div>
+          <div class="today-work-action d-flex align-items-center gap-2">
+            <span class="today-work-arrow">
+              <i class="bi bi-arrow-right"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- TASKS OFFCANVAS  -->
+  <div
+    class="offcanvas offcanvas-start offcanvas_background_new"
+    tabindex="-1"
+    id="CommentTasks"
+    aria-labelledby="CommentTasksLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="CommentTasksLabel"></h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- ================= HEADER ================= -->
+      <div class="dashboard_main_card mb-3">
+        <div class="missed_inspections_header mb-0">
+          <div
+            class="missed_inspections_header_icon"
+            style="
+              background-color: #e8f1ff !important;
+              color: rgb(37, 99, 235) !important;
+            "
+          >
+            <i class="bi bi-chat-left-dots-fill"></i>
+          </div>
+
+          <div>
+            <div class="missed_inspections_eyebrow">TASKS</div>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <h1
+                class="missed_inspections_title mb-0"
+                style="font-size: 16px !important"
+              >
+                New Task Comments
+              </h1>
+
+              <span class="missed_inspections_count">
+                {{ project_data.comments_tasks_list|length }}
+              </span>
+            </div>
+
+            <p class="missed_inspections_subtitle mb-0">
+              Tasks with new comments waiting for your attention.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ISSUE COMMENTS  -->
+      {% for issue in project_data.comments_tasks_list %}
+      <a href="{% url 'issues:issue' issue.uuid %}">
+        <div class="today-work-card mb-2">
+          <div class="today-work-icon inspection-work-icon">
+            <span class="material-symbols-outlined"> chat_bubble</span>
+          </div>
+          <div class="today-work-content">
+            <div class="today-work-title-row">
+              <h6 class="today-work-title mb-0">{{issue.title}}</h6>
+              <p class="today-work-description mb-0 text-capitalize">
+                {{issue.priority}} priority
+              </p>
+            </div>
+          </div>
+          <div class="today-work-action d-flex align-items-center gap-2">
+            <span class="today-work-arrow">
+              <i class="bi bi-arrow-right"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
   </div>
 </section>
 
@@ -546,10 +771,12 @@
               <i class="bi bi-arrow-right"></i>
             </a>
 
-            <button type="button" class="secondary-action-button">
-              <span>View History</span>
-              <i class="bi bi-arrow-right"></i>
-            </button>
+            <a href="{% url 'inspections:project-inspections' project.uuid %}">
+              <button type="button" class="secondary-action-button">
+                <span>View History</span>
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </a>
           </div>
         </div>
       </div>
@@ -791,11 +1018,12 @@
               <span>Create Daily Report</span>
               <i class="bi bi-arrow-right"></i>
             </a>
-
-            <button type="button" class="secondary-action-button">
-              <span>View History</span>
-              <i class="bi bi-arrow-right"></i>
-            </button>
+            <a href="{% url 'report:project-reports' project.uuid %}">
+              <button type="button" class="secondary-action-button">
+                <span>View History</span>
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </a>
           </div>
         </div>
       </div>
@@ -845,117 +1073,136 @@
         <!-- ISSUES LIST -->
         <div class="operations-list">
           {% for data in project_data.open_issues %}
-
-          <div
-            class="operation-item issue-item scroll-section"
-            id="issue{{data.issue.id}}"
-          >
-            <!-- ICON -->
-            <div class="operation-icon issue-item-icon">
-              <span class="material-symbols-outlined">warning</span>
-            </div>
-
-            <!-- CONTENT -->
-            <div class="operation-content">
-              <div class="operation-top">
-                <h6 class="operation-title mb-0 font_size_14">
-                  {{data.issue.title}}
-                </h6>
-
-                <!-- PRIORITY -->
-                {% if data.issue.priority == 'high' %}
-                <span class="font_size_11 priority-pill priority-high">
-                  <span class="priority-dot"></span>
-                  High
-                </span>
-
-                {% elif data.issue.priority == 'medium' %}
-                <span class="font_size_11 priority-pill priority-medium">
-                  <span class="priority-dot"></span>
-                  Medium
-                </span>
-
-                {% else %}
-                <span class="font_size_11 priority-pill priority-low">
-                  <span class="priority-dot"></span>
-                  Low
-                </span>
-                {% endif %}
+          <a href="{% url 'issues:issue' data.issue.uuid %}">
+            <div
+              class="operation-item issue-item scroll-section"
+              id="issue{{data.issue.id}}"
+            >
+              <!-- ICON -->
+              <div class="operation-icon issue-item-icon">
+                <span class="material-symbols-outlined">warning</span>
               </div>
 
-              <!-- DESCRIPTION -->
-              {% if data.issue.description %}
-              <p class="operation-description font_size_12">
-                {{data.issue.description}}
-              </p>
-              {% endif %}
-
-              <!-- META -->
-              <div class="operation-meta">
-                <!-- DUE DATE -->
-                {% if data.issue.due_date == today %}
-
-                <span class="meta-pill meta-due-today font_size_10">
-                  <i class="bi bi-calendar2-check-fill"></i>
-                  Due Today
-                </span>
-
-                {% else %}
-
-                <span class="meta-pill meta-due font_size_10">
-                  <i class="bi bi-calendar2"></i>
-                  {{data.issue_text}}
-                </span>
-
-                {% endif %}
-
-                <!-- ASSIGNED TO YOU -->
-                {% if data.issue.assigned_to == current_user %}
-
-                <span class="meta-pill meta-assigned font_size_10">
-                  <i class="bi bi-person-check-fill"></i>
-                  Assigned to you
-                </span>
-                {% else %}
-                <span
-                  class="meta-pill meta-assigned font_size_10"
-                  style="
-                    background-color: #f4f5f6 !important;
-                    color: rgb(111, 118, 125) !important;
-                  "
-                >
-                  <i class="bi bi-person-fill"></i>
-                  Unassigned
-                </span>
-                {% endif %}
-              </div>
-
-              <!-- BOTTOM -->
-              <div class="operation-bottom">
-                <!-- REPORTED BY  -->
-                <div class="assigned-info">
-                  <div class="mini-avatar">
-                    {{ data.issue.created_by.first_name|first|upper }}
+              <!-- CONTENT -->
+              <div class="operation-content">
+                <div class="operation-top">
+                  <div class="d-flex gap-2">
+                    <h6 class="operation-title mb-0 font_size_14">
+                      {{data.issue.title}}
+                    </h6>
                   </div>
 
-                  <span class="person-label font_size_11">Reported by</span>
-                  <span class="font_size_11">
-                    {{ data.issue.created_by.first_name }}
-                    <!-- divider  -->
-                    {{ data.issue.created_by.last_name }}
+                  <!-- PRIORITY -->
+                  {% if data.issue.priority == 'high' %}
+                  <span class="font_size_11 priority-pill priority-high">
+                    <span class="priority-dot"></span>
+                    High
                   </span>
+
+                  {% elif data.issue.priority == 'medium' %}
+                  <span class="font_size_11 priority-pill priority-medium">
+                    <span class="priority-dot"></span>
+                    Medium
+                  </span>
+
+                  {% else %}
+                  <span class="font_size_11 priority-pill priority-low">
+                    <span class="priority-dot"></span>
+                    Low
+                  </span>
+                  {% endif %}
                 </div>
-                <button
-                  type="button"
-                  class="operation-view-button font_size_12"
-                >
-                  View Issue
-                  <i class="bi bi-arrow-right"></i>
-                </button>
+
+                <!-- DESCRIPTION -->
+                {% if data.issue.description %}
+                <p class="operation-description font_size_12">
+                  {{data.issue.description}}
+                </p>
+                {% endif %}
+
+                <!-- META -->
+                <div class="operation-meta">
+                  <!-- DUE DATE -->
+                  {% if data.issue.due_date == today %}
+
+                  <span class="meta-pill meta-due-today font_size_10">
+                    <i class="bi bi-calendar2-check-fill"></i>
+                    Due Today
+                  </span>
+
+                  {% else %}
+
+                  <span class="meta-pill meta-due font_size_10">
+                    <i class="bi bi-calendar2"></i>
+                    {{data.issue_text}}
+                  </span>
+
+                  {% endif %}
+
+                  <!-- ASSIGNED TO YOU -->
+                  {% if data.issue.assigned_to == current_user %}
+
+                  <span class="meta-pill meta-assigned font_size_10">
+                    <i class="bi bi-person-check-fill"></i>
+                    Assigned to you
+                  </span>
+                  {% else %}
+                  <span
+                    class="meta-pill meta-assigned font_size_10"
+                    style="
+                      background-color: #f4f5f6 !important;
+                      color: rgb(111, 118, 125) !important;
+                    "
+                  >
+                    <i class="bi bi-person-fill"></i>
+                    Unassigned
+                  </span>
+                  {% endif %}
+                  <!-- issue comment  -->
+                  {% if data.comment_count > 0 %}
+                  <span class="comment-notification">
+                    <span class="comment-notification-icon">
+                      <i class="bi bi-chat-left-text-fill"></i>
+                    </span>
+
+                    <span class="comment-notification-text">
+                      {{ data.comment_count }}
+                      <!-- divider  -->
+                      {% if data.comment_count == 1 %} New comment {% else %}
+                      <!-- divider  -->
+                      New comments {% endif %}
+                    </span>
+                    <span class="comment-notification-dot"></span>
+                  </span>
+                  {% endif %}
+                  <!-- issue comment end -->
+                </div>
+                <!-- BOTTOM -->
+                <div class="operation-bottom">
+                  <!-- REPORTED BY  -->
+                  <div class="assigned-info">
+                    <div class="mini-avatar">
+                      {{ data.issue.created_by.first_name|first|upper }}
+                    </div>
+
+                    <span class="person-label font_size_11">Reported by</span>
+                    <span class="font_size_11">
+                      {{ data.issue.created_by.first_name }}
+                      <!-- divider  -->
+                      {{ data.issue.created_by.last_name }}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    class="operation-view-button font_size_12"
+                  >
+                    View Issue
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-
+          </a>
           {% endfor %}
         </div>
 
@@ -1047,115 +1294,134 @@
         <!-- TASK LIST -->
         <div class="operations-list">
           {% for data in project_data.open_tasks %}
-          <div
-            class="operation-item task-item scroll-section"
-            id="task{{data.task.id}}"
-          >
-            <!-- ICON -->
-            <div class="operation-icon task-item-icon">
-              <span class="material-symbols-outlined"> assignment </span>
-            </div>
-
-            <!-- CONTENT -->
-            <div class="operation-content">
-              <div class="operation-top">
-                <h6
-                  class="operation-title mb-0"
-                  style="font-weight: 600 !important"
-                >
-                  {{data.task.description}}
-                </h6>
-                <!-- PRIORITY -->
-                {% if data.task.priority == 'high' %}
-
-                <span class="priority-pill priority-high font_size_11">
-                  <span class="priority-dot"></span>
-                  High
-                </span>
-
-                {% elif data.task.priority == 'medium' %}
-
-                <span class="priority-pill priority-medium font_size_11">
-                  <span class="priority-dot"></span>
-                  Medium
-                </span>
-
-                {% else %}
-
-                <span class="priority-pill priority-low font_size_11">
-                  <span class="priority-dot"></span>
-                  Low
-                </span>
-
-                {% endif %}
+          <a href="{% url 'issues:task' data.task.uuid %}">
+            <div
+              class="operation-item task-item scroll-section"
+              id="task{{data.task.id}}"
+            >
+              <!-- ICON -->
+              <div class="operation-icon task-item-icon">
+                <span class="material-symbols-outlined"> assignment </span>
               </div>
 
-              <!-- META -->
-              <div class="operation-meta">
-                <!-- DUE DATE -->
-                {% if data.task.due_date == today %}
+              <!-- CONTENT -->
+              <div class="operation-content">
+                <div class="operation-top">
+                  <h6
+                    class="operation-title mb-0"
+                    style="font-weight: 600 !important"
+                  >
+                    {{data.task.description}}
+                  </h6>
+                  <!-- PRIORITY -->
+                  {% if data.task.priority == 'high' %}
 
-                <span class="meta-pill meta-due-today font_size_10">
-                  <i class="bi bi-calendar2-check-fill"></i>
-                  Due Today
-                </span>
-
-                {% else %}
-
-                <span class="meta-pill meta-due font_size_10">
-                  <i class="bi bi-calendar2"></i>
-                  {{data.task_text}}
-                </span>
-
-                {% endif %}
-
-                <!-- ASSIGNED TO YOU -->
-                {% if data.task.assigned_to == current_user %}
-
-                <span class="meta-pill meta-assigned font_size_10">
-                  <i class="bi bi-person-check-fill"></i>
-                  Assigned to you
-                </span>
-                {% else %}
-                <span
-                  class="meta-pill meta-assigned font_size_10"
-                  style="
-                    background-color: #f4f5f6 !important;
-                    color: rgb(111, 118, 125) !important;
-                  "
-                >
-                  <i class="bi bi-person-fill"></i>
-                  Unassigned
-                </span>
-                {% endif %}
-              </div>
-
-              <!-- BOTTOM -->
-              <div class="operation-bottom">
-                <!-- CREATED BY  -->
-                <div class="assigned-info">
-                  <div class="mini-avatar">
-                    {{ data.task.created_by.first_name |first|upper }}
-                  </div>
-                  <span class="person-label font_size_11">Created by</span>
-                  <span class="font_size_11">
-                    {{ data.task.created_by.first_name }}
-                    <!-- divider  -->
-                    {{ data.task.created_by.last_name }}
+                  <span class="priority-pill priority-high font_size_11">
+                    <span class="priority-dot"></span>
+                    High
                   </span>
+
+                  {% elif data.task.priority == 'medium' %}
+
+                  <span class="priority-pill priority-medium font_size_11">
+                    <span class="priority-dot"></span>
+                    Medium
+                  </span>
+
+                  {% else %}
+
+                  <span class="priority-pill priority-low font_size_11">
+                    <span class="priority-dot"></span>
+                    Low
+                  </span>
+
+                  {% endif %}
                 </div>
 
-                <button
-                  type="button"
-                  class="operation-view-button font_size_12"
-                >
-                  View Task
-                  <i class="bi bi-arrow-right"></i>
-                </button>
+                <!-- META -->
+                <div class="operation-meta">
+                  <!-- DUE DATE -->
+                  {% if data.task.due_date == today %}
+
+                  <span class="meta-pill meta-due-today font_size_10">
+                    <i class="bi bi-calendar2-check-fill"></i>
+                    Due Today
+                  </span>
+
+                  {% else %}
+
+                  <span class="meta-pill meta-due font_size_10">
+                    <i class="bi bi-calendar2"></i>
+                    {{data.task_text}}
+                  </span>
+
+                  {% endif %}
+
+                  <!-- ASSIGNED TO YOU -->
+                  {% if data.task.assigned_to == current_user %}
+
+                  <span class="meta-pill meta-assigned font_size_10">
+                    <i class="bi bi-person-check-fill"></i>
+                    Assigned to you
+                  </span>
+                  {% else %}
+                  <span
+                    class="meta-pill meta-assigned font_size_10"
+                    style="
+                      background-color: #f4f5f6 !important;
+                      color: rgb(111, 118, 125) !important;
+                    "
+                  >
+                    <i class="bi bi-person-fill"></i>
+                    Unassigned
+                  </span>
+                  {% endif %}
+                  <!-- issue comment  -->
+                  {% if data.comment_count > 0 %}
+                  <span class="comment-notification">
+                    <span class="comment-notification-icon">
+                      <i class="bi bi-chat-left-text-fill"></i>
+                    </span>
+
+                    <span class="comment-notification-text">
+                      {{ data.comment_count }}
+                      <!-- divider  -->
+                      {% if data.comment_count == 1 %} New comment {% else %}
+                      <!-- divider  -->
+                      New comments {% endif %}
+                    </span>
+                    <span class="comment-notification-dot"></span>
+                  </span>
+                  {% endif %}
+                  <!-- issue comment end -->
+                </div>
+
+                <!-- BOTTOM -->
+                <div class="operation-bottom">
+                  <!-- CREATED BY  -->
+                  <div class="assigned-info">
+                    <div class="mini-avatar">
+                      {{ data.task.created_by.first_name |first|upper }}
+                    </div>
+                    <span class="person-label font_size_11">Created by</span>
+                    <span class="font_size_11">
+                      {{ data.task.created_by.first_name }}
+                      <!-- divider  -->
+                      {{ data.task.created_by.last_name }}
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="operation-view-button font_size_12"
+                  >
+                    View Task
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-
+          </a>
           {% endfor %}
         </div>
 

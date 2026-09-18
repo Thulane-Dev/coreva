@@ -358,7 +358,12 @@ def get_missed_inspection_days(project):
     today = timezone.localdate()
     yesterday = today - timedelta(days=1)
 
-    current_date = project.start_date
+    # current_date = project.start_date
+
+    current_date = max(
+        project.start_date,
+        project.created_at.date()
+    )
     missed_days = []
 
     while current_date <= yesterday:
@@ -477,6 +482,13 @@ def get_project_details_daily_inspection(
 
 
 # DAILY INSPECTION CHECKLIST ITEMS PAGE
+# def generate_inspection_reference(inspection_date):
+#     return f"DI-{inspection_date.strftime('%Y%m%d')}"
+
+def generate_inspection_reference(inspection_id, inspection_date):
+    return f"IN-{inspection_date.strftime('%Y%m%d')}-{inspection_id:04d}"
+
+
 def get_project_daily_inspection_new(
     current_user=None,
     project=None,
@@ -496,12 +508,21 @@ def get_project_daily_inspection_new(
     # CHECK IF INSPECTION CREATED IF NOT CREATE ONE
     # ==================================================
     if inspection == None:
+
         inspection = InspectionModel.objects.create(
             project=project,
             status="in_progress",
             started_at=today,
             started_by=current_user,
         )
+
+        # inspection reference
+        inspection_date = timezone.now().date()
+        inspection_id = inspection.id
+        reference = generate_inspection_reference(
+            inspection_id, inspection_date)
+        inspection.reference = reference
+        inspection.save()
 
         # Get All Project Questions
         inspection_questions = InspectionQuestionModel.objects.filter((

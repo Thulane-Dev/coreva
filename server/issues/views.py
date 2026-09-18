@@ -20,6 +20,7 @@ from .services.issues_view import (
     get_project_issues,
     get_project_tasks,
     get_all_project_issues,
+    get_all_project_tasks,
 )
 
 
@@ -248,7 +249,7 @@ def ProjectTasksPageView(request, project_uuid):
     project = get_object_or_404(ProjectModel, uuid=project_uuid)
     today = timezone.now().date()
 
-    tasks_data = get_project_tasks(project=project)
+    tasks_data = get_all_project_tasks(project=project)
     tasks = tasks_data['open_tasks_sorted']
 
     context = {
@@ -283,14 +284,6 @@ def IssuePreview(request, issue_uuid):
         uuid=issue_uuid,
     )
 
-    # Comments for this issue
-    # comments = (
-    #     IssueCommentModel.objects
-    #     .filter(issue=issue)
-    #     .select_related("comment_by")
-    #     .order_by("created_at")
-    # )
-
     comments = (
         IssueCommentModel.objects
         .filter(issue=issue)
@@ -299,16 +292,7 @@ def IssuePreview(request, issue_uuid):
         .order_by("created_at")
     )
 
-    # Team members available for assignment
-    # team_members = (
-    #     UserModel.objects
-    #     .filter(
-    #         company=request.user.company,
-    #         status="active",
-    #     )
-    #     .order_by("first_name", "last_name")
-    # )
-
+    # Team Members
     team_members = UserModel.objects.filter(
         company=company).order_by('date_created')
 
@@ -325,7 +309,7 @@ def IssuePreview(request, issue_uuid):
     return render(request, "client/base.html", context)
 
 
-# ============= UPDATE ISSUE POST METHOD =============
+# ============= DELETE THIS UPDATE ISSUE POST METHOD =============
 def save_issue_update(request):
 
     if request.method == "POST":
@@ -444,7 +428,7 @@ def mark_issue_read(request, issue_uuid):
 def update_issue_status(request, issue_uuid):
     user = request.user
     current_user = get_object_or_404(UserModel, user=user)
-    today = timezone.now().date()
+    today = timezone.now()
     user = request.user
     current_user = get_object_or_404(UserModel, user=user)
     company = current_user.company
@@ -481,6 +465,57 @@ def update_issue_status(request, issue_uuid):
         icon_type='issue',
     )
 
+    if issue.status == 'closed':
+        comments = IssueCommentModel.objects.filter(
+            Q(issue=issue) & Q(is_read=False))
+        for issue_comment in comments:
+            issue_comment.is_read = True
+            issue_comment.save()
+
     # 🎯 Redirect To Projects
     url = reverse('issues:issue', args=[issue.uuid, ])
     return redirect(f"{url}")
+
+
+# ============= VIEW ISSUE PAGE =============
+def TasksPreview(request, issue_uuid):
+    user = request.user
+    current_user = get_object_or_404(UserModel, user=user)
+    company = current_user.company
+
+    # Get the issue and its related objects
+    issue = get_object_or_404(
+        IssueModel.objects.select_related(
+            "project",
+            "inspection",
+            "inspection_response",
+            "daily_report",
+            "assigned_to",
+            "created_by",
+        ),
+        uuid=issue_uuid,
+    )
+
+    comments = (
+        IssueCommentModel.objects
+        .filter(issue=issue)
+        .select_related("comment_by")
+        .prefetch_related("comment_attachments")
+        .order_by("created_at")
+    )
+
+    # Team Members
+    team_members = UserModel.objects.filter(
+        company=company).order_by('date_created')
+
+    context = {
+        "issue": issue,
+        "comments": comments,
+        "team_members": team_members,
+        "today": timezone.localdate(),
+        "page": "issues/task_preview.html",
+    }
+
+    if request.htmx:
+        return render(request, "issues/task_preview.html", context)
+    return render(request, "client/base.html", context)

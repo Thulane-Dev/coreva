@@ -201,6 +201,7 @@ def get_project_data(
         "overdue_text_sm": issues_data['overdue_text_sm'],
         "open_issues_count": issues_data['open_issues_count'],
         "open_issues_count": open_issues_count,
+        "comments_issues_list": issues_data['comments_issues_list'],
 
         # TASKS DATA
         "open_tasks": tasks_data["open_tasks_sorted"][:4],
@@ -213,6 +214,7 @@ def get_project_data(
         "overdue_tasks_count": tasks_data['overdue_tasks_count'],
         "high_priority_tasks": tasks_data['high_priority_count'],
         "tasks_count": tasks_count,
+        "comments_tasks_list": tasks_data['comments_tasks_list'],
 
         # DAILY REPORT
         "report": report,

@@ -1,1 +1,1 @@
-from .issues_view import get_project_issues,get_project_tasks,get_all_project_issues
+from .issues_view import get_project_issues,get_project_tasks,get_all_project_issues,get_all_project_tasks
