@@ -261,6 +261,59 @@ def get_all_project_issues(
     }
 
 
+def filter_issues(
+    project
+):
+    # Open Issues
+    open_issues_list = []
+
+    open_issues = IssueModel.objects.filter(
+        project=project,
+        type="issue"
+    ).prefetch_related(
+        Prefetch(
+            "issue",
+            queryset=IssueCommentModel.objects.filter(
+                is_read=False).order_by("-created_at"),
+            to_attr="unread_comments"
+        )
+    ).order_by("-created_at")
+
+    for issue in open_issues:
+        comment_count = 0
+
+        # DAYS LEFT CHECK
+        days_left = (
+            issue.due_date - date.today()).days
+
+        if days_left < 0:
+            issue_text = f"Due {abs(days_left)} days ago"
+
+        elif days_left == 0:
+            issue_text = "Due today"
+
+        elif days_left == 1:
+            issue_text = "Due tomorrow"
+
+        else:
+            issue_text = f"Due in {days_left} days"
+
+        # comment check
+        for comment in issue.unread_comments:
+            comment_count += 1
+
+        open_issues_list.append({
+            "issue": issue,
+            "issue_text": issue_text,
+            "comment_count": comment_count,
+        })
+
+    return {
+        # "open_issues": open_issues_sorted,
+        "open_issues": open_issues_list,
+    }
+
+
 def get_project_tasks(
         project,
 ):

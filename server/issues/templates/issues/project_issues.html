@@ -56,250 +56,108 @@
 
 <!-- ======== ISSUES ======== -->
 <section class="issues-filters mb-4">
-  <div class="issues-filters-inner">
-
-    <!-- Search -->
-    <div class="issues-search">
-      <i class="bi bi-search"></i>
-      <input
-        type="search"
-        class="form-control"
-        placeholder="Search issues..."
-        aria-label="Search issues"
-      >
-    </div>
-
-    <!-- Filters -->
-    <div class="issues-filter-group">
-
-      <!-- Status -->
-      <div class="issue-filter">
-        <label for="statusFilter">Status</label>
-        <select id="statusFilter" class="form-select">
-          <option selected>All statuses</option>
-          <option value="open">Open</option>
-          <option value="in_progress">In Progress</option>
-          <option value="resolved">Resolved</option>
-          <option value="closed">Closed</option>
-        </select>
+  <form action="">
+    {% csrf_token %}
+    <div class="issues-filters-inner">
+      <!-- Search -->
+      <div class="issues-search">
+        <i class="bi bi-search"></i>
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Search issues..."
+          aria-label="Search issues"
+          name="query"
+          hx-post="{% url 'issues:filter-issues' project.uuid %}"
+          hx-trigger="keyup changed delay:300ms"
+          hx-target="#issues_partial"
+          hx-indicator=".loading"
+          hx-swap="innerHTML"
+        />
       </div>
 
-      <!-- Priority -->
-      <div class="issue-filter">
-        <label for="priorityFilter">Priority</label>
-        <select id="priorityFilter" class="form-select">
-          <option selected>All priorities</option>
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
-        </select>
-      </div>
-
-      <!-- Assignee -->
-      <div class="issue-filter">
-        <label for="assigneeFilter">Assigned to</label>
-        <select id="assigneeFilter" class="form-select">
-          <option selected>Everyone</option>
-          <option value="unassigned">Unassigned</option>
-          <option value="me">Assigned to me</option>
-        </select>
-      </div>
-
-      <!-- More -->
-      <button
-        type="button"
-        class="issues-more-btn"
-        data-bs-toggle="collapse"
-        data-bs-target="#moreIssueFilters"
-        aria-expanded="false"
-      >
-        <i class="bi bi-sliders2"></i>
-        <span>More filters</span>
-        <i class="bi bi-chevron-down filter-chevron"></i>
-      </button>
-
-    </div>
-
-    <!-- More Filters -->
-    <div class="collapse" id="moreIssueFilters">
-      <div class="more-filters">
-
+      <!-- Filters -->
+      <div class="issues-filter-group">
+        <!-- Status -->
         <div class="issue-filter">
-          <label for="dateFilter">Date</label>
-          <select id="dateFilter" class="form-select">
-            <option selected>Any date</option>
-            <option value="today">Created today</option>
-            <option value="week">Created this week</option>
-            <option value="updated">Recently updated</option>
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter" class="form-select">
+            <option selected>All statuses</option>
+            <option value="open">Open</option>
+            <option value="in_progress">In Progress</option>
+            <option value="resolved">Resolved</option>
+            <option value="closed">Closed</option>
           </select>
         </div>
 
+        <!-- Priority -->
         <div class="issue-filter">
-          <label for="commentFilter">Comments</label>
-          <select id="commentFilter" class="form-select">
-            <option selected>All comments</option>
-            <option value="unread">Unread comments</option>
+          <label for="priorityFilter">Priority</label>
+          <select id="priorityFilter" class="form-select">
+            <option selected>All priorities</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
           </select>
         </div>
 
-        <button type="button" class="clear-filters-btn">
-          Clear filters
+        <!-- Assignee -->
+        <div class="issue-filter">
+          <label for="assigneeFilter">Assigned to</label>
+          <select id="assigneeFilter" class="form-select">
+            <option selected>Everyone</option>
+            <option value="unassigned">Unassigned</option>
+            <option value="me">Assigned to me</option>
+          </select>
+        </div>
+
+        <!-- More -->
+        <button
+          type="button"
+          class="issues-more-btn"
+          data-bs-toggle="collapse"
+          data-bs-target="#moreIssueFilters"
+          aria-expanded="false"
+        >
+          <i class="bi bi-sliders2"></i>
+          <span>More filters</span>
+          <i class="bi bi-chevron-down filter-chevron"></i>
         </button>
+      </div>
 
+      <!-- More Filters -->
+      <div class="collapse" id="moreIssueFilters">
+        <div class="more-filters">
+          <div class="issue-filter">
+            <label for="dateFilter">Date</label>
+            <select id="dateFilter" class="form-select">
+              <option selected>Any date</option>
+              <option value="today">Created today</option>
+              <option value="week">Created this week</option>
+              <option value="updated">Recently updated</option>
+            </select>
+          </div>
+
+          <div class="issue-filter">
+            <label for="commentFilter">Comments</label>
+            <select id="commentFilter" class="form-select">
+              <option selected>All comments</option>
+              <option value="unread">Unread comments</option>
+            </select>
+          </div>
+
+          <button type="button" class="clear-filters-btn">Clear filters</button>
+        </div>
       </div>
     </div>
-
-  </div>
+  </form>
 </section>
 
 <!-- ======== ISSUES ======== -->
 <section class="section-spacing">
-  {% for data in issues %}
-  <a href="{% url 'issues:issue' data.issue.uuid %}">
-    <div
-      class="operation-item issue-item scroll-section mb-3"
-      id="project_issue{{data.issue.id}}"
-    >
-      <!-- ICON -->
-      <div class="operation-icon issue-item-icon">
-        <span class="material-symbols-outlined">warning</span>
-      </div>
-
-      <!-- CONTENT -->
-      <div class="operation-content">
-        <div class="operation-top">
-          <h6 class="operation-title mb-0 font_size_14">
-            {{data.issue.title}}
-            <!-- divider  -->
-            {% if data.issue.status == 'open'%}
-            <span
-              class="font_size_11 priority-pill priority-high text-capitalize"
-              style="margin-left: 4px"
-            >
-              <span class="priority-dot"></span>
-              {{data.issue.status}}
-            </span>
-            {% else %}
-            <span
-              class="font_size_11 priority-pill priority-low text-capitalize"
-              style="margin-left: 4px"
-            >
-              <span class="priority-dot"></span>
-              {{data.issue.status}}
-            </span>
-            {% endif %}
-          </h6>
-
-          <!-- PRIORITY -->
-          {% if data.issue.priority == 'high' %}
-          <span class="font_size_11 priority-pill priority-high">
-            <span class="priority-dot"></span>
-            High
-          </span>
-
-          {% elif data.issue.priority == 'medium' %}
-          <span class="font_size_11 priority-pill priority-medium">
-            <span class="priority-dot"></span>
-            Medium
-          </span>
-
-          {% else %}
-          <span class="font_size_11 priority-pill priority-low">
-            <span class="priority-dot"></span>
-            Low
-          </span>
-          {% endif %}
-        </div>
-
-        <!-- DESCRIPTION -->
-        {% if data.issue.description %}
-        <p class="operation-description font_size_12">
-          {{data.issue.description}}
-        </p>
-        {% endif %}
-
-        <!-- META -->
-        <div class="operation-meta">
-          <!-- DUE DATE -->
-          {% if data.issue.due_date == today %}
-
-          <span class="meta-pill meta-due-today font_size_10">
-            <i class="bi bi-calendar2-check-fill"></i>
-            Due Today
-          </span>
-
-          {% else %}
-
-          <span class="meta-pill meta-due font_size_10">
-            <i class="bi bi-calendar2"></i>
-            {{data.issue_text}}
-          </span>
-          {% endif %}
-
-          <!-- ASSIGNED TO YOU -->
-          {% if data.issue.assigned_to == current_user %}
-
-          <span class="meta-pill meta-assigned font_size_10">
-            <i class="bi bi-person-check-fill"></i>
-            Assigned to you
-          </span>
-          {% else %}
-          <span
-            class="meta-pill meta-assigned font_size_10"
-            style="
-              background-color: #f4f5f6 !important;
-              color: rgb(111, 118, 125) !important;
-            "
-          >
-            <i class="bi bi-person-fill"></i>
-            Unassigned
-          </span>
-          {% endif %}
-          <!-- comments alert  -->
-          {% if data.comment_count > 0 %}
-          <span class="comment-notification">
-            <span class="comment-notification-icon">
-              <i class="bi bi-chat-left-text-fill"></i>
-            </span>
-
-            <span class="comment-notification-text">
-              {{ data.comment_count }}
-              <!-- divider  -->
-              {% if data.comment_count == 1 %} New comment {% else %}
-              <!-- divider  -->
-              New comments {% endif %}
-            </span>
-
-            <span class="comment-notification-dot"></span>
-          </span>
-          {% endif %}
-          <!-- comments alert  end -->
-        </div>
-
-        <!-- BOTTOM -->
-        <div class="operation-bottom">
-          <!-- REPORTED BY  -->
-          <div class="assigned-info">
-            <div class="mini-avatar">
-              {{ data.issue.created_by.first_name|first|upper }}
-            </div>
-
-            <span class="person-label font_size_11">Reported by</span>
-            <span class="font_size_11">
-              {{ data.issue.created_by.first_name }}
-              <!-- divider  -->
-              {{ data.issue.created_by.last_name }}
-            </span>
-          </div>
-          <button type="button" class="operation-view-button font_size_12">
-            View Issue
-            <i class="bi bi-arrow-right"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </a>
-  {% endfor %}
+  <div id="issues_partial">
+    {% include 'partials/all_issues_partial.html' %}
+  </div>
 </section>
 
 <style>

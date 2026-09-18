@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Q
+from django.db.models import Prefetch
 
 # htmx
 from django.http import HttpResponse
@@ -21,6 +22,7 @@ from .services.issues_view import (
     get_project_tasks,
     get_all_project_issues,
     get_all_project_tasks,
+    filter_issues
 )
 
 
@@ -239,6 +241,31 @@ def ProjectIssuesPageView(request, project_uuid):
     if request.htmx:
         return render(request, "issues/project_issues.html", context)
     return render(request, "client/base.html", context)
+
+
+# ============= Project Issues Partial =============
+def issues_partial(request, project_uuid):
+    user = request.user
+    current_user = get_object_or_404(UserModel, user=user)
+    query = request.POST.get("query", "").strip()
+    project = get_object_or_404(ProjectModel, uuid=project_uuid)
+    today = timezone.now().date()
+
+    print(query)
+
+    issues_data = filter_issues(project=project)
+    issues = issues_data['open_issues']
+
+    return render(
+        request,
+        "partials/all_issues_partial.html",
+        {
+            "issues": issues,
+            "project": project,
+            "current_user": current_user,
+            "today": today,
+        },
+    )
 
 
 # ============= Project Tasks =============

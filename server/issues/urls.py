@@ -15,6 +15,12 @@ urlpatterns = [
          views.save_issue_post, name='save-issue'),
     path('project-issues/<uuid:project_uuid>/',
          views.ProjectIssuesPageView, name='project-issues'),
+
+
+    path('filter-issues/<uuid:project_uuid>/',
+         views.issues_partial, name='filter-issues'),
+
+
     path('project-tasks/<uuid:project_uuid>/',
          views.ProjectTasksPageView, name='project-tasks'),
     # UPDATE ISSUE URLS
